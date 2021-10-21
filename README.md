@@ -6,4 +6,4 @@ Miembros del equipo:
 * Juan Antonio González
 * Rafael Rodríguez Calvente
 
-Enlace Rúbrica auto-evaluación:
+[Rúbrica auto-evaluación](https://docs.google.com/spreadsheets/d/1q-f5MUyD9vz1LYL5ytqQ4P3v7miQeNutINQsDhMZ6Zg/edit?usp=sharing)
