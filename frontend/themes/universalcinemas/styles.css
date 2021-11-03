@@ -1,0 +1,23 @@
+@import url('./main-layout.css');
+@import url('./views/novedades-view.css');
+@import url('./views/películas-view.css');
+@import url('./views/registro-view.css');
+@import url('./views/iniciar-sesión-view.css');
+@import url('./views/compra-view.css');
+@import url('./views/editar-perfil-view.css');
+@import url('lumo-css-framework/all-classes.css');
+@import url('line-awesome/dist/line-awesome/css/line-awesome.min.css');
+@import url('@fontsource/raleway');    html {
+      --lumo-border-radius: calc(var(--lumo-size-m) / 2);
+--lumo-font-family: Raleway;
+
+    }
+
+    [theme~="dark"] {
+      --lumo-base-color: hsl(0, 0%, 0%);
+      --lumo-error-color: hsl(3, 57%, 47%);
+      --lumo-error-color-50pct: hsla(3, 57%, 47%, 0.5);
+      --lumo-error-color-10pct: hsla(3, 57%, 47%, 0.1);
+      --lumo-body-text-color: hsla(359, 100%, 50%, 0.9);
+
+    }
