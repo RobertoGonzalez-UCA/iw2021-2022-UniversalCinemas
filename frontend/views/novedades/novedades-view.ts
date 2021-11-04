@@ -1,34 +1,31 @@
-import { html, LitElement, customElement } from 'lit-element';
-import '@vaadin/vaadin-ordered-layout/vaadin-horizontal-layout';
-import '@vaadin/vaadin-ordered-layout/vaadin-vertical-layout';
-import '@vaadin/vaadin-select';
-// @ts-ignore
-import { applyTheme } from '../../generated/theme';
-
-
+import { showNotification } from '@vaadin/flow-frontend/a-notification';
+import '@vaadin/vaadin-button';
+import '@vaadin/vaadin-text-field';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { View } from '../../views/view';
 
 @customElement('novedades-view')
-export class NovedadesView extends LitElement {
+export class NovedadesView extends View {
+  name = '';
+
   connectedCallback() {
     super.connectedCallback();
-    // Apply the theme manually because of https://github.com/vaadin/flow/issues/11160
-    applyTheme(this.renderRoot);
+    this.classList.add('flex', 'p-m', 'gap-m', 'items-end');
   }
 
   render() {
     return html`
-      <main class="max-w-screen-lg mx-auto pb-l px-l">
-        <vaadin-horizontal-layout class="items-center justify-between">
-          <vaadin-vertical-layout>
-            <h2 class="mb-0 mt-xl text-3xl">Beautiful photos</h2>
-            <p class="mb-xl mt-0 text-secondary">Royalty free photos and pictures, courtesy of Unsplash</p>
-          </vaadin-vertical-layout>
-          <vaadin-select label="Sort by" id="sortBy"></vaadin-select>
-        </vaadin-horizontal-layout>
-        <ol class="gap-m grid list-none m-0 p-0">
-          <slot></slot>
-        </ol>
-      </main>
+      <vaadin-text-field label="Your name" @value-changed=${this.nameChanged}></vaadin-text-field>
+      <vaadin-button @click=${this.sayHello}>Say hello</vaadin-button>
     `;
+  }
+
+  nameChanged(e: CustomEvent) {
+    this.name = e.detail.value;
+  }
+
+  sayHello() {
+    showNotification(`Hello ${this.name}`);
   }
 }
