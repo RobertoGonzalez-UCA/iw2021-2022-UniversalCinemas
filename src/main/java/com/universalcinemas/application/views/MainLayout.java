@@ -34,7 +34,6 @@ import com.universalcinemas.application.views.registro.RegistroView;
 import com.universalcinemas.application.views.iniciosesión.IniciosesiónView;
 import com.universalcinemas.application.views.novedades.NovedadesView;
 import com.universalcinemas.application.views.planes.PlanesView;
-import com.universalcinemas.application.views.películas.PelículasView;
 import com.universalcinemas.application.views.elegirasiento.ElegirasientoView;
 import com.universalcinemas.application.views.comprarentrada.ComprarentradaView;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -134,8 +133,6 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Novedades", "la la-newspaper", NovedadesView.class), //
 
                 new MenuItemInfo("Planes", "la la-th-list", PlanesView.class), //
-
-                new MenuItemInfo("Películas", "la la-video", PelículasView.class), //
 
                 new MenuItemInfo("Elegir asiento", "la la-chair", ElegirasientoView.class), //
 
