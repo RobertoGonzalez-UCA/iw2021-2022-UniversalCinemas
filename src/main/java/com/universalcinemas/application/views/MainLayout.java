@@ -31,7 +31,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import com.universalcinemas.application.views.MainLayout;
 import com.universalcinemas.application.views.registro.RegistroView;
-import com.universalcinemas.application.views.iniciosesión.IniciosesiónView;
+import com.universalcinemas.application.views.iniciosesion.IniciosesionView;
 import com.universalcinemas.application.views.novedades.NovedadesView;
 import com.universalcinemas.application.views.planes.PlanesView;
 import com.universalcinemas.application.views.elegirasiento.ElegirasientoView;
@@ -128,7 +128,7 @@ public class MainLayout extends AppLayout {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{ //
                 new MenuItemInfo("Registro", "la la-user", RegistroView.class), //
 
-                new MenuItemInfo("Inicio sesión", "la la-user", IniciosesiónView.class), //
+                new MenuItemInfo("Inicio sesión", "la la-user", IniciosesionView.class), //
 
                 new MenuItemInfo("Novedades", "la la-newspaper", NovedadesView.class), //
 

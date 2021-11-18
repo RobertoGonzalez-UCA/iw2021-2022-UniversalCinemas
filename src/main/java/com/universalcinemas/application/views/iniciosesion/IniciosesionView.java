@@ -1,4 +1,4 @@
-package com.universalcinemas.application.views.iniciosesión;
+package com.universalcinemas.application.views.iniciosesion;
 
 import com.universalcinemas.application.data.entity.SamplePerson;
 import com.universalcinemas.application.data.service.SamplePersonService;
@@ -27,7 +27,7 @@ import com.vaadin.flow.component.icon.Icon;
 @PageTitle("Inicio sesión")
 @Route(value = "login", layout = MainLayout.class)
 @Uses(Icon.class)
-public class IniciosesiónView extends Div {
+public class IniciosesionView extends Div {
 
     private TextField firstName = new TextField("First name");
     private TextField lastName = new TextField("Last name");
@@ -41,7 +41,7 @@ public class IniciosesiónView extends Div {
 
     private Binder<SamplePerson> binder = new Binder(SamplePerson.class);
 
-    public IniciosesiónView(SamplePersonService personService) {
+    public IniciosesionView(SamplePersonService personService) {
         addClassName("iniciosesión-view");
 
         add(createTitle());

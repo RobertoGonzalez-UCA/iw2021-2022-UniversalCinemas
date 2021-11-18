@@ -1,10 +1,10 @@
-.iniciosesión-view {
+.iniciosesion-view {
   display: block;
   margin: 0 auto;
   max-width: 1024px;
   padding: 0 var(--lumo-space-l);
 }
-.iniciosesión-view .button-layout {
+.iniciosesion-view .button-layout {
   margin-bottom: var(--lumo-space-l);
   margin-top: var(--lumo-space-m);
 }
