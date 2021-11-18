@@ -10,6 +10,7 @@ import org.vaadin.artur.helpers.LaunchUtil;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.vaadin.flow.component.dependency.NpmPackage;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * The entry point of the Spring Boot application.
@@ -19,6 +20,7 @@ import com.vaadin.flow.component.dependency.NpmPackage;
  *
  */
 @SpringBootApplication
+@EnableJpaRepositories
 @Theme(value = "universalcinemasapp", variant = Lumo.DARK)
 @PWA(name = "UniversalCinemas App", shortName = "UniversalCinemas App", offlineResources = {"images/logo.png"})
 @NpmPackage(value = "line-awesome", version = "1.3.0")
