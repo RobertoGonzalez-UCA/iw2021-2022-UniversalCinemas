@@ -7,4 +7,4 @@ import java.time.LocalDate;
 
 public interface LanguageRepository extends JpaRepository<Language, Integer> {
 
-}
+} 

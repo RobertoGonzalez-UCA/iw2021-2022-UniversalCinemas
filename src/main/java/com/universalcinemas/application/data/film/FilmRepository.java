@@ -6,4 +6,4 @@ import com.universalcinemas.application.data.film.Film;
 
 public interface FilmRepository extends JpaRepository<Film, Integer>{
 	
-}
+}  

@@ -21,3 +21,4 @@ public class Film {
 	@GeneratedValue
 	private Integer id;
 }
+ 
