@@ -19,4 +19,4 @@ error-screenshots/
 webpack.generated.js
 
 # application.properties (username and password database)
-src\main\resources\application.properties
+src/main/resources/application.properties
