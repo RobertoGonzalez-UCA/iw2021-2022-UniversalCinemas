@@ -16,7 +16,6 @@ public class User {
 	private String urlprofileimage;
 	private Date dateofbirth;
 	private String phonenumber;
-	
 	@Id
 	@GeneratedValue
 	private Integer id;
