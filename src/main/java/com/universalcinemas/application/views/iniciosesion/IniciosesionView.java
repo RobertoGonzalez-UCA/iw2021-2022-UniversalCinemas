@@ -1,7 +1,7 @@
 package com.universalcinemas.application.views.iniciosesion;
 
-import com.universalcinemas.application.data.entity.SamplePerson;
-import com.universalcinemas.application.data.service.SamplePersonService;
+import com.universalcinemas.application.data.user.User;
+import com.universalcinemas.application.data.user.UserService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -14,6 +14,7 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
@@ -29,19 +30,20 @@ import com.vaadin.flow.component.icon.Icon;
 @Uses(Icon.class)
 public class IniciosesionView extends Div {
 
-    private TextField firstName = new TextField("First name");
-    private TextField lastName = new TextField("Last name");
-    private EmailField email = new EmailField("Email address");
-    private DatePicker dateOfBirth = new DatePicker("Birthday");
-    private PhoneNumberField phone = new PhoneNumberField("Phone number");
-    private TextField occupation = new TextField("Occupation");
+    private TextField name = new TextField("Nombre");
+    private TextField surname = new TextField("Apellidos");
+    private EmailField email = new EmailField("Correo electrónico");
+    private PasswordField password = new PasswordField("Contraseña");
+    private TextField urlprofileimage = new TextField("Url image");
+    private DatePicker dateOfBirth = new DatePicker("Fecha de nacimiento");
+    private PhoneNumberField phone = new PhoneNumberField("Teléfono:");
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+    private Button cancel = new Button("Cancelar");
+    private Button save = new Button("Iniciar sesión");
 
-    private Binder<SamplePerson> binder = new Binder(SamplePerson.class);
+    private Binder<User> binder = new Binder(User.class);
 
-    public IniciosesionView(SamplePersonService personService) {
+    public IniciosesionView(UserService userService) {
         addClassName("iniciosesión-view");
 
         add(createTitle());
@@ -53,24 +55,24 @@ public class IniciosesionView extends Div {
 
         cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
-            personService.update(binder.getBean());
+        	userService.update(binder.getBean());
             Notification.show(binder.getBean().getClass().getSimpleName() + " details stored.");
             clearForm();
         });
     }
 
     private void clearForm() {
-        binder.setBean(new SamplePerson());
+        binder.setBean(new User());
     }
 
     private Component createTitle() {
-        return new H3("Personal information");
+        return new H3("Inicio de sesión");
     }
 
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
-        email.setErrorMessage("Please enter a valid email address");
-        formLayout.add(firstName, lastName, dateOfBirth, phone, email, occupation);
+        email.setErrorMessage("Por favor introduce un correo válido.");
+        formLayout.add(name, surname, email, password, urlprofileimage, dateOfBirth, phone);
         return formLayout;
     }
 
@@ -90,7 +92,7 @@ public class IniciosesionView extends Div {
         public PhoneNumberField(String label) {
             setLabel(label);
             countryCode.setWidth("120px");
-            countryCode.setPlaceholder("Country");
+            countryCode.setPlaceholder("País");
             countryCode.setPattern("\\+\\d*");
             countryCode.setPreventInvalidInput(true);
             countryCode.setItems("+354", "+91", "+62", "+98", "+964", "+353", "+44", "+972", "+39", "+225");
