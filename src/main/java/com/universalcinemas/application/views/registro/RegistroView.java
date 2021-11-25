@@ -11,9 +11,11 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
@@ -31,15 +33,17 @@ import com.vaadin.flow.component.icon.Icon;
 @Uses(Icon.class)
 public class RegistroView extends Div {
 
-    private TextField firstName = new TextField("First name");
-    private TextField lastName = new TextField("Last name");
-    private EmailField email = new EmailField("Email address");
-    private DatePicker dateOfBirth = new DatePicker("Birthday");
-    private PhoneNumberField phone = new PhoneNumberField("Phone number");
-    private TextField occupation = new TextField("Occupation");
+    private TextField firstName = new TextField("Nombre");
+    private TextField lastName = new TextField("Apellidos");
+    private EmailField email = new EmailField("Email");
+    private PasswordField password = new PasswordField("Contraseña");
+    private PasswordField passwordConfirm = new PasswordField("Confirma tu contraseña");
+    private DatePicker dateOfBirth = new DatePicker("Fecha de Nacimiento");
+    private PhoneNumberField phone = new PhoneNumberField("Número de telefono");
+    private Image urlProfileImage = new Image("https://dummyimage.com/300x200/000/fff", "DummyImage");
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+    private Button cancel = new Button("Cancelar");
+    private Button save = new Button("Guardar");
 
     private Binder<SamplePerson> binder = new Binder(SamplePerson.class);
 
@@ -66,13 +70,13 @@ public class RegistroView extends Div {
     }
 
     private Component createTitle() {
-        return new H3("Personal information");
+        return new H3("Datos personales");
     }
 
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
-        email.setErrorMessage("Please enter a valid email address");
-        formLayout.add(firstName, lastName, dateOfBirth, phone, email, occupation);
+        email.setErrorMessage("Por favor, introduce un correo válido");
+        formLayout.add(firstName, lastName, dateOfBirth, phone, email, password, passwordConfirm, urlProfileImage);
         return formLayout;
     }
 
@@ -92,10 +96,10 @@ public class RegistroView extends Div {
         public PhoneNumberField(String label) {
             setLabel(label);
             countryCode.setWidth("120px");
-            countryCode.setPlaceholder("Country");
+            countryCode.setPlaceholder("País");
             countryCode.setPattern("\\+\\d*");
             countryCode.setPreventInvalidInput(true);
-            countryCode.setItems("+354", "+91", "+62", "+98", "+964", "+353", "+44", "+972", "+39", "+225");
+            countryCode.setItems("+34");
             countryCode.addCustomValueSetListener(e -> countryCode.setValue(e.getDetail()));
             number.setPattern("\\d*");
             number.setPreventInvalidInput(true);
