@@ -3,6 +3,8 @@ package com.universalcinemas.application.views.elegirasiento;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -20,6 +22,7 @@ import com.vaadin.flow.component.dependency.JsModule;
 
 @PageTitle("Elegir asiento")
 @Route(value = "chooseseat", layout = MainLayout.class)
+@PermitAll
 @Tag("elegirasiento-view")
 @JsModule("./views/elegirasiento/elegirasiento-view.ts")
 public class ElegirasientoView extends LitTemplate implements HasStyle {

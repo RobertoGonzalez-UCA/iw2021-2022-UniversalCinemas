@@ -3,6 +3,8 @@ package com.universalcinemas.application.views.comprarentrada;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -20,6 +22,7 @@ import com.vaadin.flow.component.dependency.JsModule;
 
 @PageTitle("Comprar entrada")
 @Route(value = "checkout", layout = MainLayout.class)
+@PermitAll
 @Tag("comprarentrada-view")
 @JsModule("./views/comprarentrada/comprarentrada-view.ts")
 public class ComprarentradaView extends LitTemplate implements HasStyle {

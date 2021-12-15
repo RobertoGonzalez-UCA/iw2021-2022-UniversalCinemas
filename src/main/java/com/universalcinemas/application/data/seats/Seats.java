@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 public class Seats {
 	private Integer row;
-	private Integer column;
+	private Integer col;
 	@Id
 	@GeneratedValue
 	private Integer id;

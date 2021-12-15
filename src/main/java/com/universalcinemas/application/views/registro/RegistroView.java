@@ -1,7 +1,5 @@
 package com.universalcinemas.application.views.registro;
 
-import com.universalcinemas.application.data.entity.SamplePerson;
-import com.universalcinemas.application.data.service.SamplePersonService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -27,7 +25,6 @@ import com.vaadin.flow.component.icon.Icon;
 
 @PageTitle("Registro")
 @Route(value = "signup", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
 @Uses(Icon.class)
 public class RegistroView extends Div {
 
@@ -35,13 +32,13 @@ public class RegistroView extends Div {
     private TextField lastName = new TextField("Last name");
     private EmailField email = new EmailField("Email address");
     private DatePicker dateOfBirth = new DatePicker("Birthday");
-    private PhoneNumberField phone = new PhoneNumberField("Phone number");
+    //private PhoneNumberField phone = new PhoneNumberField("Phone number");
     private TextField occupation = new TextField("Occupation");
 
     private Button cancel = new Button("Cancel");
     private Button save = new Button("Save");
 
-    private Binder<SamplePerson> binder = new Binder(SamplePerson.class);
+    /*private Binder<SamplePerson> binder = new Binder(SamplePerson.class);
 
     public RegistroView(SamplePersonService personService) {
         addClassName("registro-view");
@@ -127,6 +124,6 @@ public class RegistroView extends Div {
                 number.clear();
             }
         }
-    }
+    }*/
 
 }

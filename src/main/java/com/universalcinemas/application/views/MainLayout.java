@@ -2,41 +2,29 @@ package com.universalcinemas.application.views;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import com.universalcinemas.application.security.SecurityService;
+import com.universalcinemas.application.views.comprarentrada.ComprarentradaView;
+import com.universalcinemas.application.views.elegirasiento.ElegirasientoView;
+import com.universalcinemas.application.views.iniciosesion.IniciosesionView;
+import com.universalcinemas.application.views.novedades.NovedadesView;
+import com.universalcinemas.application.views.planes.PlanesView;
+import com.universalcinemas.application.views.registro.RegistroView;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentUtil;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Nav;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
-import com.vaadin.flow.component.tabs.TabsVariant;
-import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.component.html.ListItem;
+import com.vaadin.flow.component.html.Nav;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.router.PageTitle;
-import com.universalcinemas.application.views.MainLayout;
-import com.universalcinemas.application.views.registro.RegistroView;
-import com.universalcinemas.application.views.iniciosesion.IniciosesionView;
-import com.universalcinemas.application.views.novedades.NovedadesView;
-import com.universalcinemas.application.views.planes.PlanesView;
-import com.universalcinemas.application.views.elegirasiento.ElegirasientoView;
-import com.universalcinemas.application.views.comprarentrada.ComprarentradaView;
-import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.router.RouterLink;
 
 /**
  * The main view is a top-level placeholder for other views.
