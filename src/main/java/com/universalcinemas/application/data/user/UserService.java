@@ -54,4 +54,9 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 	protected JpaRepository<User, Integer> getRepository() {
 		return null;
 	}
+	
+	public User obtenerDatosUsuario(int id) {
+		Optional<User> usuario = repository.findById(id);
+		return usuario.isPresent() ? usuario.get() : null;
+	}
 }
