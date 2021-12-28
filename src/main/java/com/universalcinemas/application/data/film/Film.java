@@ -25,5 +25,6 @@ public class Film {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	public String getName() {return name;}
 }
  
