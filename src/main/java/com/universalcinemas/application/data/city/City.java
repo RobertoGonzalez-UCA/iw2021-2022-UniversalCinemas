@@ -5,12 +5,16 @@ import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.universalcinemas.application.data.province.Province;
 
 @Entity
 
 public class City {
 	private String name;
-	private Integer province_id;
+	@ManyToOne(optional = false)
+    private Province province;
 	@Id
 	@GeneratedValue
 	private Integer id;
