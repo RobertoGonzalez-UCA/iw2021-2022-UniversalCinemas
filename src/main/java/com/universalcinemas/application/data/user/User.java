@@ -1,6 +1,7 @@
 package com.universalcinemas.application.data.user;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,17 +14,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.universalcinemas.application.data.entity.AbstractEntity;
 import com.universalcinemas.application.data.role.Role;
 
 @Entity
-public class User extends AbstractEntity implements UserDetails {
+public class User implements UserDetails {
 	private String name;
 	private String surname;
 	private String email;
 	private String password;
 	private String urlprofileimage;
-	private Date dateofbirth;
+	private LocalDate dateofbirth;
 	private String phonenumber;
 	
 	@ManyToOne
@@ -41,6 +41,14 @@ public class User extends AbstractEntity implements UserDetails {
 		return roles;
 	}
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+	
 	public String getName() {
 		return name;
 	}
@@ -73,11 +81,11 @@ public class User extends AbstractEntity implements UserDetails {
 		this.phonenumber = phone;
 	}
 
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateofbirth;
 	}
 
-	public void setDateOfBirth(Date dateofbirth) {
+	public void setDateOfBirth(LocalDate dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
 
