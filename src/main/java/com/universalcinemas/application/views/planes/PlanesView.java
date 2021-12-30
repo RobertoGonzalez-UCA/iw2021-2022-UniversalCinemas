@@ -21,7 +21,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @PageTitle("Planes")
-@Route(value = "PlanesView", layout = MainLayout.class)
+@Route(value = "plans", layout = MainLayout.class)
 @PermitAll
 public class PlanesView extends VerticalLayout {
 

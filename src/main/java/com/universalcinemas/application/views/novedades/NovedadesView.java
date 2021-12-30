@@ -6,9 +6,11 @@ import javax.annotation.security.PermitAll;
 
 import com.github.javaparser.ParseException;
 import com.universalcinemas.application.data.film.Film;
+import com.universalcinemas.application.data.film.FilmRepository;
 import com.universalcinemas.application.data.film.FilmService;
 import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.MainLayout;
+import com.universalcinemas.application.views.planes.PlanesView;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Tag;
@@ -28,23 +30,28 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Novedades")
 @Route(value = "news", layout = MainLayout.class)
 @PermitAll
-@Tag("novedades-view")
-@JsModule("./views/novedades/novedades-view.ts")
-public class NovedadesView extends LitTemplate implements HasComponents, HasStyle {
+public class NovedadesView extends VerticalLayout {
 
-    public NovedadesView(FilmService filmservice) throws ParseException {
-        Set<Film> films = filmservice.getFilms();
+    public NovedadesView(FilmRepository filmrepository) throws ParseException {
+        Iterable<Film> films = filmrepository.findAll();
 
         //Layouts
         VerticalLayout verticalLayout1 = new VerticalLayout();
-        verticalLayout1.setWidth("30%");
+        HorizontalLayout horizontalLayout1 = new HorizontalLayout();
 
-        //Mostrar todos los nombres de los eventos
         for(Film f: films)
         {
-        	verticalLayout1.add(f.getName());
+        	VerticalLayout verticalLayout2 = new VerticalLayout();
+        	Image img=new Image(f.getFilmPoster(), f.getFilmPoster());
+            img.setWidth("200px");
+            img.addClickListener(e -> UI.getCurrent().navigate(PlanesView.class));
+            verticalLayout2.add(img);
+        	verticalLayout2.add(f.getName());
+        	horizontalLayout1.add(verticalLayout2);
         }
-
+        
+        verticalLayout1.add("Ultimos estrenos");
+        verticalLayout1.add(horizontalLayout1);
         add(verticalLayout1);
     }
 }

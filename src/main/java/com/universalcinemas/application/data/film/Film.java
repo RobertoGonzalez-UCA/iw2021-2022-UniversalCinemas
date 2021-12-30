@@ -16,6 +16,7 @@ public class Film {
 	private String director;
 	private String synopsis;
 	private String trailerurl;
+	private String filmposter;
 	private String gender;
 	private Date releasedate;
 	private Integer agerating;
@@ -26,5 +27,6 @@ public class Film {
 	@GeneratedValue
 	private Integer id;
 	public String getName() {return name;}
+	public String getFilmPoster() {return filmposter;}
 }
  
