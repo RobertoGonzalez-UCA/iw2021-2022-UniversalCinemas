@@ -14,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.role.Role;
 
 @Entity
@@ -28,6 +29,9 @@ public class User implements UserDetails {
 	
 	@ManyToOne
 	private Role role;
+	
+	@ManyToOne
+	private Plan plan;
 	
 	@Id
 	@GeneratedValue

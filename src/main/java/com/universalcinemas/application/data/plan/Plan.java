@@ -1,4 +1,4 @@
-package com.universalcinemas.application.data.film;
+package com.universalcinemas.application.data.plan;
 
 import java.sql.Date;
 import java.util.Set;
@@ -11,27 +11,19 @@ import javax.persistence.ManyToOne;
 
 import com.universalcinemas.application.data.genre.Genre;
 import com.universalcinemas.application.data.language.Language;
-import com.universalcinemas.application.data.plan.Plan;
 
 @Entity
 
-public class Film {
+public class Plan {
 	private String name;
-	private String director;
-	private String synopsis;
-	private String trailerurl;
-	private String filmposter;
-	private Date releasedate;
-	private Integer agerating;
-	private Double rating;
+	private String description;
+	private Integer percent;
 	@ManyToOne
 	private Genre genre;
-	@ManyToMany
-    Set<Language> filmLanguages;
 	@Id
 	@GeneratedValue
 	private Integer id;
+	public String getDescription() {return description;}
 	public String getName() {return name;}
-	public String getFilmPoster() {return filmposter;}
 }
  
