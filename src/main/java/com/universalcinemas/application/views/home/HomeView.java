@@ -33,7 +33,7 @@ import com.vaadin.flow.router.Route;
 @PermitAll
 public class HomeView extends VerticalLayout {
 
-    public HomeView(FilmRepository filmrepository) throws ParseException {
+    public HomeView(FilmRepository filmrepository) throws ParseException { 		
         Iterable<Film> films = filmrepository.findAll();
 
         //Layouts
