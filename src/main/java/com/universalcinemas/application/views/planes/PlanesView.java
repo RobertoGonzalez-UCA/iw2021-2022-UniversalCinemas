@@ -7,7 +7,7 @@ import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.plan.PlanRepository;
 import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.MainLayout;
-import com.universalcinemas.application.views.novedades.NovedadesView;
+import com.universalcinemas.application.views.home.HomeView;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -40,7 +40,7 @@ public class PlanesView extends VerticalLayout {
         for(Plan p: plans)
         {
         	Button btn = new Button("Elegir plan");
-     		btn.addClickListener(e -> UI.getCurrent().navigate(NovedadesView.class));
+     		btn.addClickListener(e -> UI.getCurrent().navigate(HomeView.class));
         	VerticalLayout verticalLayout2 = new VerticalLayout();
         	verticalLayout2.add(new Label(p.getName()));
         	verticalLayout2.add(new Label(p.getDescription()));

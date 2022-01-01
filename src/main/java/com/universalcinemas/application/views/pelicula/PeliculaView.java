@@ -10,7 +10,7 @@ import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.plan.PlanRepository;
 import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.MainLayout;
-import com.universalcinemas.application.views.novedades.NovedadesView;
+import com.universalcinemas.application.views.home.HomeView;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -40,7 +40,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	VerticalLayout verticalLayout = new VerticalLayout();
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
     	Button btn = new Button("Comprar entrada");
- 		btn.addClickListener(e -> UI.getCurrent().navigate(NovedadesView.class));
+ 		btn.addClickListener(e -> UI.getCurrent().navigate(HomeView.class));
     	Image img=new Image(film.get().getFilmPoster(), film.get().getFilmPoster());
         img.setWidth("350px");
         horizontalLayout.add(img);

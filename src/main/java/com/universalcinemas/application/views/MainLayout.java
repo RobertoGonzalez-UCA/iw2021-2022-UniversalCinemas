@@ -6,8 +6,8 @@ import java.util.List;
 import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.comprarentrada.ComprarentradaView;
 import com.universalcinemas.application.views.elegirasiento.ElegirasientoView;
+import com.universalcinemas.application.views.home.HomeView;
 import com.universalcinemas.application.views.iniciosesion.IniciosesionView;
-import com.universalcinemas.application.views.novedades.NovedadesView;
 import com.universalcinemas.application.views.planes.PlanesView;
 import com.universalcinemas.application.views.registro.RegistroView;
 import com.vaadin.flow.component.Component;
@@ -118,7 +118,7 @@ public class MainLayout extends AppLayout {
 
                 new MenuItemInfo("Inicio sesión", "la la-user", IniciosesionView.class), //
 
-                new MenuItemInfo("Novedades", "la la-newspaper", NovedadesView.class), //
+                new MenuItemInfo("Inicio", "la la-newspaper", HomeView.class), //
 
                 new MenuItemInfo("Planes", "la la-th-list", PlanesView.class), //
 

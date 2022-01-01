@@ -1,4 +1,4 @@
-package com.universalcinemas.application.views.novedades;
+package com.universalcinemas.application.views.home;
 
 import java.util.Set;
 
@@ -28,12 +28,12 @@ import com.vaadin.flow.component.template.Id;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@PageTitle("Novedades")
-@Route(value = "news", layout = MainLayout.class)
+@PageTitle("Inicio")
+@Route(value = "home", layout = MainLayout.class)
 @PermitAll
-public class NovedadesView extends VerticalLayout {
+public class HomeView extends VerticalLayout {
 
-    public NovedadesView(FilmRepository filmrepository) throws ParseException {
+    public HomeView(FilmRepository filmrepository) throws ParseException {
         Iterable<Film> films = filmrepository.findAll();
 
         //Layouts
