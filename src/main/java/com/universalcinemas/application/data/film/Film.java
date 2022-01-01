@@ -31,7 +31,9 @@ public class Film {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	public Integer getId() {return id;}
 	public String getName() {return name;}
 	public String getFilmPoster() {return filmposter;}
+	public String getSynopsis() {return synopsis;}
 }
  

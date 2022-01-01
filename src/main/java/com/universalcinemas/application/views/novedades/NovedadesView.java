@@ -10,6 +10,7 @@ import com.universalcinemas.application.data.film.FilmRepository;
 import com.universalcinemas.application.data.film.FilmService;
 import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.MainLayout;
+import com.universalcinemas.application.views.pelicula.PeliculaView;
 import com.universalcinemas.application.views.planes.PlanesView;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
@@ -44,7 +45,7 @@ public class NovedadesView extends VerticalLayout {
         	VerticalLayout verticalLayout2 = new VerticalLayout();
         	Image img=new Image(f.getFilmPoster(), f.getFilmPoster());
             img.setWidth("200px");
-            img.addClickListener(e -> UI.getCurrent().navigate(PlanesView.class));
+            img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
             verticalLayout2.add(img);
         	verticalLayout2.add(f.getName());
         	horizontalLayout1.add(verticalLayout2);

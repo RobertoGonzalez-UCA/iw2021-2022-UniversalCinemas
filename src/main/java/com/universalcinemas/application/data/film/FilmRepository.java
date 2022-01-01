@@ -1,11 +1,9 @@
 package com.universalcinemas.application.data.film;
 
-import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 
-import com.universalcinemas.application.data.film.Film;
-
 public interface FilmRepository extends CrudRepository<Film, Integer>{
-	
+	Optional<Film> findById(Integer id);
 }  

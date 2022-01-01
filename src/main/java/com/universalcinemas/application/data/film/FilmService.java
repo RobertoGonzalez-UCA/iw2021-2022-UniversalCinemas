@@ -20,9 +20,4 @@ public class FilmService extends CrudService<Film, Integer> {
 		return null;
 	}
 	
-	public Set<Film> getFilms(){
-		
-		return null;
-	}
-
 }
