@@ -56,9 +56,8 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 	}
 	
 	public User obtenerDatosUsuario(int id) {
-//		Optional<User> usuario = repository.findById(id);
-//		return usuario.isPresent() ? usuario.get() : null;
-		return repository.findById(id).get();
+		Optional<User> usuario = repository.findById(id);
+		return usuario.isPresent() ? usuario.get() : null;
 	}
 	
 	public void actualizarUsuario(User usuario) {

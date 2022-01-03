@@ -44,7 +44,6 @@ public class PerfilUsuarioView extends VerticalLayout {
 		VerticalLayout formularioLogin = new VerticalLayout(crearFormularioLogin(servicioUsuario.obtenerDatosUsuario(1)));
 		HorizontalLayout formularios = new HorizontalLayout(formularioDatos, formularioLogin);
 		HorizontalLayout botonLayout = new HorizontalLayout(crearBotonInicio());
-		//botonLayout.getStyle().set("align-items","center");
 		add(formularios, botonLayout);
 	}
 	
@@ -52,7 +51,7 @@ public class PerfilUsuarioView extends VerticalLayout {
 		FormLayout formulario = new FormLayout();
 		TextField nombre = new TextField("Nombre");
 		TextField apellidos = new TextField("Apellidos");
-		TextField telefono = new TextField("Telefono");
+		TextField telefono = new TextField("Teléfono");
 		DatePicker fechaNacimiento = new DatePicker("Nacimiento");
 		Button modificar = new Button("Modificar");
 		Dialog dialog = new Dialog();
@@ -111,8 +110,8 @@ public class PerfilUsuarioView extends VerticalLayout {
 	}
 	private FormLayout crearFormularioLogin(User usuario) {
 		FormLayout formulario = new FormLayout();
-		EmailField email = new EmailField("Email");
-		PasswordField newPassword = new PasswordField("Contraseña");
+		EmailField email = new EmailField("Correo electrónico");
+		PasswordField newPassword = new PasswordField("Contraseña para modificar correo electrónico");
 		Button passButton = new Button("Modificar");
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		Dialog dialog = new Dialog();
@@ -134,13 +133,13 @@ public class PerfilUsuarioView extends VerticalLayout {
 					usuario.setEmail(email.getValue());
 					x = true;
 				}
+				else
+					mostrarError();
 			}
 			if(x) {
 				servicioUsuario.actualizarUsuario(usuario);
 				dialog.open();
 			}
-			else
-				mostrarError();
 		});
 		
 		formulario.add(email, 
@@ -159,8 +158,6 @@ public class PerfilUsuarioView extends VerticalLayout {
 	private static VerticalLayout createDialogLayout(Dialog dialog) {
         H2 headline = new H2("Los datos han sido actualizados.");
         H4 midline = new H4("Los cambios se verán reflejados pronto.");
-        headline.getStyle().set("margin", "var(--lumo-space-m) 0 0 0")
-                .set("font-size", "1.5em").set("font-weight", "bold");
         Button okButton = new Button("OK", e -> {
         	dialog.close();
         	UI.getCurrent().getPage().reload();
@@ -192,8 +189,6 @@ public class PerfilUsuarioView extends VerticalLayout {
 	private static void mostrarError() {
 		Dialog errorDialog = new Dialog();
 		Label errorLine = new Label("La contraseña proporcionada no coincide. Vuelve a introducirla para cambiar el correo, por favor.");
-		//errorLine.getStyle().set("margin", "var(--lumo-space-m) 0 0 0")
-        //.set("font-size", "1.5em").set("font-weight", "bold");
 		Button okButton = new Button("OK", e -> errorDialog.close());
 		VerticalLayout errorLayout = new VerticalLayout(errorLine, okButton);
 		
