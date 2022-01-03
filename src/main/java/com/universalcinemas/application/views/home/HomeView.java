@@ -36,43 +36,42 @@ public class HomeView extends VerticalLayout {
 
     public HomeView(FilmRepository filmrepository) throws ParseException { 		
         //Layouts
-        VerticalLayout verticalLayout1 = new VerticalLayout();
-        HorizontalLayout horizontalLayout1 = new HorizontalLayout();
+        VerticalLayout vLayoutMain = new VerticalLayout();
+    	HorizontalLayout hLayoutAux = new HorizontalLayout();
         
         Iterable<Film> films = filmrepository.findAllByOrderByReleasedateDesc();
 
         for(Film f: films)
         {
-        	VerticalLayout verticalLayout2 = new VerticalLayout();
+        	VerticalLayout vLayoutAux = new VerticalLayout();
         	Image img=new Image(f.getFilmPoster(), f.getFilmPoster());
             img.setWidth("200px");
             img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
-            verticalLayout2.add(img);
-        	verticalLayout2.add(f.getName());
-        	horizontalLayout1.add(verticalLayout2);
+            vLayoutAux.add(img);
+            vLayoutAux.add(f.getName());
+            hLayoutAux.add(vLayoutAux);
         }
         
-        verticalLayout1.add("Ultimos estrenos");
-        verticalLayout1.add(horizontalLayout1);
+        vLayoutMain.add("Ultimos estrenos");
+        vLayoutMain.add(hLayoutAux);
         
-        VerticalLayout verticalLayout3 = new VerticalLayout();
-        HorizontalLayout horizontalLayout2 = new HorizontalLayout();
+        HorizontalLayout hLayoutAux2 = new HorizontalLayout();
         
         films = filmrepository.findByGenre_Id(1);
 
         for(Film f: films)
         {
-        	VerticalLayout verticalLayout2 = new VerticalLayout();
+        	VerticalLayout vLayoutAux = new VerticalLayout();
         	Image img=new Image(f.getFilmPoster(), f.getFilmPoster());
             img.setWidth("200px");
             img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
-            verticalLayout2.add(img);
-        	verticalLayout2.add(f.getName());
-        	horizontalLayout2.add(verticalLayout2);
+            vLayoutAux.add(img);
+            vLayoutAux.add(f.getName());
+            hLayoutAux2.add(vLayoutAux);
         }
         
-        verticalLayout3.add("Peliculas de acción");
-        verticalLayout3.add(horizontalLayout2);
-        add(verticalLayout1, verticalLayout3);
+        vLayoutMain.add("Peliculas de acción");
+        vLayoutMain.add(hLayoutAux2);
+        add(vLayoutMain);
     }
 }
