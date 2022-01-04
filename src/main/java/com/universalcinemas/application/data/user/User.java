@@ -69,19 +69,10 @@ public class User implements UserDetails {
     
 		this.dateofbirth = date;
 		this.password = password;
-		
-//		Notification.show(role.getName());
-//		Notification.show(name);
-//		Notification.show(surname);
-//		Notification.show(dateofBirth);
-//		Notification.show(email);
-//		Notification.show(password);
-//		Notification.show(phonenumber);
-//		Notification.show(surname);
-//		Notification.show(urlprofileimage);
-	}
-	
 
+	}
+
+	
     public Integer getId() {
         return id;
     }

@@ -38,16 +38,13 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 		}
 	}
 	
-
 	public void registerUser(User user) {
 		user.setPassword(encoder.encode(user.getPassword()));
-		Notification.show(user.getPassword());
-//		Notification.show(user.toString());
 		user.setRole(roleService.getDefaultRole());
 		repository.save(user);
-//		Notification.show(user.toString());
 	}
-
+	
+	
 	public boolean activateUser(String email, String key) {
 
 		Optional<User> user = repository.findByEmail(email);
