@@ -3,6 +3,7 @@ package com.universalcinemas.application.data.seats;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.universalcinemas.application.data.city.City;
@@ -14,6 +15,7 @@ public class Seats {
 	private Integer row;
 	private Integer col;
 	@ManyToOne(optional = false)
+	@JoinColumn(referencedColumnName = "id")
     private Ticket ticket;
 	@Id
 	@GeneratedValue

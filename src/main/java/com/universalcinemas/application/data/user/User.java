@@ -12,13 +12,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.role.Role;
+import com.universalcinemas.application.data.role.RoleService;
 import com.vaadin.flow.component.notification.Notification;
 
 @Entity
@@ -33,13 +36,18 @@ public class User implements UserDetails {
 	private LocalDate dateofbirth;
 	private String phonenumber;
 	
+	// evita que se tome roleService como columna
+	@Transient
+	@Autowired
+	private RoleService roleService;
+	
 	@ManyToOne
 	private Role role;
 	
 	@ManyToOne
 	private Plan plan;
 	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id @GeneratedValue
 	private Integer id;
 	
 	@Override
@@ -50,11 +58,11 @@ public class User implements UserDetails {
 		return roles;
 	}
 	
+	public User() {}
+	
 	public User(String name, String surname, String email, String dateofBirth, String phonenumber, String password){
 		
-		this.role = new Role();
-		this.role.setName("user");
-		
+		this.role = roleService.getDefaultRole();
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
@@ -68,16 +76,15 @@ public class User implements UserDetails {
 		this.dateofbirth = date;
 		this.password = password;
 		
-//		Notification.show(role.getName());
-//		Notification.show(name);
-//		Notification.show(surname);
-//		Notification.show(dateofBirth);
+		Notification.show(role.getName());
+		Notification.show(name);
+		Notification.show(surname);
+		Notification.show(dateofBirth);
 		//Notification.show(email);
-//		Notification.show(password);
-//		Notification.show(phonenumber);
-//		Notification.show(surname);
-//		Notification.show(urlprofileimage);
-
+		Notification.show(password);
+		Notification.show(phonenumber);
+		Notification.show(surname);
+		Notification.show(urlprofileimage);
 	}
 
     public Integer getId() {

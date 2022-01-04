@@ -36,7 +36,7 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 
 	public void registerUser(User user) {
 		user.setPassword(encoder.encode(user.getPassword()));
-//		Notification.show(user.getPassword());
+		Notification.show(user.getPassword());
 //		Notification.show(user.toString());
 		repository.save(user);
 //		Notification.show(user.toString());

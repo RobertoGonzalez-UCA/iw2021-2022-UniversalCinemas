@@ -61,7 +61,7 @@ public class RegistroView extends VerticalLayout {
         emailField.setPlaceholder("username@example.com");
         emailField.setErrorMessage("Please enter a valid example.com email address");
         emailField.setClearButtonVisible(true);
-        emailField.setPattern("^.+@example\\.com$");
+//        emailField.setPattern("^.+@example\\.com$");
         TextField phoneNumber = new TextField("Número de teléfono");
         PasswordField password1 = new PasswordField("Contraseña");
         PasswordField password2 = new PasswordField("Confirma contraseña");
@@ -83,7 +83,7 @@ public class RegistroView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.CENTER);//puts button in vertical center
     }
 	
-	 private void register(String name, String surname, String birthDate, String email, String phoneNumber, String password1, String password2) {
+	 private void register(String name, String surname, String birthDate, String phoneNumber, String email, String password1, String password2) {
 		 
 		 if (name.trim().isEmpty()) {
 	            Notification.show("Introduce tu nombre");
@@ -102,9 +102,9 @@ public class RegistroView extends VerticalLayout {
 	        } else if (!password1.equals(password2)) {
 	            Notification.show("Las contraseñas no coinciden");
 	        } else {
-
 	        	User user = new User(name,surname,email,birthDate,phoneNumber,password1);
-	    		//System.out.println(user.toString());		
+	            Notification.show(email);
+	        	//System.out.println(user.toString());		
 	        	userService.registerUser(user);
 	        	
 	            Notification.show("Te has registrado con éxito");
