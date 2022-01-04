@@ -37,6 +37,7 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 			throw new UsernameNotFoundException(email);
 		}
 	}
+	
 
 	public void registerUser(User user) {
 		user.setPassword(encoder.encode(user.getPassword()));

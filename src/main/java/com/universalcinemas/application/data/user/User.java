@@ -80,6 +80,7 @@ public class User implements UserDetails {
 //		Notification.show(surname);
 //		Notification.show(urlprofileimage);
 	}
+	
 
     public Integer getId() {
         return id;
