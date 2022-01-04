@@ -36,11 +36,6 @@ public class User implements UserDetails {
 	private LocalDate dateofbirth;
 	private String phonenumber;
 	
-	// evita que se tome roleService como columna
-	@Transient
-	@Autowired
-	private RoleService roleService;
-	
 	@ManyToOne
 	private Role role;
 	
@@ -62,12 +57,11 @@ public class User implements UserDetails {
 	
 	public User(String name, String surname, String email, String dateofBirth, String phonenumber, String password){
 		
-		this.role = roleService.getDefaultRole();
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.phonenumber = phonenumber;
-
+		
 		// Convert from String to LocalDate
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		formatter = formatter.withLocale( new Locale ( "es" , "ES" ));  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
@@ -76,15 +70,15 @@ public class User implements UserDetails {
 		this.dateofbirth = date;
 		this.password = password;
 		
-		Notification.show(role.getName());
-		Notification.show(name);
-		Notification.show(surname);
-		Notification.show(dateofBirth);
-		//Notification.show(email);
-		Notification.show(password);
-		Notification.show(phonenumber);
-		Notification.show(surname);
-		Notification.show(urlprofileimage);
+//		Notification.show(role.getName());
+//		Notification.show(name);
+//		Notification.show(surname);
+//		Notification.show(dateofBirth);
+//		Notification.show(email);
+//		Notification.show(password);
+//		Notification.show(phonenumber);
+//		Notification.show(surname);
+//		Notification.show(urlprofileimage);
 	}
 
     public Integer getId() {

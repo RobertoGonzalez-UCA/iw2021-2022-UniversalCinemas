@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.vaadin.artur.helpers.CrudService;
 
+import com.universalcinemas.application.data.role.RoleService;
 import com.vaadin.flow.component.notification.Notification;
 
 @Service
@@ -17,6 +18,9 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 
 	private UserRepository repository;
 	private PasswordEncoder encoder;
+	
+	@Autowired
+	private RoleService roleService;
 
 	@Autowired
 	public UserService(PasswordEncoder encoder, UserRepository repository) {
@@ -38,6 +42,7 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 		user.setPassword(encoder.encode(user.getPassword()));
 		Notification.show(user.getPassword());
 //		Notification.show(user.toString());
+		user.setRole(roleService.getDefaultRole());
 		repository.save(user);
 //		Notification.show(user.toString());
 	}
