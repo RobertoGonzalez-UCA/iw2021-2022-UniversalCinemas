@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.vaadin.artur.helpers.CrudService;
 
+import com.vaadin.flow.component.notification.Notification;
+
 @Service
 public class UserService extends CrudService<User, Integer> implements UserDetailsService {
 
@@ -30,12 +32,14 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 		} else {
 			throw new UsernameNotFoundException(email);
 		}
-
 	}
 
 	public void registerUser(User user) {
 		user.setPassword(encoder.encode(user.getPassword()));
+//		Notification.show(user.getPassword());
+//		Notification.show(user.toString());
 		repository.save(user);
+//		Notification.show(user.toString());
 	}
 
 	public boolean activateUser(String email, String key) {
@@ -56,8 +60,9 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 	}
 	
 	public User obtenerDatosUsuario(int id) {
-		Optional<User> usuario = repository.findById(id);
-		return usuario.isPresent() ? usuario.get() : null;
+//		Optional<User> usuario = repository.findById(id);
+//		return usuario.isPresent() ? usuario.get() : null;
+		return repository.findById(id).get();
 	}
 	
 	public void actualizarUsuario(User usuario) {

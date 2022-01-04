@@ -9,6 +9,7 @@ import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -22,7 +23,11 @@ import com.vaadin.flow.router.PageTitle;
 
 import java.util.Date;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.universalcinemas.application.data.user.User;
+import com.universalcinemas.application.data.user.UserRepository;
 import com.universalcinemas.application.data.user.UserService;
 import com.universalcinemas.application.views.MainLayout;
 import com.vaadin.flow.router.RouteAlias;
@@ -37,162 +42,72 @@ import com.vaadin.flow.component.html.H2;
 @Route(value = "signup")
 @AnonymousAllowed
 @Uses(Icon.class)
-public class RegistroView extends Composite {
+public class RegistroView extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
 	private final UserService userService;
 
     public RegistroView(UserService userService) {
-        this.userService = userService;
-    }
-	
-	
-	@Override
-    protected Component initContent() {
+        
+		this.userService = userService;
+		
+		H2 title = new H2("Registro");
         TextField name = new TextField("Nombre");
         TextField surname = new TextField("Apellidos");
         DatePicker birthDate = new DatePicker("Fecha nacimiento");
-        EmailField email = new EmailField("Correo");
+        EmailField emailField = new EmailField();
+        emailField.setLabel("Email address");
+        emailField.getElement().setAttribute("name", "email");
+        emailField.setPlaceholder("username@example.com");
+        emailField.setErrorMessage("Please enter a valid example.com email address");
+        emailField.setClearButtonVisible(true);
+        emailField.setPattern("^.+@example\\.com$");
+        TextField phoneNumber = new TextField("Número de teléfono");
         PasswordField password1 = new PasswordField("Contraseña");
         PasswordField password2 = new PasswordField("Confirma contraseña");
-        return new VerticalLayout(
-                new H2("Registro"),
-                name,
-                surname,
-                birthDate,
-                email,
-                password1,
-                password2,
-                new Button("Registrarme", event -> register(
-                		name.getValue(),
-                		surname.getValue(),/*
-                		birthDate.getValue().toString(),*/
-                		email.getValue(),
-                        password1.getValue(),
-                        password2.getValue()
-                ))
-        );
+        Button button = new Button("Registrarme", event -> register(
+        		name.getValue(),
+        		surname.getValue(),
+        		birthDate.getValue() == null ? "" : birthDate.getValue().toString(),
+				phoneNumber.getValue(),	
+				emailField.getValue(),
+                password1.getValue(),
+                password2.getValue()
+        ));
+        
+
+        add(title,name,surname,birthDate,emailField,phoneNumber,password1,password2,button);
+        
+        setHeightFull();
+		setAlignItems(Alignment.CENTER);
+        setJustifyContentMode(JustifyContentMode.CENTER);//puts button in vertical center
     }
 	
-	 private void register(String name, String surname,/* String birthDate, */String email, String password1, String password2) {
-	        if (name.trim().isEmpty()) {
+	 private void register(String name, String surname, String birthDate, String email, String phoneNumber, String password1, String password2) {
+		 
+		 if (name.trim().isEmpty()) {
 	            Notification.show("Introduce tu nombre");
 	        } else if (surname.trim().isEmpty()) {
 	            Notification.show("Introduce tus apellidos");
-	        }/* else if (birthDate.toString().trim().isEmpty()) {
+	        } else if (birthDate.toString().trim() == "") {
 	            Notification.show("Introduce tu fecha de nacimiento");
-	        }*/ else if (email.trim().isEmpty()) {
+	        } else if (email.trim().isEmpty()) {
 	            Notification.show("Introduce tu email");
-	        } else if (password1.isEmpty()) {
-	            Notification.show("Enter a password");
+	        } else if (phoneNumber.trim().isEmpty()) {
+	            Notification.show("Introduce tu teléfono");
+	        } else if (password1.trim().isEmpty()) {
+	            Notification.show("Introduce una contraseña");
+	        } else if (password2.trim().isEmpty()) {
+	            Notification.show("Introduce la contraseña de confirmación");
 	        } else if (!password1.equals(password2)) {
-	            Notification.show("Passwords don't match");
-	        } else if (!password1.equals(password2)) {
-	            Notification.show("Passwords don't match");
+	            Notification.show("Las contraseñas no coinciden");
 	        } else {
-	        	User user = new User();
+
+	        	User user = new User(name,surname,email,birthDate,phoneNumber,password1);
+	    		//System.out.println(user.toString());		
 	        	userService.registerUser(user);
-	            Notification.show("Check your email.");
+	        	
+	            Notification.show("Te has registrado con éxito");
 	        }
 	    }
-	
-
-   /*private TextField firstName = new TextField("First name");
-    private TextField lastName = new TextField("Last name");
-    private EmailField email = new EmailField("Email address");
-    private DatePicker dateOfBirth = new DatePicker("Birthday");
-    private PhoneNumberField phone = new PhoneNumberField("Phone number");
-    private TextField occupation = new TextField("Occupation");
-
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
-
-    private Binder<SamplePerson> binder = new Binder(SamplePerson.class);
-
-    public RegistroView(SamplePersonService personService) {
-        addClassName("registro-view");
-
-        add(createTitle());
-        add(createFormLayout());
-        add(createButtonLayout());
-
-        binder.bindInstanceFields(this);
-        clearForm();
-
-        cancel.addClickListener(e -> clearForm());
-        save.addClickListener(e -> {
-            personService.update(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " details stored.");
-            clearForm();
-        });
-    }
-
-    private void clearForm() {
-        binder.setBean(new SamplePerson());
-    }
-
-    private Component createTitle() {
-        return new H3("Personal information");
-    }
-
-    private Component createFormLayout() {
-        FormLayout formLayout = new FormLayout();
-        email.setErrorMessage("Please enter a valid email address");
-        formLayout.add(firstName, lastName, dateOfBirth, phone, email, occupation);
-        return formLayout;
-    }
-
-    private Component createButtonLayout() {
-        HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.addClassName("button-layout");
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save);
-        buttonLayout.add(cancel);
-        return buttonLayout;
-    }
-
-    private static class PhoneNumberField extends CustomField<String> {
-        private ComboBox<String> countryCode = new ComboBox<>();
-        private TextField number = new TextField();
-
-        public PhoneNumberField(String label) {
-            setLabel(label);
-            countryCode.setWidth("120px");
-            countryCode.setPlaceholder("Country");
-            countryCode.setPattern("\\+\\d*");
-            countryCode.setPreventInvalidInput(true);
-            countryCode.setItems("+354", "+91", "+62", "+98", "+964", "+353", "+44", "+972", "+39", "+225");
-            countryCode.addCustomValueSetListener(e -> countryCode.setValue(e.getDetail()));
-            number.setPattern("\\d*");
-            number.setPreventInvalidInput(true);
-            HorizontalLayout layout = new HorizontalLayout(countryCode, number);
-            layout.setFlexGrow(1.0, number);
-            add(layout);
-        }
-
-        @Override
-        protected String generateModelValue() {
-            if (countryCode.getValue() != null && number.getValue() != null) {
-                String s = countryCode.getValue() + " " + number.getValue();
-                return s;
-            }
-            return "";
-        }
-
-        @Override
-        protected void setPresentationValue(String phoneNumber) {
-            String[] parts = phoneNumber != null ? phoneNumber.split(" ", 2) : new String[0];
-            if (parts.length == 1) {
-                countryCode.clear();
-                number.setValue(parts[0]);
-            } else if (parts.length == 2) {
-                countryCode.setValue(parts[0]);
-                number.setValue(parts[1]);
-            } else {
-                countryCode.clear();
-                number.clear();
-            }
-        }
-    }*/
-
 }

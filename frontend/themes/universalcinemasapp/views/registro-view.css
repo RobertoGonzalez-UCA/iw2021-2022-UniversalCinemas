@@ -8,3 +8,17 @@
   margin-bottom: var(--lumo-space-l);
   margin-top: var(--lumo-space-m);
 }
+h2{
+	padding-top: 30px;
+	margin-bottom: 0px;
+}
+#button{
+	margin: 0 !important;
+	border: 0 !important;
+	padding: 0 !important;
+	padding-bottom: 50px !important;
+}
+
+/* h2, button, #vaadin-text-field-label-0, #vaadin-text-field-label-1,#vaadin-text-field-label-2{ */
+/* 	color: rgb(181, 18, 31) !important; */
+/* } */
