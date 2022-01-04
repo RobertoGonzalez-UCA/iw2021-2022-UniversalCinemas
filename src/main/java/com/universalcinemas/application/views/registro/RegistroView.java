@@ -11,6 +11,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -75,8 +76,15 @@ public class RegistroView extends VerticalLayout {
                 password2.getValue()
         ));
         
+        Button button2 = new Button("Acceder a mi cuenta");
+        
 
-        add(title,name,surname,birthDate,emailField,phoneNumber,password1,password2,button);
+        add(title,name,surname,birthDate,emailField,phoneNumber,password1,password2,button,button2);
+        
+        button2.addClickListener(e ->
+	     button.getUI().ifPresent(ui ->
+	           ui.navigate("/login"))
+        );
         
         setHeightFull();
 		setAlignItems(Alignment.CENTER);
@@ -86,28 +94,25 @@ public class RegistroView extends VerticalLayout {
 	 private void register(String name, String surname, String birthDate, String phoneNumber, String email, String password1, String password2) {
 		 
 		 if (name.trim().isEmpty()) {
-	            Notification.show("Introduce tu nombre");
-	        } else if (surname.trim().isEmpty()) {
-	            Notification.show("Introduce tus apellidos");
-	        } else if (birthDate.toString().trim() == "") {
-	            Notification.show("Introduce tu fecha de nacimiento");
-	        } else if (email.trim().isEmpty()) {
-	            Notification.show("Introduce tu email");
-	        } else if (phoneNumber.trim().isEmpty()) {
-	            Notification.show("Introduce tu teléfono");
-	        } else if (password1.trim().isEmpty()) {
-	            Notification.show("Introduce una contraseña");
-	        } else if (password2.trim().isEmpty()) {
-	            Notification.show("Introduce la contraseña de confirmación");
-	        } else if (!password1.equals(password2)) {
-	            Notification.show("Las contraseñas no coinciden");
-	        } else {
-	        	User user = new User(name,surname,email,birthDate,phoneNumber,password1);
-	            Notification.show(email);
-	        	//System.out.println(user.toString());		
-	        	userService.registerUser(user);
-	        	
-	            Notification.show("Te has registrado con éxito");
-	        }
-	    }
+            Notification.show("Introduce tu nombre");
+        } else if (surname.trim().isEmpty()) {
+            Notification.show("Introduce tus apellidos");
+        } else if (birthDate.toString().trim() == "") {
+            Notification.show("Introduce tu fecha de nacimiento");
+        } else if (email.trim().isEmpty()) {
+            Notification.show("Introduce tu email");
+        } else if (phoneNumber.trim().isEmpty()) {
+            Notification.show("Introduce tu teléfono");
+        } else if (password1.trim().isEmpty()) {
+            Notification.show("Introduce una contraseña");
+        } else if (password2.trim().isEmpty()) {
+            Notification.show("Introduce la contraseña de confirmación");
+        } else if (!password1.equals(password2)) {
+            Notification.show("Las contraseñas no coinciden");
+        } else {
+        	User user = new User(name,surname,email,birthDate,phoneNumber,password1);
+        	userService.registerUser(user);
+            Notification.show("Te has registrado con éxito");  
+        }
+    }
 }
