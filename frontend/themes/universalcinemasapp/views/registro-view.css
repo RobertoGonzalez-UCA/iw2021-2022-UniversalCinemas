@@ -8,10 +8,6 @@
   margin-bottom: var(--lumo-space-l);
   margin-top: var(--lumo-space-m);
 }
-h2{
-	padding-top: 30px;
-	margin-bottom: 0px;
-}
 #button{
 	margin: 0 !important;
 	border: 0 !important;

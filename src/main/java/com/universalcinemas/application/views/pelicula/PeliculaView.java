@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.security.PermitAll;
@@ -19,12 +20,16 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
@@ -91,7 +96,21 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 			dialog.close();
 			sesionElegida = null;
 		});
-		Button elegirAsientoButton = new Button("Elegir asientos");
+		
+		Button elegirAsientoButton = new Button("Elegir asientos", e -> {
+			dialog.close();
+			Dialog dialog2 = new Dialog();
+			createDialogLayout2(dialog2);
+		});
+//		elegirAsientoButton.addClickListener(e -> 
+//		elegirAsientoButton.getUI().ifPresent(ui ->
+//	        ui.navigate("/chooseseat"))
+//		);
+		
+//		VerticalLayout dialogLayout2 = createDialogLayout(dialog);
+//		dialog.add(dialogLayout2);
+//		Button button22 = new Button("Show dialog", e -> dialog.open());
+//		add(dialog, button22);
 		
 		elegirAsientoButton.setEnabled(false);
 		elegirAsientoButton.setIcon(new Icon(VaadinIcon.ARROW_RIGHT));
@@ -131,4 +150,40 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 		
 		return dialogLayout;
     }
+	
+	private VerticalLayout createDialogLayout2(Dialog dialog) {
+		VerticalLayout verticalLayout = new VerticalLayout();
+		HorizontalLayout horizontalLayout = new HorizontalLayout();
+		H2 title = new H2("Elegir Asiento");
+		
+//		Grid<Map<String, Object>> grid = new Grid<>();
+//		String[] keys = {"id", "name", "dni", "avgsalary", "lastvisit"};
+//		Class<? extends PeliculaView> rows = getClass(); // return a list of Maps with keys like in the above list
+//		for (String key : keys) {
+//		  grid.addColumn("asd");
+//		}
+//		grid.addItems(rows);
+		
+    	verticalLayout.setWidth("90%");
+    	verticalLayout.setHeight("90%");
+    	horizontalLayout.setWidth("90%");
+    	horizontalLayout.setHeight("90%");
+
+    	horizontalLayout.add(verticalLayout);
+    	dialog.add(title);
+		dialog.open();
+    	//add(title,horizontalLayout);
+    	
+    	
+    	setHeightFull();
+		setAlignItems(Alignment.CENTER);
+        setJustifyContentMode(JustifyContentMode.CENTER);//puts button in vertical center
+		
+        
+		
+		
+		dialog.setCloseOnEsc(false);
+		dialog.setCloseOnOutsideClick(false);
+		return verticalLayout;
+	}
 }
