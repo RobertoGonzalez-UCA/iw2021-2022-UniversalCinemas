@@ -1,5 +1,7 @@
 package com.universalcinemas.application.views.pelicula;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.security.PermitAll;
@@ -7,6 +9,8 @@ import javax.annotation.security.PermitAll;
 import com.universalcinemas.application.data.business.Business;
 import com.universalcinemas.application.data.film.Film;
 import com.universalcinemas.application.data.film.FilmRepository;
+import com.universalcinemas.application.data.film.FilmService;
+import com.universalcinemas.application.data.session.Session;
 import com.universalcinemas.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -16,7 +20,6 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
@@ -27,7 +30,9 @@ import com.vaadin.flow.router.Route;
 @Route(value = "pelicula", layout = MainLayout.class)
 @PermitAll
 public class PeliculaView extends VerticalLayout implements HasUrlParameter<Integer> {
+	private static final long serialVersionUID = 1L;
 	private FilmRepository filmRepository;
+	private FilmService filmService;
 	@Override
 	public void setParameter(BeforeEvent event, Integer filmId) {
 		Optional<Film> film = filmRepository.findById(filmId);
@@ -35,8 +40,10 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
     	Button btn = new Button("Comprar entrada");
     	Dialog compraDialogo = new Dialog();
-    	compraDialogo.add(createDialogLayout(compraDialogo));
  		btn.addClickListener(e -> {
+ 			List<Session> listaSesiones = filmService.obtenerSessionsPelicula(filmId, LocalDate.now());
+ 			List<Business> listaCines = filmService.obtenerBusinessSesiones(listaSesiones);
+ 	    	compraDialogo.add(createDialogLayout(compraDialogo, listaCines));
  			compraDialogo.open();
 // 			 UI.getCurrent().navigate(HomeView.class);
  			 
@@ -52,20 +59,29 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	add(horizontalLayout);
 	}
 	
-	public PeliculaView(FilmRepository filmRepository) {
+	public PeliculaView(FilmRepository filmRepository, FilmService filmService) {
 		this.filmRepository = filmRepository;
+		this.filmService = filmService;
 	}
 	
-	private static VerticalLayout createDialogLayout(Dialog dialog) {
+	private static VerticalLayout createDialogLayout(Dialog dialog, List<Business> listaCines) {
+		LocalDate hoy = LocalDate.now();
 		VerticalLayout dialogLayout = new VerticalLayout();
 		HorizontalLayout buttonLayout = new HorizontalLayout();
-		ComboBox<Business>  elegirCine = new ComboBox<>("Elegir cine");
-//		elegirCine.setItemLabelGenerator();
+		
+		ComboBox<Business> elegirCine = new ComboBox<>("Elegir cine");
 		DatePicker fechaPelicula = new DatePicker("Día");
 		TimePicker horaPelicula = new TimePicker("Hora");
 //		IntegerField cantidadEntradas = new IntegerField();
+
 		Button cancelarCompraButton = new Button("Cancelar", e -> dialog.close());
 		Button elegirAsientoButton = new Button("Elegir asientos");
+		
+		elegirCine.setItems(listaCines);
+		elegirCine.setItemLabelGenerator(cine -> cine.getName());
+		
+		fechaPelicula.setMin(hoy);
+		fechaPelicula.setValue(hoy);
 		
 //		cantidadEntradas.setLabel("Número de entradas");
 //		cantidadEntradas.setMin(1);
@@ -74,6 +90,9 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 		
 		buttonLayout.add(cancelarCompraButton, elegirAsientoButton);
 		dialogLayout.add(elegirCine, fechaPelicula, horaPelicula, buttonLayout);
+		
+		dialog.setCloseOnEsc(false);
+		dialog.setCloseOnOutsideClick(false);
 		
 		return dialogLayout;
     }
