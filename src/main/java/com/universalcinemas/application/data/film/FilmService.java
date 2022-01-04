@@ -60,4 +60,12 @@ public class FilmService extends CrudService<Film, Integer> {
 		
 		return sesiones;
 	}
+	
+	public List<LocalDateTime> fechasSesiones(List<Session> sesiones) {
+		return sesiones.stream().map(sesion -> sesion.getDate_time()).collect(Collectors.toList());
+	}
+	
+	public List<Session> filtrarPorCine(List<Session> sesiones, int idCine) {
+		return sesiones.stream().filter(cine -> cine.getRoom().getBusiness().getId() == idCine).collect(Collectors.toList());
+	}
 }
