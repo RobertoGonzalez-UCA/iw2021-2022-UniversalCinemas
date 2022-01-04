@@ -16,6 +16,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -32,9 +33,6 @@ import com.vaadin.flow.router.Route;
 @Route(value = "perfilusuario")
 @PermitAll
 public class PerfilUsuarioView extends VerticalLayout {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	UserService servicioUsuario;
 	@Autowired
@@ -44,7 +42,7 @@ public class PerfilUsuarioView extends VerticalLayout {
 		VerticalLayout formularioLogin = new VerticalLayout(crearFormularioLogin(servicioUsuario.obtenerDatosUsuario(1)));
 		HorizontalLayout formularios = new HorizontalLayout(formularioDatos, formularioLogin);
 		HorizontalLayout botonLayout = new HorizontalLayout(crearBotonInicio());
-		add(formularios, botonLayout);
+		add(formularios, new Hr(), botonLayout);
 	}
 	
 	private FormLayout crearFormularioDatos(User usuario) {
