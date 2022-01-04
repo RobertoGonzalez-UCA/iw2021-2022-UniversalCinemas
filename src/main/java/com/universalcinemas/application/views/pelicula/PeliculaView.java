@@ -179,9 +179,6 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 		setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);//puts button in vertical center
 		
-        
-		
-		
 		dialog.setCloseOnEsc(false);
 		dialog.setCloseOnOutsideClick(false);
 		return verticalLayout;
