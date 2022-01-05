@@ -18,6 +18,7 @@ public class Plan {
 	private String name;
 	private String description;
 	private Integer percent;
+	private Integer price;
 	@ManyToOne
 	private Genre genre;
 	@Id
@@ -25,5 +26,8 @@ public class Plan {
 	private Integer id;
 	public String getDescription() {return description;}
 	public String getName() {return name;}
+	public Integer getId() {return id;}
+	public Integer getPrice() {return price;}
+	public Integer getPercent() {return percent;}
 }
  

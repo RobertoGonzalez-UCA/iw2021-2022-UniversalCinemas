@@ -1,4 +1,4 @@
-package com.universalcinemas.application.views.home;
+package com.universalcinemas.application.views.inicio;
 
 import java.util.Set;
 
@@ -19,6 +19,7 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.littemplate.LitTemplate;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -32,9 +33,9 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Inicio")
 @Route(value = "home", layout = MainLayout.class)
 @PermitAll
-public class HomeView extends VerticalLayout {
+public class InicioView extends VerticalLayout {
 
-    public HomeView(FilmRepository filmrepository) throws ParseException { 		
+    public InicioView(FilmRepository filmrepository) throws ParseException { 		
         //Layouts
         VerticalLayout vLayoutMain = new VerticalLayout();
     	HorizontalLayout hLayoutAux = new HorizontalLayout();
@@ -52,7 +53,7 @@ public class HomeView extends VerticalLayout {
             hLayoutAux.add(vLayoutAux);
         }
         
-        vLayoutMain.add("Ultimos estrenos");
+        vLayoutMain.add(new H1("Ultimos estrenos"));
         vLayoutMain.add(hLayoutAux);
         
         HorizontalLayout hLayoutAux2 = new HorizontalLayout();
@@ -70,7 +71,7 @@ public class HomeView extends VerticalLayout {
             hLayoutAux2.add(vLayoutAux);
         }
         
-        vLayoutMain.add("Peliculas de acción");
+        vLayoutMain.add(new H1("Peliculas de acción"));
         vLayoutMain.add(hLayoutAux2);
         add(vLayoutMain);
     }

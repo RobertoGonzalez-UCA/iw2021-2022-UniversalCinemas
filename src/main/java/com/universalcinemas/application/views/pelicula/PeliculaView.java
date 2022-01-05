@@ -19,6 +19,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
@@ -63,7 +64,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	Image img=new Image(film.get().getFilmPoster(), film.get().getFilmPoster());
         img.setWidth("350px");
         horizontalLayout.add(img);
-    	verticalLayout.add(new Label(film.get().getName()));
+    	verticalLayout.add(new H1(film.get().getName()));
     	verticalLayout.add(new Label(film.get().getSynopsis()));
     	verticalLayout.add(btn);
     	verticalLayout.setWidth("30%");

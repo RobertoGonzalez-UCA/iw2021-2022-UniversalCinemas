@@ -5,7 +5,9 @@ import javax.annotation.security.PermitAll;
 import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.plan.PlanRepository;
 import com.universalcinemas.application.views.MainLayout;
-import com.universalcinemas.application.views.home.HomeView;
+import com.universalcinemas.application.views.inicio.InicioView;
+import com.universalcinemas.application.views.pelicula.PeliculaView;
+import com.universalcinemas.application.views.plan.PlanView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
@@ -37,7 +39,7 @@ public class PlanesView extends VerticalLayout {
         {
         	Button btn = new Button("Elegir plan");
         	VerticalLayout verticalLayout2 = new VerticalLayout();
-     		btn.addClickListener(e -> UI.getCurrent().navigate(HomeView.class));
+     		btn.addClickListener(e -> UI.getCurrent().navigate(PlanView.class, p.getId()));
      		
      		Image img = new Image("https://start.vaadin.com/images/empty-plant.png", "imagen tematica del plan");
             img.setWidth("200px");
