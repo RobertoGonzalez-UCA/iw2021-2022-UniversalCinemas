@@ -1,4 +1,5 @@
 package com.universalcinemas.application.views.pelicula;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -6,7 +7,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+
 import javax.annotation.security.PermitAll;
+
 import com.universalcinemas.application.data.business.Business;
 import com.universalcinemas.application.data.film.Film;
 import com.universalcinemas.application.data.film.FilmRepository;
@@ -31,6 +34,7 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+
 @PageTitle("Pelicula")
 @Route(value = "pelicula", layout = MainLayout.class)
 @PermitAll
@@ -87,6 +91,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 //		DatePicker fechaPelicula = new DatePicker("Día");
 //		TimePicker horaPelicula = new TimePicker("Hora");
 //		IntegerField cantidadEntradas = new IntegerField();
+
 		Button cancelarCompraButton = new Button("Cancelar", e -> {
 			dialog.close();
 			sesionElegida = null;
@@ -163,6 +168,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	verticalLayout.setHeight("90%");
     	horizontalLayout.setWidth("90%");
     	horizontalLayout.setHeight("90%");
+
     	horizontalLayout.add(verticalLayout);
     	dialog.add(title);
 		dialog.open();
@@ -172,10 +178,10 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	setHeightFull();
 		setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);//puts button in vertical center
-
-
-
-
+		
+        
+		
+		
 		dialog.setCloseOnEsc(false);
 		dialog.setCloseOnOutsideClick(false);
 		return verticalLayout;
