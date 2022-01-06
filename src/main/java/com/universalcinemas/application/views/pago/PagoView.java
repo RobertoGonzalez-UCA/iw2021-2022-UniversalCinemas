@@ -69,9 +69,13 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
     private FormLayout crearFormularioDireccion() {
     	FormLayout formularioDireccion = new FormLayout();
 		TextField pais = new TextField("País");
+		pais.setRequired(true);
 		TextField direccion = new TextField("Dirección");
+		direccion.setRequired(true);
 		TextField codigoPostal = new TextField("Código postal");
+		codigoPostal.setRequired(true);
 		TextField ciudad = new TextField("Ciudad");
+		ciudad.setRequired(true);
 		formularioDireccion.add(pais, direccion, codigoPostal, ciudad);
 		return formularioDireccion;
     }
@@ -79,9 +83,13 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
     private FormLayout crearFormularioTarjeta() {
     	FormLayout formularioTarjeta = new FormLayout();
 		TextField nombreTarjeta = new TextField("Nombre del titular");
+		nombreTarjeta.setRequired(true);
 		TextField numero = new TextField("Número de tarjeta");
+		numero.setRequired(true);
 		TextField codigoSeguridad = new TextField("Código de seguridad");
+		codigoSeguridad.setRequired(true);
 		DatePicker fechaCaducidad = new DatePicker("Fecha de caducidad");
+		fechaCaducidad.setRequired(true);
 		formularioTarjeta.add(nombreTarjeta, numero, codigoSeguridad, fechaCaducidad);
 		return formularioTarjeta;
     }
@@ -95,7 +103,7 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 		VerticalLayout verticalLayout = new VerticalLayout();
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         verticalLayout.add(new H2("Pago"));
-        verticalLayout.add(new H3("Dirección"));
+        verticalLayout.add(new H3("Dirección de facturación"));
 		VerticalLayout formularioDireccion = new VerticalLayout(crearFormularioDireccion());
 		verticalLayout.add(formularioDireccion);
         verticalLayout.add(new H3("Información de pago"));
@@ -103,7 +111,8 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 		verticalLayout.add(formularioTarjeta);
 		verticalLayout.add(btn);
 		Aside pedido = new Aside(new H3("Pedido"));
-		pedido.add(new Paragraph(plan.get().getName() + " " + plan.get().getPrice().toString() + "€"));
+		pedido.add(new Paragraph(plan.get().getName() + " (mensual) " + plan.get().getPrice().toString() + "€"));
+		pedido.setWidth("500px");
 		horizontalLayout.add(verticalLayout, pedido);
 		add(horizontalLayout);
 		
