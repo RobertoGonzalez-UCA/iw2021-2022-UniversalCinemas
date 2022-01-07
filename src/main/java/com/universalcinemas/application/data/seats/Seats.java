@@ -12,7 +12,7 @@ import com.universalcinemas.application.data.ticket.Ticket;
 @Entity
 
 public class Seats {
-	private Integer row;
+	private Integer roww;
 	private Integer col;
 	@ManyToOne(optional = false)
 	@JoinColumn(referencedColumnName = "id")
