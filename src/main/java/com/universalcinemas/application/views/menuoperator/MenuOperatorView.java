@@ -1,4 +1,4 @@
-package com.universalcinemas.application.views.menuadmin;
+package com.universalcinemas.application.views.menuoperator;
 
 import javax.annotation.security.PermitAll;
 
@@ -16,10 +16,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@PageTitle("Menu Administrador")
-@Route(value = "menuadministrador")
+@PageTitle("Menu Operador")
+@Route(value = "menuoperador")
 @PermitAll
-public class MenuAdminView extends VerticalLayout{
+public class MenuOperatorView extends VerticalLayout{
 	/**
 	 * 
 	 */
@@ -27,13 +27,13 @@ public class MenuAdminView extends VerticalLayout{
 	UserService userService;
 	
 	@Autowired
-	public MenuAdminView() {
+	public MenuOperatorView() {
 		VerticalLayout mainLayout = new VerticalLayout();
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		VerticalLayout labelLayout = new VerticalLayout(new H4("Menú de administrador"));
 		VerticalLayout volverLayout = new VerticalLayout(crearBoton("Volver al home","news"));
 		
-		buttonLayout.add(crearBoton("Peliculas","crudfilms"), crearBoton("Usuarios","crudusers"), crearBoton("Negocios","crudbusinesses"), crearBoton("Planes","crudplans"));
+		buttonLayout.add(crearBoton("Peliculas","crudfilms"), crearBoton("Salas","crudrooms"), crearBoton("Cartelera","crudbillboards"));
 		mainLayout.add(buttonLayout);
 		mainLayout.setAlignItems(Alignment.CENTER);
 		labelLayout.setAlignItems(Alignment.CENTER);
@@ -55,5 +55,4 @@ public class MenuAdminView extends VerticalLayout{
 			return boton;
 		}
 	}
-	
 }
