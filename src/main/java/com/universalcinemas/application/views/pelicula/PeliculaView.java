@@ -3,10 +3,12 @@ package com.universalcinemas.application.views.pelicula;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.security.PermitAll;
 
@@ -14,7 +16,13 @@ import com.universalcinemas.application.data.business.Business;
 import com.universalcinemas.application.data.film.Film;
 import com.universalcinemas.application.data.film.FilmRepository;
 import com.universalcinemas.application.data.film.FilmService;
+import com.universalcinemas.application.data.plan.Plan;
+import com.universalcinemas.application.data.seats.Seats;
+import com.universalcinemas.application.data.seats.SeatsService;
+import com.universalcinemas.application.data.seats.SeatsRepository;
 import com.universalcinemas.application.data.session.Session;
+import com.universalcinemas.application.data.ticket.Ticket;
+import com.universalcinemas.application.data.ticket.TicketService;
 import com.universalcinemas.application.data.user.User;
 import com.universalcinemas.application.views.MainLayout;
 import com.vaadin.flow.component.HtmlComponent;
@@ -48,7 +56,11 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 	private static final long serialVersionUID = 1L;
 	private static DateTimeFormatter formatoFecha = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).localizedBy(Locale.forLanguageTag("es-ES"));
 	
+	private FilmRepository filmRepository;
 	private FilmService filmService;
+	private SeatsService seatsService;
+	private TicketService ticketService;
+	private SeatsRepository seatsRepository;
 	
 	private Session sesionElegida;
 	private List<Session> sesiones;
@@ -57,7 +69,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 	@Override
 	public void setParameter(BeforeEvent event, Integer filmId) {
 		sesionElegida = null;
-		Optional<Film> film = filmService.findById(filmId);
+		Optional<Film> film = filmRepository.findById(filmId);
     	VerticalLayout verticalLayout = new VerticalLayout();
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
     	Button btn = new Button("Comprar entrada");
@@ -81,8 +93,12 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	add(horizontalLayout);
 	}
 	
-	public PeliculaView(FilmService filmService) {
+	public PeliculaView(FilmRepository filmRepository, FilmService filmService, SeatsService seatsService, TicketService ticketService, SeatsRepository seatsRepository) {
+		this.filmRepository = filmRepository;
 		this.filmService = filmService;
+		this.seatsService = seatsService;
+		this.ticketService = ticketService;
+		this.seatsRepository  = seatsRepository; 
 	}
 	
 	private VerticalLayout createDialogLayout(Dialog dialog) {
@@ -165,27 +181,108 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 		divColor.getElement().getStyle().set("height","30px");
 		divColor.getElement().getStyle().set("margin-top", "10px");
 		divColor.getElement().getStyle().set("margin-bottom", "10px");
-
-
 		title.getElement().getStyle().set("text-align", "center");
-//		title.getElement().getStyle().set("margin-bottom", "30px");
 
     	dialog.add(title,divColor);
 
     	dialog.setMaxWidth("900px");
     	dialog.setMaxHeight("700px");
     	
+    	Iterable<Ticket> ticket2 = ticketService.findBySessionId(sesionElegida.getId());
+    	List<Integer> tickets_id = new ArrayList<Integer>();
+    	
+    	//Integer session_id = 0;
+    	
+    	
+    	List<Integer> seats_id = new ArrayList<Integer>();
+    	List<Seats> seats = new ArrayList<Seats>();
+    	
+    	for(Ticket t: ticket2)
+        {
+    		Iterable<Seats> seats2 = seatsService.getAllOccupiedSeatsByTicketId(t.getId());
+    		
+    		for(Seats s: seats2) {
+            	System.out.println(s.getId());
+    			seats.add(s);
+    		}
+        	
+        	//tickets_id.add(t.getId());
+        	//seats_id.add(seatsService.getAllOccupiedSeatsByTicketId(t.getId()));
+        	//System.out.println(t.getId());
+        }
+    	
+    	
+//    	Iterable<Seats> seats = seatsService.getAllOccupiedSeatsByTicketId(tickets_id.get(0));
+//    	List<Integer> seats_id = new ArrayList<Integer>();
+//    	
+//    	for(Seats s: seats)
+//        {
+//    		seats_id.add(s.getId());
+//        	System.out.println(s.getId());
+//        }
+    	
+		//seats.add(seatsService.getAllOccupiedSeatsByTicketId(tickets_id.get(i)));
+
+//    	for(int i = 0; i < tickets_id.size(); i++) {
+//    		Seats seat = new Seats();
+//    		seat = seatsService.getAllOccupiedSeatsByTicketId(tickets_id.get(i));
+//    		seats_id.add();
+//    		System.out.println(seatsService.getAllOccupiedSeatsByTicketId(tickets_id.get(i)));
+//    		System.out.println(seats.get(i).getId());
+//    	}
+    	
+    	//List<Seats> seats = seatsRepository.findAll();		
+		List<Integer> cols = new ArrayList<Integer>();
+		List<Integer> rows = new ArrayList<Integer>();
+//		
+		for (int i = 0; i < seats.size(); i++) {
+			cols.add(seats.get(i).getCol());
+			rows.add(seats.get(i).getRow());
+        }
+		
 		for(int i = 0; i < 6; i++) {
 			HtmlComponent br = new HtmlComponent("br");
-			for (int j = 0; j < 12; j++) {
-				Image img2= new Image("https://p.kindpng.com/picc/s/111-1114911_person-icon-png-download-icono-usuario-png-transparent.png","User Image");
-				img2.setHeight("40px");
+			for (int j = 0; j < 12; j++) {	
+				Image img2 = new Image("https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png","User Image");	
+
+				
+				for(int r = 0; r < rows.size(); r++) {
+					for(int c = 0; c < cols.size(); c++) {
+						//System.out.println(i + " " + j + " " + r + " " + c + " " + rows.get(r) + " " +  cols.get(c));
+						if (i == rows.get(r) && j == cols.get(c) && r == c) 
+			 				img2.getElement().getStyle().set("background-color", "red");
+					}
+				}
+				if(img2.getElement().getStyle().get("background-color") == null )
+					img2.getElement().getStyle().set("background-color", "white");
+
+	 			img2.setHeight("40px");
 				img2.setWidth("40px");
+	 			
+				int num_row = i;
+				int num_col = j;
+				
+				img2.addClickListener((e -> {
+		 			img2.getElement().getStyle().set("background-color", "green");
+
+		 			
+		 			//Session session = new Session(sesionElegida.getDate_time(), sesionElegida.getFilm(), sesionElegida.getRoom());
+
+		 			Ticket ticket = new Ticket(12.,0,sesionElegida);
+		 			ticketService.saveNewTicket(ticket);
+		 			
+		 			Seats seats2 = new Seats(num_row,num_col,ticket);
+		 			seatsService.saveNewOccupiedSeat(seats2);
+		 		}));
+				
+
 				if(j == 0)
 					img2.getElement().getStyle().set("margin-left", "100px");
+				
 				img2.getElement().getStyle().set("margin-right", "2px");
 
 				dialog.add(img2);
+				
 				if(j == 3 || j == 7){
 					Div d = new Div();
 					d.getElement().getStyle().set("display", "inline");
@@ -198,28 +295,26 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 				}
 			}
 			dialog.add(br);
-		}
-		
-		
+		}		
 		
     	horizontalLayout.add(verticalLayout);
-//    	dialog.add(title,img,img2,img3,img4);
 		dialog.open();
-    	//add(title,horizontalLayout);
     	
     	setHeightFull();
 		setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);//puts button in vertical center
 		
 		dialog.setCloseOnEsc(false);
-		dialog.setCloseOnOutsideClick(false);
 		
 		Button btnConfirmar = new Button("Confirmar");
 //		btnConfirmar.getElement().getStyle().set(null, null);
 		dialog.add(btnConfirmar);
 		btnConfirmar.addClickListener(e -> {
+			Notification.show("Compraste con éxito tu/s ticket/s");
  			dialog.close(); 
  		});
+		
+		dialog.setCloseOnOutsideClick(true);
 		
 		return verticalLayout;
 	}

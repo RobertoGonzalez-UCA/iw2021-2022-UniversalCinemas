@@ -23,6 +23,14 @@ public class Session {
 	@GeneratedValue
 	private Integer id;
 	
+	public Session() {}
+	
+	public Session(LocalDateTime date_time, Film film, Room room) {
+		this.date_time = date_time;
+		this.film = film;
+		this.room = room;
+	}
+	
 	public LocalDateTime getDate_time() {
 		return date_time;
 	}
