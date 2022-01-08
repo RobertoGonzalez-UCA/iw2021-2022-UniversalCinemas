@@ -56,7 +56,6 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 	private static final long serialVersionUID = 1L;
 	private static DateTimeFormatter formatoFecha = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).localizedBy(Locale.forLanguageTag("es-ES"));
 	
-	private FilmRepository filmRepository;
 	private FilmService filmService;
 	private SeatsService seatsService;
 	private TicketService ticketService;
@@ -69,7 +68,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 	@Override
 	public void setParameter(BeforeEvent event, Integer filmId) {
 		sesionElegida = null;
-		Optional<Film> film = filmRepository.findById(filmId);
+		Optional<Film> film = filmService.findById(filmId);
     	VerticalLayout verticalLayout = new VerticalLayout();
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
     	Button btn = new Button("Comprar entrada");
@@ -93,8 +92,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	add(horizontalLayout);
 	}
 	
-	public PeliculaView(FilmRepository filmRepository, FilmService filmService, SeatsService seatsService, TicketService ticketService, SeatsRepository seatsRepository) {
-		this.filmRepository = filmRepository;
+	public PeliculaView(FilmService filmService, SeatsService seatsService, TicketService ticketService, SeatsRepository seatsRepository) {
 		this.filmService = filmService;
 		this.seatsService = seatsService;
 		this.ticketService = ticketService;
