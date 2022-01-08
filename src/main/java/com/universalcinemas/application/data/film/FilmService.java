@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,12 @@ import com.universalcinemas.application.data.session.SessionRepository;
 public class FilmService extends CrudService<Film, Integer> {
 
 	private SessionRepository sessionRepository;
+	private FilmRepository filmRepository;
 	
 	@Autowired
-	public FilmService(SessionRepository sessionRepository) {
+	public FilmService(SessionRepository sessionRepository, FilmRepository filmRepository) {
 		this.sessionRepository = sessionRepository;
+		this.filmRepository = filmRepository;
 	}
 	
 	@Override
@@ -67,5 +70,17 @@ public class FilmService extends CrudService<Film, Integer> {
 	
 	public List<Session> filtrarPorCine(List<Session> sesiones, int idCine) {
 		return sesiones.stream().filter(cine -> cine.getRoom().getBusiness().getId() == idCine).collect(Collectors.toList());
+	}
+
+	public Optional<Film> findById(Integer filmId) {
+		return filmRepository.findById(filmId);
+	}
+
+	public Iterable<Film> findAllByOrderByReleasedateDesc() {
+		return filmRepository.findAllByOrderByReleasedateDesc();
+	}
+
+	public Iterable<Film> findByGenre_Id(int genreId) {
+		return filmRepository.findByGenre_Id(genreId);
 	}
 }

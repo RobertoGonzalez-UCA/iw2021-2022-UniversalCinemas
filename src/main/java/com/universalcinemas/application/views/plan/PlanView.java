@@ -31,12 +31,11 @@ import com.vaadin.flow.router.Route;
 @Route(value = "plan", layout = MainLayout.class)
 @PermitAll
 public class PlanView extends VerticalLayout implements HasUrlParameter<Integer> {
-	private PlanRepository planRepository;
 	private PlanService planService;
 	
 	@Override
 	public void setParameter(BeforeEvent event, Integer planId) {
-		Optional<Plan> plan = planRepository.findById(planId);
+		Optional<Plan> plan = planService.findById(planId);
     	VerticalLayout verticalLayout = new VerticalLayout();
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
     	Button btn = new Button("Proceder al pago");
@@ -52,8 +51,7 @@ public class PlanView extends VerticalLayout implements HasUrlParameter<Integer>
     	add(verticalLayout);
 	}
 	
-	public PlanView(PlanRepository planRepository, PlanService planService) {
-		this.planRepository = planRepository;
+	public PlanView(PlanService planService) {
 		this.planService = planService;
 	}
 

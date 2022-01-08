@@ -35,12 +35,12 @@ import com.vaadin.flow.router.Route;
 @PermitAll
 public class InicioView extends VerticalLayout {
 
-    public InicioView(FilmRepository filmrepository) throws ParseException { 		
+    public InicioView(FilmService filmService) throws ParseException { 		
         //Layouts
         VerticalLayout vLayoutMain = new VerticalLayout();
     	HorizontalLayout hLayoutAux = new HorizontalLayout();
         
-        Iterable<Film> films = filmrepository.findAllByOrderByReleasedateDesc();
+        Iterable<Film> films = filmService.findAllByOrderByReleasedateDesc();
 
         for(Film f: films)
         {
@@ -58,7 +58,7 @@ public class InicioView extends VerticalLayout {
         
         HorizontalLayout hLayoutAux2 = new HorizontalLayout();
         
-        films = filmrepository.findByGenre_Id(1);
+        films = filmService.findByGenre_Id(1);
 
         for(Film f: films)
         {

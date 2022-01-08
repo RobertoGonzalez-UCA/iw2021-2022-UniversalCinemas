@@ -41,7 +41,6 @@ import com.vaadin.flow.router.Route;
 @Route(value = "checkout", layout = MainLayout.class)
 @PermitAll
 public class PagoView extends VerticalLayout implements HasUrlParameter<Integer> {
-	private PlanRepository planRepository;
 	private PlanService planService;
     /*private static final List<String> countries = new ArrayList<>();
     static {
@@ -55,14 +54,13 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
     private ComboBox stateSelect;
 */
     @Autowired
-    public PagoView(PlanRepository planRepository, PlanService planService) {
+    public PagoView(PlanService planService) {
         /*addClassNames("flex", "flex-col", "h-full");
         stateSelect.setVisible(false);
         countrySelect.setItems(countries);
         countrySelect.addValueChangeListener(e -> {
             stateSelect.setVisible(countrySelect.getValue().equals("United States"));
         });*/
-		this.planRepository = planRepository;
 		this.planService = planService;
     }
     
@@ -96,7 +94,7 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 
 	@Override
 	public void setParameter(BeforeEvent event, Integer planId) {
-		Optional<Plan> plan = planRepository.findById(planId);
+		Optional<Plan> plan = planService.findById(planId);
 		Button btn = new Button("Pagar");
 		btn.addClickListener(e -> UI.getCurrent().navigate(InicioView.class));
     	btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

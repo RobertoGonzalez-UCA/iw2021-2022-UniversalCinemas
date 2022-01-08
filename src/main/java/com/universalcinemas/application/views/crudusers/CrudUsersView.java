@@ -50,7 +50,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 	private TextField email;
 	private TextField phone;
 	private DatePicker dateOfBirth;
-	//private TextField role;
+	private TextField role_id;
 	private Checkbox operator;
 	private Button cancel = new Button("Cancelar");
 	private Button save = new Button("Guardar");
@@ -76,7 +76,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		grid.addColumn("email").setAutoWidth(true);
 		grid.addColumn("phone").setAutoWidth(true);
 		grid.addColumn("dateOfBirth").setAutoWidth(true);
-		//grid.addColumn("role").setAutoWidth(true);
+		grid.addColumn("role").setAutoWidth(true);
 		/*
 		 * TemplateRenderer<User> importantRenderer = TemplateRenderer.<User>of(
 		 * "<iron-icon hidden='[[!item.important]]' icon='vaadin:check' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: var(--lumo-primary-text-color);'></iron-icon><iron-icon hidden='[[item.important]]' icon='vaadin:minus' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: var(--lumo-disabled-text-color);'></iron-icon>"
@@ -162,10 +162,10 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		email = new TextField("Correo electrónico");
 		phone = new TextField("Teléfono");
 		dateOfBirth = new DatePicker("Fecha de nacimiento");
-		//role = new TextField("Rol");
+		role_id = new TextField("Rol id");
 		operator = new Checkbox("Operador");
 		operator.getStyle().set("padding-top", "var(--lumo-space-m)");
-		Component[] fields = new Component[] { name, surname, email, phone, dateOfBirth, operator };
+		Component[] fields = new Component[] { name, surname, email, phone, dateOfBirth, role_id, operator };
 
 		for (Component field : fields) {
 			((HasStyle) field).addClassName("full-width");

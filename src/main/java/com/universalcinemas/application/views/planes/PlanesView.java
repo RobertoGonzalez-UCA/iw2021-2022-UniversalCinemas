@@ -4,6 +4,7 @@ import javax.annotation.security.PermitAll;
 
 import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.plan.PlanRepository;
+import com.universalcinemas.application.data.plan.PlanService;
 import com.universalcinemas.application.views.MainLayout;
 import com.universalcinemas.application.views.inicio.InicioView;
 import com.universalcinemas.application.views.pelicula.PeliculaView;
@@ -24,9 +25,9 @@ import com.vaadin.flow.router.Route;
 @PermitAll
 public class PlanesView extends VerticalLayout {
 
-	public PlanesView(PlanRepository planrepository) {
+	public PlanesView(PlanService planService) {
 		
-        Iterable<Plan> plans = planrepository.findAll();
+        Iterable<Plan> plans = planService.findAll();
 
         //Layouts
         VerticalLayout verticalLayout1 = new VerticalLayout();
