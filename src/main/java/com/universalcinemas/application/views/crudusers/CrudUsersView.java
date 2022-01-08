@@ -76,7 +76,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		grid.addColumn("email").setAutoWidth(true);
 		grid.addColumn("phone").setAutoWidth(true);
 		grid.addColumn("dateOfBirth").setAutoWidth(true);
-		grid.addColumn("role").setAutoWidth(true);
+		grid.addColumn("role_id").setAutoWidth(true);
 		/*
 		 * TemplateRenderer<User> importantRenderer = TemplateRenderer.<User>of(
 		 * "<iron-icon hidden='[[!item.important]]' icon='vaadin:check' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: var(--lumo-primary-text-color);'></iron-icon><iron-icon hidden='[[item.important]]' icon='vaadin:minus' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: var(--lumo-disabled-text-color);'></iron-icon>"
