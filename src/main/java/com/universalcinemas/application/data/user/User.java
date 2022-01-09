@@ -107,6 +107,16 @@ public class User implements UserDetails {
 		this.phonenumber = phone;
 	}
 
+	// REVISAR
+	public String getPhonenumber() {
+		return phonenumber;
+	}
+
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber = phonenumber;
+	}
+	// -------
+
 	public LocalDate getDateOfBirth() {
 		return dateofbirth;
 	}
@@ -114,7 +124,17 @@ public class User implements UserDetails {
 	public void setDateOfBirth(LocalDate dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
+	
+	// REVISAR
+	public LocalDate getDateofbirth() {
+		return dateofbirth;
+	}
 
+	public void setDateofbirth(LocalDate dateofbirth) {
+		this.dateofbirth = dateofbirth;
+	}
+	// -------
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}

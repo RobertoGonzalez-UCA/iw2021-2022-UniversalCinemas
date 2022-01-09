@@ -58,7 +58,7 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 
 	@Override
 	protected JpaRepository<User, Integer> getRepository() {
-		return null;
+		return repository;
 	}
 	
 	public User obtenerDatosUsuario(int id) {

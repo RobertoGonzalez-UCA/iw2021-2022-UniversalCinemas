@@ -1,10 +1,14 @@
 package com.universalcinemas.application.views.crudusers;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Optional;
 
 import javax.annotation.security.PermitAll;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.util.UriUtils;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
 
 import com.universalcinemas.application.data.user.User;
@@ -15,53 +19,58 @@ import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@PageTitle("Panel Usuarios")
-@Route(value = "about/:userID?/:action?(edit)", layout = MainLayout.class)
+import elemental.json.Json;
+
+@PageTitle("Panel usuarios")
+@Route(value = "cruduser/:UserID?/:action?(edit)", layout = MainLayout.class)
 @PermitAll
-@Uses(Icon.class)
 public class CrudUsersView extends Div implements BeforeEnterObserver {
 
-	private static final long serialVersionUID = 1L;
-	private final String USER_ID = "userID";
-	private final String USER_EDIT_ROUTE_TEMPLATE = "about/%d/edit";
+	private final String USER_ID = "UserID";
+	private final String USER_EDIT_ROUTE_TEMPLATE = "cruduser/%d/edit";
 
 	private Grid<User> grid = new Grid<>(User.class, false);
 
 	private TextField name;
 	private TextField surname;
 	private TextField email;
-	private TextField phone;
-	private DatePicker dateOfBirth;
-	private TextField role_id;
-	private Checkbox operator;
+	private DatePicker dateofbirth;
+	private TextField phonenumber;
+	private Upload urlprofileimage;
+	private Image urlprofileimagePreview;
+
 	private Button cancel = new Button("Cancelar");
 	private Button save = new Button("Guardar");
-	private BeanValidationBinder<User> binder;
-	private User user;
-	private UserService userService;
 
-	public CrudUsersView(@Autowired UserService userService) {
-		this.userService = userService;
-		addClassNames("about-view", "flex", "flex-col", "h-full");
+	private BeanValidationBinder<User> binder;
+
+	private User user;
+
+	private UserService UserService;
+
+	public CrudUsersView(@Autowired UserService UserService) {
+		this.UserService = UserService;
+		addClassNames("crud-users-view-view", "flex", "flex-col", "h-full");
 		// Create UI
 		SplitLayout splitLayout = new SplitLayout();
 		splitLayout.setSizeFull();
@@ -72,20 +81,17 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		add(splitLayout);
 
 		// Configure Grid
-		grid.addColumn("name").setAutoWidth(true);
-		grid.addColumn("surname").setAutoWidth(true);
+		grid.addColumn("name").setAutoWidth(true).setHeader("Nombre");
+		grid.addColumn("surname").setAutoWidth(true).setHeader("Apellidos");
 		grid.addColumn("email").setAutoWidth(true);
-		grid.addColumn("phone").setAutoWidth(true);
-		grid.addColumn("dateOfBirth").setAutoWidth(true);
-		grid.addColumn("role_id").setAutoWidth(true);
-		/*
-		 * TemplateRenderer<User> importantRenderer = TemplateRenderer.<User>of(
-		 * "<iron-icon hidden='[[!item.important]]' icon='vaadin:check' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: var(--lumo-primary-text-color);'></iron-icon><iron-icon hidden='[[item.important]]' icon='vaadin:minus' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: var(--lumo-disabled-text-color);'></iron-icon>"
-		 * ) .withProperty("important", User::isImportant);
-		 * grid.addColumn(importantRenderer).setHeader("Important").setAutoWidth(true);
-		 */
+		grid.addColumn("dateofbirth").setAutoWidth(true).setHeader("Fecha de nacimiento");
+		grid.addColumn("phonenumber").setAutoWidth(true).setHeader("Teléfono");
+		TemplateRenderer<User> urlprofileimageRenderer = TemplateRenderer.<User>of(
+				"<span style='border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; width: 64px; height: 64px'><img style='max-width: 100%' src='[[item.urlprofileimage]]' /></span>")
+				.withProperty("urlprofileimage", User::getUrlprofileimage);
+		grid.addColumn(urlprofileimageRenderer).setHeader("Imagen de perfil").setWidth("96px").setFlexGrow(0);
 
-		grid.setDataProvider(new CrudServiceDataProvider<>(userService));
+		grid.setDataProvider(new CrudServiceDataProvider<>(UserService));
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 		grid.setHeightFull();
 
@@ -106,6 +112,8 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 
 		binder.bindInstanceFields(this);
 
+		attachImageUpload(urlprofileimage, urlprofileimagePreview);
+
 		cancel.addClickListener(e -> {
 			clearForm();
 			refreshGrid();
@@ -117,14 +125,15 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 					this.user = new User();
 				}
 				binder.writeBean(this.user);
+				this.user.setUrlprofileimage(urlprofileimagePreview.getSrc());
 
-				userService.update(this.user);
+				UserService.update(this.user);
 				clearForm();
 				refreshGrid();
 				Notification.show("User details stored.");
 				UI.getCurrent().navigate(CrudUsersView.class);
 			} catch (ValidationException validationException) {
-				Notification.show("An exception happened while trying to store the user details.");
+				Notification.show("An exception happened while trying to store the User details.");
 			}
 		});
 
@@ -132,13 +141,13 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 
 	@Override
 	public void beforeEnter(BeforeEnterEvent event) {
-		Optional<Integer> userId = event.getRouteParameters().getInteger(USER_ID);
-		if (userId.isPresent()) {
-			Optional<User> userFromBackend = userService.get(userId.get());
-			if (userFromBackend.isPresent()) {
-				populateForm(userFromBackend.get());
+		Optional<Integer> UserId = event.getRouteParameters().getInteger(USER_ID);
+		if (UserId.isPresent()) {
+			Optional<User> UserFromBackend = UserService.get(UserId.get());
+			if (UserFromBackend.isPresent()) {
+				populateForm(UserFromBackend.get());
 			} else {
-				Notification.show(String.format("The requested user was not found, ID = %d", userId.get()), 3000,
+				Notification.show(String.format("The requested User was not found, ID = %d", UserId.get()), 3000,
 						Notification.Position.BOTTOM_START);
 				// when a row is selected but the data is no longer available,
 				// refresh grid
@@ -160,13 +169,17 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		FormLayout formLayout = new FormLayout();
 		name = new TextField("Nombre");
 		surname = new TextField("Apellidos");
-		email = new TextField("Correo electrónico");
-		phone = new TextField("Teléfono");
-		dateOfBirth = new DatePicker("Fecha de nacimiento");
-		role_id = new TextField("Rol id");
-		operator = new Checkbox("Operador");
-		operator.getStyle().set("padding-top", "var(--lumo-space-m)");
-		Component[] fields = new Component[] { name, surname, email, phone, dateOfBirth, role_id, operator };
+		email = new TextField("Email");
+		dateofbirth = new DatePicker("Fecha de nacimiento");
+		phonenumber = new TextField("Teléfono");
+		Label urlprofileimageLabel = new Label("Imagen de perfil");
+		urlprofileimagePreview = new Image();
+		urlprofileimagePreview.setWidth("100%");
+		urlprofileimage = new Upload();
+		urlprofileimage.getStyle().set("box-sizing", "border-box");
+		urlprofileimage.getElement().appendChild(urlprofileimagePreview.getElement());
+		Component[] fields = new Component[] { name, surname, email, dateofbirth, phonenumber, urlprofileimageLabel,
+				urlprofileimage };
 
 		for (Component field : fields) {
 			((HasStyle) field).addClassName("full-width");
@@ -196,6 +209,24 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		wrapper.add(grid);
 	}
 
+	private void attachImageUpload(Upload upload, Image preview) {
+		ByteArrayOutputStream uploadBuffer = new ByteArrayOutputStream();
+		upload.setAcceptedFileTypes("image/*");
+		upload.setReceiver((fileName, mimeType) -> {
+			return uploadBuffer;
+		});
+		upload.addSucceededListener(e -> {
+			String mimeType = e.getMIMEType();
+			String base64ImageData = Base64.getEncoder().encodeToString(uploadBuffer.toByteArray());
+			String dataUrl = "data:" + mimeType + ";base64,"
+					+ UriUtils.encodeQuery(base64ImageData, StandardCharsets.UTF_8);
+			upload.getElement().setPropertyJson("files", Json.createArray());
+			preview.setSrc(dataUrl);
+			uploadBuffer.reset();
+		});
+		preview.setVisible(false);
+	}
+
 	private void refreshGrid() {
 		grid.select(null);
 		grid.getDataProvider().refreshAll();
@@ -208,5 +239,12 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 	private void populateForm(User value) {
 		this.user = value;
 		binder.readBean(this.user);
+		this.urlprofileimagePreview.setVisible(value != null);
+		if (value == null) {
+			this.urlprofileimagePreview.setSrc("");
+		} else {
+			this.urlprofileimagePreview.setSrc(value.getUrlprofileimage());
+		}
+
 	}
 }
