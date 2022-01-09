@@ -1,15 +1,10 @@
 package com.universalcinemas.application.data.ticket;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.universalcinemas.application.data.city.City;
 import com.universalcinemas.application.data.session.Session;
 
 @Entity

@@ -6,7 +6,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.universalcinemas.application.data.city.City;
 import com.universalcinemas.application.data.ticket.Ticket;
 
 @Entity

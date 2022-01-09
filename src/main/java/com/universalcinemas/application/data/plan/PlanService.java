@@ -7,18 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.vaadin.artur.helpers.CrudService;
 
-import com.universalcinemas.application.data.film.Film;
-import com.universalcinemas.application.data.session.SessionRepository;
-
 @Service
 public class PlanService extends CrudService<Plan, Integer>{
 
-	private SessionRepository sessionRepository;
 	private PlanRepository planRepository;
 
 	@Autowired
-	public PlanService(SessionRepository sessionRepository, PlanRepository planRepository) {
-		this.sessionRepository = sessionRepository;
+	public PlanService(PlanRepository planRepository) {
 		this.planRepository = planRepository;
 	}
 	

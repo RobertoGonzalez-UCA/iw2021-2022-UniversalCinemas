@@ -6,31 +6,25 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.security.PermitAll;
 
 import com.universalcinemas.application.data.business.Business;
 import com.universalcinemas.application.data.film.Film;
-import com.universalcinemas.application.data.film.FilmRepository;
 import com.universalcinemas.application.data.film.FilmService;
-import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.seats.Seats;
 import com.universalcinemas.application.data.seats.SeatsService;
-import com.universalcinemas.application.data.seats.SeatsRepository;
 import com.universalcinemas.application.data.session.Session;
 import com.universalcinemas.application.data.ticket.Ticket;
 import com.universalcinemas.application.data.ticket.TicketService;
-import com.universalcinemas.application.data.user.User;
 import com.universalcinemas.application.views.MainLayout;
 import com.vaadin.flow.component.HtmlComponent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
@@ -39,15 +33,10 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.server.ClassResource;
-import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.flow.component.html.Div;
 
 @PageTitle("Pelicula")
 @Route(value = "pelicula", layout = MainLayout.class)
@@ -59,7 +48,6 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 	private FilmService filmService;
 	private SeatsService seatsService;
 	private TicketService ticketService;
-	private SeatsRepository seatsRepository;
 	
 	private Session sesionElegida;
 	private List<Session> sesiones;
@@ -92,11 +80,10 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	add(horizontalLayout);
 	}
 	
-	public PeliculaView(FilmService filmService, SeatsService seatsService, TicketService ticketService, SeatsRepository seatsRepository) {
+	public PeliculaView(FilmService filmService, SeatsService seatsService, TicketService ticketService) {
 		this.filmService = filmService;
 		this.seatsService = seatsService;
 		this.ticketService = ticketService;
-		this.seatsRepository  = seatsRepository; 
 	}
 	
 	private VerticalLayout createDialogLayout(Dialog dialog) {
@@ -187,12 +174,6 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	dialog.setMaxHeight("700px");
     	
     	Iterable<Ticket> ticket2 = ticketService.findBySessionId(sesionElegida.getId());
-    	List<Integer> tickets_id = new ArrayList<Integer>();
-    	
-    	//Integer session_id = 0;
-    	
-    	
-    	List<Integer> seats_id = new ArrayList<Integer>();
     	List<Seats> seats = new ArrayList<Seats>();
     	
     	for(Ticket t: ticket2)
@@ -232,7 +213,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	//List<Seats> seats = seatsRepository.findAll();		
 		List<Integer> cols = new ArrayList<Integer>();
 		List<Integer> rows = new ArrayList<Integer>();
-//		
+		
 		for (int i = 0; i < seats.size(); i++) {
 			cols.add(seats.get(i).getCol());
 			rows.add(seats.get(i).getRow());

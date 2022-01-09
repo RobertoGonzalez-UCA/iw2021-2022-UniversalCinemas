@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.vaadin.artur.helpers.CrudService;
 
 import com.universalcinemas.application.data.role.RoleService;
-import com.vaadin.flow.component.notification.Notification;
 
 @Service
 public class UserService extends CrudService<User, Integer> implements UserDetailsService {

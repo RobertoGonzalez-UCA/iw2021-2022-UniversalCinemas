@@ -17,19 +17,20 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.server.VaadinSession;
 
 @PageTitle("Novedades")
 @Route(value = "news", layout = MainLayout.class)
 @PermitAll
 public class NovedadesView extends VerticalLayout {
 	
+	private static final long serialVersionUID = 1L;
 	UserService userService;
 	
-	public class IconBox extends VerticalLayout
-	{
-		public IconBox(String icon, String text)
-		{
+	public class IconBox extends VerticalLayout{
+
+		private static final long serialVersionUID = 1L;
+
+		public IconBox(String icon, String text){
 			VerticalLayout mainVerticalLayout = new VerticalLayout();
 			mainVerticalLayout.setAlignItems(Alignment.CENTER);
 			mainVerticalLayout.add(new Icon(icon));

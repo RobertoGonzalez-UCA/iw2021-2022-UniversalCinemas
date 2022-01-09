@@ -16,7 +16,11 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 @Uses(Icon.class)
 public class IniciosesionView extends LoginOverlay implements BeforeEnterObserver{
-    public IniciosesionView() {
+
+	private static final long serialVersionUID = 1L;
+
+
+	public IniciosesionView() {
         setAction("login");
 
         LoginI18n i18n = LoginI18n.createDefault();

@@ -3,7 +3,6 @@ package com.universalcinemas.application.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.elegirasiento.ElegirasientoView;
 import com.universalcinemas.application.views.inicio.InicioView;
 import com.universalcinemas.application.views.iniciosesion.IniciosesionView;
@@ -31,7 +30,9 @@ import com.vaadin.flow.router.RouterLink;
 @PageTitle("Main")
 public class MainLayout extends AppLayout {
 
-    public static class MenuItemInfo {
+	private static final long serialVersionUID = 1L;
+
+	public static class MenuItemInfo {
 
         private String text;
         private String iconClass;

@@ -1,43 +1,21 @@
 package com.universalcinemas.application.views.registro;
 
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Composite;
+
+import com.universalcinemas.application.data.user.User;
+import com.universalcinemas.application.data.user.UserService;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.NativeButton;
+import com.vaadin.flow.component.dependency.Uses;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
-
-import java.util.Date;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.universalcinemas.application.data.user.User;
-import com.universalcinemas.application.data.user.UserRepository;
-import com.universalcinemas.application.data.user.UserService;
-import com.universalcinemas.application.views.MainLayout;
-import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.dependency.Uses;
-import com.vaadin.flow.data.renderer.TemplateRenderer;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.html.H2;
 
 @PageTitle("Registro")
 @Route(value = "signup")

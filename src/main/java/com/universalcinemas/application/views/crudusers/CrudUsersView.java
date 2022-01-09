@@ -40,6 +40,7 @@ import com.vaadin.flow.router.Route;
 @Uses(Icon.class)
 public class CrudUsersView extends Div implements BeforeEnterObserver {
 
+	private static final long serialVersionUID = 1L;
 	private final String USER_ID = "userID";
 	private final String USER_EDIT_ROUTE_TEMPLATE = "about/%d/edit";
 

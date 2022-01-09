@@ -15,7 +15,9 @@ import com.vaadin.flow.router.Route;
 @PermitAll
 public class CrudFilmsView extends VerticalLayout {
 
-    public CrudFilmsView(){ 		
+	private static final long serialVersionUID = 1L;
+
+	public CrudFilmsView(){ 		
     	VerticalLayout vLayoutMain = new VerticalLayout();
     	FormLayout form = new FormLayout();
     	vLayoutMain.add(new H1("Añadir película"));

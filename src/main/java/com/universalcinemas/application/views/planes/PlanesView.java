@@ -3,11 +3,8 @@ package com.universalcinemas.application.views.planes;
 import javax.annotation.security.PermitAll;
 
 import com.universalcinemas.application.data.plan.Plan;
-import com.universalcinemas.application.data.plan.PlanRepository;
 import com.universalcinemas.application.data.plan.PlanService;
 import com.universalcinemas.application.views.MainLayout;
-import com.universalcinemas.application.views.inicio.InicioView;
-import com.universalcinemas.application.views.pelicula.PeliculaView;
 import com.universalcinemas.application.views.plan.PlanView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -24,6 +21,8 @@ import com.vaadin.flow.router.Route;
 @Route(value = "plans", layout = MainLayout.class)
 @PermitAll
 public class PlanesView extends VerticalLayout {
+
+	private static final long serialVersionUID = 1L;
 
 	public PlanesView(PlanService planService) {
 		

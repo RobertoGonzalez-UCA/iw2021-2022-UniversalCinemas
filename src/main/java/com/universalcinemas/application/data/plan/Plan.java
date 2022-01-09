@@ -1,16 +1,11 @@
 package com.universalcinemas.application.data.plan;
 
-import java.sql.Date;
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.universalcinemas.application.data.genre.Genre;
-import com.universalcinemas.application.data.language.Language;
 
 @Entity
 

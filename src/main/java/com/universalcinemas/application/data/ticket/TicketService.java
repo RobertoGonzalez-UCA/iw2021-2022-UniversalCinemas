@@ -1,14 +1,9 @@
 package com.universalcinemas.application.data.ticket;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.vaadin.artur.helpers.CrudService;
-
-import com.universalcinemas.application.data.seats.Seats;
 
 
 @Service

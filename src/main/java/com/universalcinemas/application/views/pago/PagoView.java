@@ -1,36 +1,26 @@
 package com.universalcinemas.application.views.pago;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.security.PermitAll;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.universalcinemas.application.data.film.FilmRepository;
 import com.universalcinemas.application.data.plan.Plan;
-import com.universalcinemas.application.data.plan.PlanRepository;
 import com.universalcinemas.application.data.plan.PlanService;
 import com.universalcinemas.application.views.MainLayout;
 import com.universalcinemas.application.views.inicio.InicioView;
-import com.vaadin.flow.component.HasStyle;
-import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Aside;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.littemplate.LitTemplate;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.template.Id;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
@@ -41,6 +31,8 @@ import com.vaadin.flow.router.Route;
 @Route(value = "checkout", layout = MainLayout.class)
 @PermitAll
 public class PagoView extends VerticalLayout implements HasUrlParameter<Integer> {
+
+	private static final long serialVersionUID = 1L;
 	private PlanService planService;
     /*private static final List<String> countries = new ArrayList<>();
     static {

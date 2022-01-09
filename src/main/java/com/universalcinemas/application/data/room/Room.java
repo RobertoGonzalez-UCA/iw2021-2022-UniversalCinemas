@@ -6,7 +6,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.universalcinemas.application.data.business.Business;
-import com.universalcinemas.application.data.city.City;
 
 @Entity
 

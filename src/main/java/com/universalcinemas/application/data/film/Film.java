@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 
 import com.universalcinemas.application.data.genre.Genre;
 import com.universalcinemas.application.data.language.Language;
-import com.universalcinemas.application.data.plan.Plan;
 
 @Entity
 

@@ -1,6 +1,5 @@
 package com.universalcinemas.application.data.session;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;

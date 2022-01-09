@@ -1,6 +1,5 @@
 package com.universalcinemas.application.data.user;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -9,20 +8,15 @@ import java.util.Locale;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.role.Role;
-import com.universalcinemas.application.data.role.RoleService;
-import com.vaadin.flow.component.notification.Notification;
 
 @Entity
 public class User implements UserDetails {

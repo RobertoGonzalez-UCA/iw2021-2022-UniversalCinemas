@@ -5,20 +5,15 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 
-import com.vaadin.flow.component.HasStyle;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.template.Id;
-import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.littemplate.LitTemplate;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.PageTitle;
 import com.universalcinemas.application.views.MainLayout;
+import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.littemplate.LitTemplate;
+import com.vaadin.flow.component.template.Id;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 
 @PageTitle("Elegir asiento")
 @Route(value = "chooseseat", layout = MainLayout.class)
@@ -26,7 +21,9 @@ import com.vaadin.flow.component.dependency.JsModule;
 @Tag("elegirasiento-view")
 @JsModule("./views/elegirasiento/elegirasiento-view.ts")
 public class ElegirasientoView extends LitTemplate implements HasStyle {
-    private static final List<String> states = new ArrayList<>();
+
+	private static final long serialVersionUID = 1L;
+	private static final List<String> states = new ArrayList<>();
     private static final List<String> countries = new ArrayList<>();
     static {
         states.add("Alabama");

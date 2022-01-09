@@ -1,32 +1,17 @@
 package com.universalcinemas.application.views.inicio;
 
-import java.util.Set;
-
 import javax.annotation.security.PermitAll;
 
 import com.github.javaparser.ParseException;
 import com.universalcinemas.application.data.film.Film;
-import com.universalcinemas.application.data.film.FilmRepository;
 import com.universalcinemas.application.data.film.FilmService;
-import com.universalcinemas.application.data.genre.Genre;
-import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.MainLayout;
 import com.universalcinemas.application.views.pelicula.PeliculaView;
-import com.universalcinemas.application.views.planes.PlanesView;
-import com.vaadin.flow.component.HasComponents;
-import com.vaadin.flow.component.HasStyle;
-import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.littemplate.LitTemplate;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
-import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.template.Id;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -35,7 +20,9 @@ import com.vaadin.flow.router.Route;
 @PermitAll
 public class InicioView extends VerticalLayout {
 
-    public InicioView(FilmService filmService) throws ParseException { 		
+	private static final long serialVersionUID = 1L;
+
+	public InicioView(FilmService filmService) throws ParseException { 		
         //Layouts
         VerticalLayout vLayoutMain = new VerticalLayout();
     	HorizontalLayout hLayoutAux = new HorizontalLayout();
