@@ -16,6 +16,7 @@ import com.universalcinemas.application.data.user.UserService;
 import com.universalcinemas.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -26,7 +27,9 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -61,6 +64,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 
 	private Button cancel = new Button("Cancelar");
 	private Button save = new Button("Guardar");
+	private Button delete = new Button("Eliminar");
 
 	private BeanValidationBinder<User> binder;
 
@@ -95,21 +99,20 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 		grid.setHeightFull();
 
-		// when a row is selected or deselected, populate form
+		// when a row is selected or deselected
 		grid.asSingleSelect().addValueChangeListener(event -> {
 			if (event.getValue() != null) {
 				UI.getCurrent().navigate(String.format(USER_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+				delete.setVisible(true);
 			} else {
 				clearForm();
 				UI.getCurrent().navigate(CrudUsersView.class);
+				delete.setVisible(false);
 			}
 		});
 
 		// Configure Form
 		binder = new BeanValidationBinder<>(User.class);
-
-		// Bind fields. This where you'd define e.g. validation rules
-
 		binder.bindInstanceFields(this);
 
 		attachImageUpload(urlprofileimage, urlprofileimagePreview);
@@ -130,13 +133,30 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 				UserService.update(this.user);
 				clearForm();
 				refreshGrid();
-				Notification.show("User details stored.");
+
+				Notification.show("Usuario guardado correctamente.");
+
 				UI.getCurrent().navigate(CrudUsersView.class);
 			} catch (ValidationException validationException) {
-				Notification.show("An exception happened while trying to store the User details.");
+				Notification.show("Ocurrió un error al guardar los datos del usuario.");
 			}
 		});
 
+		delete.addClickListener(e -> {
+			try {
+				binder.getBean();
+				UserService.delete(this.user.getId());
+
+				clearForm();
+				refreshGrid();
+				
+				Notification.show("Usuario eliminado correctamente.");
+				
+				UI.getCurrent().navigate(CrudUsersView.class);
+			} catch (Exception exception) {
+				Notification.show("Ocurrió un error al borrar los datos del usuario.");
+			}
+		});
 	}
 
 	@Override
@@ -147,10 +167,9 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 			if (UserFromBackend.isPresent()) {
 				populateForm(UserFromBackend.get());
 			} else {
-				Notification.show(String.format("The requested User was not found, ID = %d", UserId.get()), 3000,
-						Notification.Position.BOTTOM_START);
-				// when a row is selected but the data is no longer available,
-				// refresh grid
+				Notification.show("No se pudo encontrar ese usuario");
+
+				// when a row is selected but the data is no longer available
 				refreshGrid();
 				event.forwardTo(CrudUsersView.class);
 			}
@@ -195,9 +214,14 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		buttonLayout.setClassName("w-full flex-wrap bg-contrast-5 py-s px-l");
 		buttonLayout.setSpacing(true);
-		cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+
 		save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		buttonLayout.add(save, cancel);
+		cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+		delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+		delete.getStyle().set("margin-inline-start", "auto");
+		delete.setVisible(false);
+
+		buttonLayout.add(save, cancel, delete);
 		editorLayoutDiv.add(buttonLayout);
 	}
 
