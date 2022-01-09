@@ -11,7 +11,7 @@ public class RoleService extends CrudService<Role,Integer>{
 	private RoleRepository repository;
 
 	public Role getDefaultRole() {
-		return repository.findByName("user").get();
+		return repository.findByName("ROLE_user").get();
 	}
 	
 	@Autowired
