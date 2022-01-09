@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.UriUtils;
@@ -43,7 +43,7 @@ import elemental.json.Json;
 
 @PageTitle("Panel usuarios")
 @Route(value = "cruduser/:UserID?/:action?(edit)", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed("ROLE_admin")
 public class CrudUsersView extends Div implements BeforeEnterObserver {
 
 	private final String USER_ID = "UserID";
