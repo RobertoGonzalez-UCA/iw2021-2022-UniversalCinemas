@@ -43,7 +43,6 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 		repository.save(user);
 	}
 	
-	
 	public boolean activateUser(String email, String key) {
 
 		Optional<User> user = repository.findByEmail(email);
@@ -69,5 +68,14 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 	
 	public void actualizarUsuario(User usuario) {
 		repository.save(usuario);
+	}
+	
+	public User loadUserByEmail(String email){
+		Optional<User> user = repository.findByEmail(email);
+		if (user.isPresent()) {
+			return user.get();
+		} else {
+			return new User();
+		}
 	}
 }
