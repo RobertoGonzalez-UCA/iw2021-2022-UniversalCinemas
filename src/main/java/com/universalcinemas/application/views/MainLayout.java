@@ -28,6 +28,7 @@ import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 
@@ -73,17 +74,36 @@ public class MainLayout extends AppLayout {
         addToNavbar(true, createHeaderContent());
         addToDrawer(createDrawerContent());
     }
+    
+    @SuppressWarnings("static-access")
+	private Component createMenuBar() {
+    	HorizontalLayout vLayoutMain = new HorizontalLayout();
+    	vLayoutMain.setMargin(true);
+    	
+		MenuBar profileMenu = new MenuBar();
+		MenuItem item = profileMenu.addItem("[User Name]");
+
+		SubMenu profileSubMenu = item.getSubMenu();
+		profileSubMenu.addItem("Perfil", e -> UI.getCurrent().navigate(PerfilUsuarioView.class));
+		profileSubMenu.addItem("Elegir plan", e -> UI.getCurrent().navigate(PlanesView.class));
+		profileSubMenu.add(new Hr());
+		profileSubMenu.addItem("Cerrar sesión", e -> securityService.logout());
+		
+		vLayoutMain.add(profileMenu);
+
+		return vLayoutMain;
+    }
 
     private Component createHeaderContent() {
         DrawerToggle toggle = new DrawerToggle();
         toggle.addClassName("text-secondary");
         toggle.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         toggle.getElement().setAttribute("aria-label", "Menu toggle");
-
+                
         viewTitle = new H1();
         viewTitle.addClassNames("m-0", "text-l");
-
-        Header header = new Header(toggle, viewTitle);
+                
+        Header header = new Header(toggle,viewTitle, createMenuBar());
         header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center",
                 "w-full");
         return header;
@@ -99,7 +119,6 @@ public class MainLayout extends AppLayout {
         return section;
     }
 
-    @SuppressWarnings("static-access")
 	private Nav createNavigation() {
         Nav nav = new Nav();
         nav.addClassNames("border-b", "border-contrast-10", "flex-grow", "overflow-auto");
@@ -118,18 +137,7 @@ public class MainLayout extends AppLayout {
             ListItem item = new ListItem(link);
             list.add(item);
         }
-        
-		MenuBar profileMenu = new MenuBar();
-		MenuItem item = profileMenu.addItem("User Name");
-
-		SubMenu profileSubMenu = item.getSubMenu();
-		profileSubMenu.addItem("Perfil", e -> UI.getCurrent().navigate(PerfilUsuarioView.class));
-		profileSubMenu.addItem("Elegir plan", e -> UI.getCurrent().navigate(PlanesView.class));
-		profileSubMenu.add(new Hr());
-		profileSubMenu.addItem("Cerrar sesión", e -> securityService.logout());
-
-		nav.add(profileMenu);
-        
+                
         return nav;
     }
 
