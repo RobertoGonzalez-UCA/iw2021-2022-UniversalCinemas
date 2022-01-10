@@ -90,7 +90,6 @@ public class MainLayout extends AppLayout {
 		profileSubMenu.add(new Hr());
 		profileSubMenu.addItem("Cerrar sesión", e -> securityService.logout());
 		
-		hLayoutMain.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
 		hLayoutMain.add(profileMenu);
 
 		return hLayoutMain;
@@ -104,8 +103,9 @@ public class MainLayout extends AppLayout {
                 
         viewTitle = new H1();
         viewTitle.addClassNames("m-0", "text-l");
-                
-        Header header = new Header(toggle,viewTitle, createMenuBar());
+        HorizontalLayout itemLayout = new HorizontalLayout(createMenuBar());
+        itemLayout.addClassNames("w-full","justify-end");
+        Header header = new Header(toggle,viewTitle, itemLayout);
         header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center",
                 "w-full");
         return header;
