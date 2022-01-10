@@ -69,7 +69,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 // 			 UI.getCurrent().navigate(HomeView.class);
  			 
  		});
-    	Image img=new Image(film.get().getFilmPoster(), film.get().getFilmPoster());
+    	Image img=new Image(film.get().getFilmposter(), film.get().getFilmposter());
         img.setWidth("350px");
         horizontalLayout.add(img);
     	verticalLayout.add(new Label(film.get().getName()));

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.vaadin.artur.helpers.CrudService;
 
@@ -30,8 +31,7 @@ public class FilmService extends CrudService<Film, Integer> {
 	
 	@Override
 	protected JpaRepository<Film, Integer> getRepository() {
-		// TODO Auto-generated method stub
-		return null;
+		return filmRepository;
 	}
 	
 	public List<Business> obtenerBusinessPelicula(int id) {
@@ -83,4 +83,18 @@ public class FilmService extends CrudService<Film, Integer> {
 	public Iterable<Film> findByGenre_Id(int genreId) {
 		return filmRepository.findByGenre_Id(genreId);
 	}
+
+	public Film loadFilmByName(String name) {
+		Optional<Film> film = filmRepository.findByName(name);
+		if (film.isPresent()) {
+			return film.get();
+		} else {
+			throw new UsernameNotFoundException(name);
+		}
+	}
+
+	public List<Film> findAll() {
+		return filmRepository.findAll();
+	}
+
 }

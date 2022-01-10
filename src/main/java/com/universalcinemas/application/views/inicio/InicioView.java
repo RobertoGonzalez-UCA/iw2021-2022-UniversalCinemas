@@ -32,7 +32,7 @@ public class InicioView extends VerticalLayout {
         for(Film f: films)
         {
         	VerticalLayout vLayoutAux = new VerticalLayout();
-        	Image img=new Image(f.getFilmPoster(), f.getFilmPoster());
+        	Image img=new Image(f.getFilmposter(), f.getFilmposter());
             img.setWidth("200px");
             img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
             vLayoutAux.add(img);
@@ -50,7 +50,7 @@ public class InicioView extends VerticalLayout {
         for(Film f: films)
         {
         	VerticalLayout vLayoutAux = new VerticalLayout();
-        	Image img=new Image(f.getFilmPoster(), f.getFilmPoster());
+        	Image img=new Image(f.getFilmposter(), f.getFilmposter());
             img.setWidth("200px");
             img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
             vLayoutAux.add(img);

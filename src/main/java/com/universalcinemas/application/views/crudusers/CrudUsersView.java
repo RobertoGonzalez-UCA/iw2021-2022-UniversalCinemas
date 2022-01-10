@@ -16,7 +16,6 @@ import com.universalcinemas.application.data.user.UserService;
 import com.universalcinemas.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -27,9 +26,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -72,6 +69,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 
 	private UserService UserService;
 
+	@SuppressWarnings({ "deprecation", "deprecation", "deprecation" })
 	public CrudUsersView(@Autowired UserService UserService) {
 		this.UserService = UserService;
 		addClassNames("crud-users-view-view", "flex", "flex-col", "h-full");
@@ -138,8 +136,8 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 			    } else if (phonenumber.isEmpty()) {
 			        Notification.show("Introduce tu teléfono");
 			    } else {
-			    	User user_exists = UserService.loadUserByEmail(email.getValue());
-			        if(user_exists.getEmail() == null) {
+			    	//User user_exists = UserService.loadUserByEmail(email.getValue());
+			        //if(user_exists.getEmail() == null) {
 						binder.writeBean(this.user);
 						this.user.setUrlprofileimage(urlprofileimagePreview.getSrc());
 						UserService.update(this.user);
@@ -149,10 +147,10 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 						Notification.show("Usuario guardado correctamente.");
 		
 						UI.getCurrent().navigate(CrudUsersView.class);
-		        	}
-		        	else {
-		                Notification.show("Usuario ya registrado."); 
-		        	}
+		        	//}
+		        	//else {
+		            //       Notification.show("Usuario ya registrado."); 
+		          	//}
 			    }
 			} catch (ValidationException validationException) {
 				Notification.show("Ocurrió un error al guardar los datos del usuario.");

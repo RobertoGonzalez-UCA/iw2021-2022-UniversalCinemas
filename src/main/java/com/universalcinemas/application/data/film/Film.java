@@ -1,6 +1,6 @@
 package com.universalcinemas.application.data.film;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -20,7 +20,7 @@ public class Film {
 	private String synopsis;
 	private String trailerurl;
 	private String filmposter;
-	private Date releasedate;
+	private LocalDate releasedate;
 	private Integer agerating;
 	private Double rating;
 	@ManyToOne
@@ -32,7 +32,20 @@ public class Film {
 	private Integer id;
 	public Integer getId() {return id;}
 	public String getName() {return name;}
-	public String getFilmPoster() {return filmposter;}
+	public void setName(String name) {this.name = name;}
 	public String getSynopsis() {return synopsis;}
+	public void setSynopsis(String synopsis) {this.synopsis = synopsis;}
+	public String getFilmposter() {return filmposter;}
+	public void setFilmposter(String filmposter) {this.filmposter = filmposter;}
+	public String getDirector() {return director;}
+	public void setDirector(String director) {this.director = director;}
+	public LocalDate getReleasedate() {return releasedate;}
+	public void setReleasedate(LocalDate releasedate) {this.releasedate = releasedate;}
+	public Integer getAgerating() {return agerating;}
+	public void setAgerating(Integer agerating) {this.agerating = agerating;}
+	public String getTrailerurl() {return trailerurl;}
+	public void setTrailerurl(String trailerurl) {this.trailerurl = trailerurl;}
+	public Double getRating() {return rating;}
+	public void setRating(Double rating) {this.rating = rating;}
 }
  
