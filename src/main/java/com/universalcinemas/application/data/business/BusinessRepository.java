@@ -1,9 +1,9 @@
 package com.universalcinemas.application.data.business;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.universalcinemas.application.data.user.User;
-
-public interface BusinessRepository extends JpaRepository<User, Integer>{
-	
+public interface BusinessRepository extends JpaRepository<Business, Integer>{
+	Optional<Business> findById(Integer id);
 }

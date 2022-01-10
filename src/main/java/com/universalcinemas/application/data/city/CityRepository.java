@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.universalcinemas.application.data.user.User;
 
-public interface CityRepository extends JpaRepository<User, Integer>{
+public interface CityRepository extends JpaRepository<City, Integer>{
 	
 }
