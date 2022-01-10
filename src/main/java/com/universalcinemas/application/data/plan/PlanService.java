@@ -19,8 +19,7 @@ public class PlanService extends CrudService<Plan, Integer>{
 	
 	@Override
 	protected JpaRepository<Plan, Integer> getRepository() {
-		// TODO Auto-generated method stub
-		return null;
+		return planRepository;
 	}
 
 	public Optional<Plan> findById(Integer planId) {

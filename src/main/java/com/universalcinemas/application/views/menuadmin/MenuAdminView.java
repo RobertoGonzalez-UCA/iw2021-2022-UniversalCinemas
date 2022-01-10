@@ -1,6 +1,7 @@
 package com.universalcinemas.application.views.menuadmin;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,8 +18,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @PageTitle("Menu Administrador")
-@Route(value = "menuadministrador")
-@PermitAll
+@Route(value = "menuadmin")
+@RolesAllowed("ROLE_admin")
 public class MenuAdminView extends VerticalLayout{
 	/**
 	 * 
@@ -33,7 +34,7 @@ public class MenuAdminView extends VerticalLayout{
 		VerticalLayout labelLayout = new VerticalLayout(new H4("Menú de administrador"));
 		VerticalLayout volverLayout = new VerticalLayout(crearBoton("Volver al home","news"));
 		
-		buttonLayout.add(crearBoton("Peliculas","crudfilms"), crearBoton("Usuarios","crudusers"), crearBoton("Negocios","crudbusinesses"), crearBoton("Planes","crudplans"));
+		buttonLayout.add(crearBoton("Peliculas","crudfilms"), crearBoton("Usuarios","crudusers"), crearBoton("Negocios","crudbusinesses"), crearBoton("Planes","crudplans"), crearBoton("Salas","crudrooms"));
 		mainLayout.add(buttonLayout);
 		mainLayout.setAlignItems(Alignment.CENTER);
 		labelLayout.setAlignItems(Alignment.CENTER);

@@ -1,6 +1,7 @@
 package com.universalcinemas.application.views.menuoperator;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,8 +18,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @PageTitle("Menu Operador")
-@Route(value = "menuoperador")
-@PermitAll
+@Route(value = "menuoperator")
+@RolesAllowed("ROLE_operator")
 public class MenuOperatorView extends VerticalLayout{
 	/**
 	 * 
@@ -33,7 +34,7 @@ public class MenuOperatorView extends VerticalLayout{
 		VerticalLayout labelLayout = new VerticalLayout(new H4("Menú de administrador"));
 		VerticalLayout volverLayout = new VerticalLayout(crearBoton("Volver al home","news"));
 		
-		buttonLayout.add(crearBoton("Peliculas","crudfilms"), crearBoton("Salas","crudrooms"), crearBoton("Cartelera","crudbillboards"));
+		buttonLayout.add(crearBoton("Peliculas","crudfilms"), crearBoton("Salas","crudrooms"));
 		mainLayout.add(buttonLayout);
 		mainLayout.setAlignItems(Alignment.CENTER);
 		labelLayout.setAlignItems(Alignment.CENTER);
