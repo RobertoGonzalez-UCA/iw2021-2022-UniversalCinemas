@@ -193,7 +193,7 @@ public class CrudPlansView extends Div implements BeforeEnterObserver {
 		description = new TextField("Descripción");
 		genre = new ComboBox<Genre>("Género");
 		genre.setItems(genreService.findAll()); // list/set of possible cities.
-		genre.setItemLabelGenerator(genre -> genre.getName() + " " + genre.getId());
+		genre.setItemLabelGenerator(genre -> genre.getName());
 		percent = new IntegerField("Porcentaje");
 		price = new IntegerField("Precio");
 		Component[] fields = new Component[] { name, description, percent, price, genre };

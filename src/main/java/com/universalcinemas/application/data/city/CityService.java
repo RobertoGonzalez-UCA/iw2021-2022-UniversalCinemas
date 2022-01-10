@@ -23,4 +23,6 @@ public class CityService extends CrudService<City, Integer> {
 		return cityRepository.findAll();
 	}
 
+	public Collection<City> findByName(String name) {return cityRepository.findByName(name);}
+
 }

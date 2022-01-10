@@ -197,7 +197,7 @@ public class CrudBusinessesView extends Div implements BeforeEnterObserver {
 		street = new TextField("Calle");
 		city = new ComboBox<City>("Ciudad");
 		city.setItems(cityService.findAll()); // list/set of possible cities.
-		city.setItemLabelGenerator(city -> city.getName() + " " + city.getId());
+		city.setItemLabelGenerator(city -> city.getName());
 		Component[] fields = new Component[] { name, street, city };
 
 		for (Component field : fields) {

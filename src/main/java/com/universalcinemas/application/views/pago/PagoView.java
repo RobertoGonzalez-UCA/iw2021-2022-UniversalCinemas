@@ -6,22 +6,34 @@ import javax.annotation.security.PermitAll;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.universalcinemas.application.data.city.City;
+import com.universalcinemas.application.data.city.CityService;
+import com.universalcinemas.application.data.country.Country;
+import com.universalcinemas.application.data.country.CountryService;
+import com.universalcinemas.application.data.genre.Genre;
 import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.plan.PlanService;
+import com.universalcinemas.application.data.province.Province;
+import com.universalcinemas.application.data.province.ProvinceService;
+import com.universalcinemas.application.data.room.Room;
 import com.universalcinemas.application.views.MainLayout;
 import com.universalcinemas.application.views.inicio.InicioView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Aside;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
@@ -34,39 +46,39 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 
 	private static final long serialVersionUID = 1L;
 	private PlanService planService;
-    /*private static final List<String> countries = new ArrayList<>();
-    static {
-        countries.add("España");
-        countries.add("Portugal");
-    }
+	private CountryService countryService;
+	private ProvinceService provinceService;
+	private CityService cityService;
+	
+	private ComboBox<Country> country;
+	private ComboBox<Province> province;
+	private ComboBox<City> city;
+	private TextField address;
+	private IntegerField postcode;
 
-    @Id
-    private ComboBox countrySelect;
-    @Id
-    private ComboBox stateSelect;
-*/
     @Autowired
-    public PagoView(PlanService planService) {
-        /*addClassNames("flex", "flex-col", "h-full");
-        stateSelect.setVisible(false);
-        countrySelect.setItems(countries);
-        countrySelect.addValueChangeListener(e -> {
-            stateSelect.setVisible(countrySelect.getValue().equals("United States"));
-        });*/
+    public PagoView(PlanService planService, CountryService countryService, ProvinceService provinceService, CityService cityService) {
 		this.planService = planService;
+		this.countryService = countryService;
+		this.provinceService = provinceService;
+		this.cityService = cityService;
     }
     
     private FormLayout crearFormularioDireccion() {
     	FormLayout formularioDireccion = new FormLayout();
-		TextField pais = new TextField("País");
-		pais.setRequired(true);
-		TextField direccion = new TextField("Dirección");
-		direccion.setRequired(true);
-		TextField codigoPostal = new TextField("Código postal");
-		codigoPostal.setRequired(true);
-		TextField ciudad = new TextField("Ciudad");
-		ciudad.setRequired(true);
-		formularioDireccion.add(pais, direccion, codigoPostal, ciudad);
+		country = new ComboBox<Country>("País");
+		country.setItems(countryService.findAll()); // list/set of possible countries.
+		country.setItemLabelGenerator(country -> country.getName());
+		province = new ComboBox<Province>("Provincia");
+		while(country.getValue() != null) province.setItems(provinceService.findByName(country.getValue().getName())); // list/set of possible provinces in selected country.
+		province.setItemLabelGenerator(province -> province.getName());
+		city = new ComboBox<City>("Ciudad");
+		while(province.getValue() != null) city.setItems(cityService.findByName(province.getValue().getName())); // list/set of possible cities in selected province.
+		city.setItemLabelGenerator(city -> city.getName());
+		address = new TextField("Dirección");
+		address.setRequired(true);
+		postcode = new IntegerField("Código postal");
+		formularioDireccion.add(country, province, city, postcode, address);
 		return formularioDireccion;
     }
     
@@ -88,7 +100,25 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 	public void setParameter(BeforeEvent event, Integer planId) {
 		Optional<Plan> plan = planService.findById(planId);
 		Button btn = new Button("Pagar");
-		btn.addClickListener(e -> UI.getCurrent().navigate(InicioView.class));
+		btn.addClickListener(e -> {
+			try {
+				if (country.isEmpty()) {
+			        Notification.show("Introduce el país");
+			    } else if (province.isEmpty()) {
+			        Notification.show("Introduce la provincia");
+			    } else if (city.isEmpty()) {
+			        Notification.show("Introduce la ciudad");
+			    } else if (postcode.isEmpty()) {
+			        Notification.show("Introduce el código postal");
+			    } else if (address.isEmpty()) {
+			        Notification.show("Introduce la dirección");
+			    } else {
+			    	UI.getCurrent().navigate(InicioView.class);
+			    }
+			} catch (Exception exception) {
+				Notification.show("Ocurrió un error al guardar los datos del plan.");
+			}
+		});
     	btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		VerticalLayout verticalLayout = new VerticalLayout();
         HorizontalLayout horizontalLayout = new HorizontalLayout();
