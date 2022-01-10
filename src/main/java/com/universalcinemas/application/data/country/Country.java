@@ -8,7 +8,16 @@ import javax.persistence.Id;
 
 public class Country {
 	private String name;
+	
 	@Id
 	@GeneratedValue
 	private Integer id;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }
