@@ -3,24 +3,31 @@ package com.universalcinemas.application.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.elegirasiento.ElegirasientoView;
 import com.universalcinemas.application.views.inicio.InicioView;
 import com.universalcinemas.application.views.iniciosesion.IniciosesionView;
+import com.universalcinemas.application.views.perfilusuario.PerfilUsuarioView;
 import com.universalcinemas.application.views.planes.PlanesView;
 import com.universalcinemas.application.views.registro.RegistroView;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.UnorderedList;
+import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 
@@ -31,6 +38,7 @@ import com.vaadin.flow.router.RouterLink;
 public class MainLayout extends AppLayout {
 
 	private static final long serialVersionUID = 1L;
+	private SecurityService securityService;
 
 	public static class MenuItemInfo {
 
@@ -91,7 +99,8 @@ public class MainLayout extends AppLayout {
         return section;
     }
 
-    private Nav createNavigation() {
+    @SuppressWarnings("static-access")
+	private Nav createNavigation() {
         Nav nav = new Nav();
         nav.addClassNames("border-b", "border-contrast-10", "flex-grow", "overflow-auto");
         nav.getElement().setAttribute("aria-labelledby", "views");
@@ -109,6 +118,18 @@ public class MainLayout extends AppLayout {
             ListItem item = new ListItem(link);
             list.add(item);
         }
+        
+		MenuBar profileMenu = new MenuBar();
+		MenuItem item = profileMenu.addItem("User Name");
+
+		SubMenu profileSubMenu = item.getSubMenu();
+		profileSubMenu.addItem("Perfil", e -> UI.getCurrent().navigate(PerfilUsuarioView.class));
+		profileSubMenu.addItem("Elegir plan", e -> UI.getCurrent().navigate(PlanesView.class));
+		profileSubMenu.add(new Hr());
+		profileSubMenu.addItem("Cerrar sesión", e -> securityService.logout());
+
+		nav.add(profileMenu);
+        
         return nav;
     }
 
@@ -130,6 +151,7 @@ public class MainLayout extends AppLayout {
             links.add(createLink(menuItemInfo));
 
         }
+              
         return links;
     }
 

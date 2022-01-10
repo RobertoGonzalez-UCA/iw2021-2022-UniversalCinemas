@@ -16,7 +16,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @PageTitle("Inicio")
-@Route(value = "home", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 @PermitAll
 public class InicioView extends VerticalLayout {
 
