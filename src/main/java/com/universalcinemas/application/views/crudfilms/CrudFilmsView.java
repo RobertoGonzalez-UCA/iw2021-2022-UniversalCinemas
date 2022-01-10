@@ -11,14 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.UriUtils;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
 
+import com.universalcinemas.application.data.city.City;
 import com.universalcinemas.application.data.film.Film;
 import com.universalcinemas.application.data.film.FilmService;
+import com.universalcinemas.application.data.genre.Genre;
+import com.universalcinemas.application.data.genre.GenreService;
 import com.universalcinemas.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -62,6 +66,7 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 	private NumberField rating;
 	private Upload filmposter;
 	private Image filmposterPreview;
+	private ComboBox<Genre> genre;
 
 	private Button cancel = new Button("Cancelar");
 	private Button save = new Button("Guardar");
@@ -72,10 +77,12 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 	private Film film;
 
 	private FilmService filmService;
+	private GenreService genreService;
 
 	@SuppressWarnings("deprecation")
-	public CrudFilmsView(@Autowired FilmService filmService) {
+	public CrudFilmsView(@Autowired FilmService filmService, GenreService genreService) {
 		this.filmService = filmService;
+		this.genreService = genreService;
 		addClassNames("crud-films-view-view", "flex", "flex-col", "h-full");
 		// Create UI
 		SplitLayout splitLayout = new SplitLayout();
@@ -93,6 +100,7 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 		grid.addColumn("releasedate").setAutoWidth(true).setHeader("Fecha de estreno");
 		grid.addColumn("agerating").setAutoWidth(true).setHeader("Edad mínima");
 		grid.addColumn("rating").setAutoWidth(true).setHeader("Puntuación");
+		grid.addColumn(film -> {return film.getGenre().getName();}).setAutoWidth(true).setHeader("Género");
 		TemplateRenderer<Film> filmposterRenderer = TemplateRenderer.<Film>of(
 				"<span style='border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; width: 64px; height: 64px'><img style='max-width: 100%' src='[[item.filmposter]]' /></span>")
 				.withProperty("filmposter", Film::getFilmposter);
@@ -215,13 +223,16 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 		releasedate = new DatePicker("Fecha de salida");
 		agerating = new IntegerField("Edad mínima");
 		rating = new NumberField("Puntuación");
+		genre = new ComboBox<Genre>("Género");
+		genre.setItems(genreService.findAll()); // list/set of possible cities.
+		genre.setItemLabelGenerator(genre -> genre.getName() + " " + genre.getId());
 		Label filmposterLabel = new Label("Póster de la película");
 		filmposterPreview = new Image();
 		filmposterPreview.setWidth("100%");
 		filmposter = new Upload();
 		filmposter.getStyle().set("box-sizing", "border-box");
 		filmposter.getElement().appendChild(filmposterPreview.getElement());
-		Component[] fields = new Component[] { name, director, synopsis, releasedate, agerating, rating, filmposterLabel,
+		Component[] fields = new Component[] { name, director, synopsis, releasedate, agerating, rating, genre, filmposterLabel,
 				filmposter };
 
 		for (Component field : fields) {

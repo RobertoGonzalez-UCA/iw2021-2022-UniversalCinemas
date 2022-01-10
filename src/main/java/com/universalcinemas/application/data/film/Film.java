@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.universalcinemas.application.data.city.City;
 import com.universalcinemas.application.data.genre.Genre;
 import com.universalcinemas.application.data.language.Language;
 
@@ -47,5 +48,7 @@ public class Film {
 	public void setTrailerurl(String trailerurl) {this.trailerurl = trailerurl;}
 	public Double getRating() {return rating;}
 	public void setRating(Double rating) {this.rating = rating;}
+	public Genre getGenre() {return genre;}
+	public void setGenre(Genre genre) {this.genre = genre;}
 }
  

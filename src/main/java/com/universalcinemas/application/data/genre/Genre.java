@@ -13,4 +13,6 @@ public class Genre {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	public Object getName() {return name;}
+	public Object getId() {return id;}
 }
