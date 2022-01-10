@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.universalcinemas.application.data.user.User;
 import com.universalcinemas.application.data.user.UserService;
+import com.universalcinemas.application.views.inicio.InicioView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -162,7 +163,7 @@ public class PerfilUsuarioView extends VerticalLayout {
         });
         Button homeButton = new Button("Volver al home", e -> {
         	dialog.close();
-        	UI.getCurrent().navigate("news");
+        	UI.getCurrent().navigate("");
         });
         
         okButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -179,7 +180,7 @@ public class PerfilUsuarioView extends VerticalLayout {
         return dialogLayout;
     }
 	private static Button crearBotonInicio() {
-		Button homeButton = new Button("Volver al home", new Icon(VaadinIcon.HOME), e -> UI.getCurrent().navigate("news"));
+		Button homeButton = new Button("Volver al home", new Icon(VaadinIcon.HOME), e -> UI.getCurrent().navigate(""));
         homeButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
         
         return homeButton;

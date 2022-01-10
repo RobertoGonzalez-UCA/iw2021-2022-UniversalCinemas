@@ -28,6 +28,7 @@ import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
@@ -77,8 +78,8 @@ public class MainLayout extends AppLayout {
     
     @SuppressWarnings("static-access")
 	private Component createMenuBar() {
-    	HorizontalLayout vLayoutMain = new HorizontalLayout();
-    	vLayoutMain.setMargin(true);
+    	HorizontalLayout hLayoutMain = new HorizontalLayout();
+    	hLayoutMain.setMargin(true);
     	
 		MenuBar profileMenu = new MenuBar();
 		MenuItem item = profileMenu.addItem("[User Name]");
@@ -89,9 +90,10 @@ public class MainLayout extends AppLayout {
 		profileSubMenu.add(new Hr());
 		profileSubMenu.addItem("Cerrar sesión", e -> securityService.logout());
 		
-		vLayoutMain.add(profileMenu);
+		hLayoutMain.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
+		hLayoutMain.add(profileMenu);
 
-		return vLayoutMain;
+		return hLayoutMain;
     }
 
     private Component createHeaderContent() {

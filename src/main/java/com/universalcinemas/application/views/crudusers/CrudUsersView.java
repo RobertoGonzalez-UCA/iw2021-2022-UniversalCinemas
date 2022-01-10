@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.UriUtils;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
 
-import com.universalcinemas.application.data.genre.Genre;
 import com.universalcinemas.application.data.role.Role;
 import com.universalcinemas.application.data.role.RoleService;
 import com.universalcinemas.application.data.user.User;
@@ -75,7 +74,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 	private UserService userService;
 	private RoleService roleService;
 	
-	@SuppressWarnings({ "deprecation", "deprecation", "deprecation" })
+	@SuppressWarnings({ "deprecation" })
 	public CrudUsersView(@Autowired UserService userService, RoleService roleService) {
 		this.userService = userService;
 		this.roleService = roleService;
@@ -134,17 +133,23 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 					this.user = new User();
 				}
 				if (name.isEmpty()) {
+			        name.focus();
 			        Notification.show("Introduce un nombre");
 			    } else if (surname.isEmpty()) {
-			        Notification.show("Introduce unos apellidos");
+			        surname.focus();
+                    Notification.show("Introduce unos apellidos");
 			    } else if (email.isEmpty()) {
-			    	Notification.show("Introduce un email");
+			    	email.focus();
+                    Notification.show("Introduce un email");
 			    } else if (dateofbirth.getValue() == null) {
-			        Notification.show("Introduce una fecha de nacimiento");
+			        dateofbirth.focus();
+                    Notification.show("Introduce una fecha de nacimiento");
 			    } else if (phonenumber.isEmpty()) {
-			        Notification.show("Introduce un teléfono");
+			        phonenumber.focus();
+                    Notification.show("Introduce un teléfono");
 			    } else if (role.isEmpty()) {
-			        Notification.show("Introduce un rol");
+			        role.focus();
+                    Notification.show("Introduce un rol");
 			    } else {
 			    	//User user_exists = UserService.loadUserByEmail(email.getValue());
 			        //if(user_exists.getEmail() == null) {
