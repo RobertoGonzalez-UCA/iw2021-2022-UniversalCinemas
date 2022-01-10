@@ -13,6 +13,7 @@ public class Room {
 	
 	private Integer num_rows;
 	private Integer num_columns;
+	private Integer num_room;
 	@ManyToOne(optional = false)
     private Business business;
 	@Id
@@ -42,5 +43,11 @@ public class Room {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public Integer getNum_room() {
+		return num_room;
+	}
+	public void setNum_room(Integer num_room) {
+		this.num_room = num_room;
 	}
 }

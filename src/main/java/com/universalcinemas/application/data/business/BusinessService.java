@@ -1,5 +1,7 @@
 package com.universalcinemas.application.data.business;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.vaadin.artur.helpers.CrudService;
@@ -14,6 +16,9 @@ public class BusinessService extends CrudService<Business, Integer>{
 	@Override
 	protected JpaRepository<Business, Integer> getRepository() {
 		return businessRepository;
+	}
+	public Collection<Business> findAll() {
+		return businessRepository.findAll();
 	}
 
 }

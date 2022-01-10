@@ -1,83 +1,73 @@
-package com.universalcinemas.application.views.crudbusinesses;
+package com.universalcinemas.application.views.crudplans;
 
-import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.util.UriUtils;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
 
-import com.universalcinemas.application.data.business.Business;
-import com.universalcinemas.application.data.business.BusinessService;
-import com.universalcinemas.application.data.city.City;
-import com.universalcinemas.application.data.city.CityService;
+import com.universalcinemas.application.data.plan.Plan;
+import com.universalcinemas.application.data.plan.PlanService;
+import com.universalcinemas.application.data.genre.Genre;
+import com.universalcinemas.application.data.genre.GenreService;
 import com.universalcinemas.application.views.MainLayout;
-import com.universalcinemas.application.views.crudbusinesses.CrudBusinessesView;
+import com.universalcinemas.application.views.crudplans.CrudPlansView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import elemental.json.Json;
-
-@PageTitle("Panel negocios")
-@Route(value = "crudbusinesses/:BusinessID?/:action?(edit)", layout = MainLayout.class)
+@PageTitle("Panel plans")
+@Route(value = "crudplans/:PlanID?/:action?(edit)", layout = MainLayout.class)
 @RolesAllowed("ROLE_admin")
-public class CrudBusinessesView extends Div implements BeforeEnterObserver {
+public class CrudPlansView extends Div implements BeforeEnterObserver {
 
 	private static final long serialVersionUID = 1L;
-	private final String FILM_ID = "BusinessID";
-	private final String FILM_EDIT_ROUTE_TEMPLATE = "crudbusinesses/%d/edit";
+	private final String FILM_ID = "PlanID";
+	private final String FILM_EDIT_ROUTE_TEMPLATE = "crudplans/%d/edit";
 
-	private Grid<Business> grid = new Grid<>(Business.class, false);
+	private Grid<Plan> grid = new Grid<>(Plan.class, false);
 
 	private TextField name;
-	private TextField street;
-	private ComboBox<City> city;
+	private TextField description;
+	private IntegerField percent;
+	private IntegerField price;
+	private ComboBox<Genre> genre;
 
 	private Button cancel = new Button("Cancelar");
 	private Button save = new Button("Guardar");
 	private Button delete = new Button("Eliminar");
 
-	private BeanValidationBinder<Business> binder;
+	private BeanValidationBinder<Plan> binder;
 
-	private Business business;
+	private Plan plan;
 
-	private BusinessService businessService;
-	private CityService cityService;
+	private PlanService planService;
+	private GenreService genreService;
 	
 	@SuppressWarnings("deprecation")
-	public CrudBusinessesView(@Autowired BusinessService businessService, CityService cityService) {
-		this.businessService = businessService;
-		this.cityService = cityService;
-		addClassNames("crud-businesses-view-view", "flex", "flex-col", "h-full");
+	public CrudPlansView(@Autowired PlanService planService, GenreService genreService) {
+		this.planService = planService;
+		this.genreService = genreService;
+		addClassNames("crud-plans-view-view", "flex", "flex-col", "h-full");
 		// Create UI
 		SplitLayout splitLayout = new SplitLayout();
 		splitLayout.setSizeFull();
@@ -89,10 +79,12 @@ public class CrudBusinessesView extends Div implements BeforeEnterObserver {
 
 		// Configure Grid
 		grid.addColumn("name").setAutoWidth(true).setHeader("Nombre");
-		grid.addColumn("street").setAutoWidth(true).setHeader("Calle");
-		grid.addColumn(business -> {return business.getCity().getName();}).setAutoWidth(true).setHeader("Ciudad");
+		grid.addColumn("description").setAutoWidth(true).setHeader("Descripción");
+		grid.addColumn("percent").setAutoWidth(true).setHeader("Porcentaje de descuento");
+		grid.addColumn("price").setAutoWidth(true).setHeader("Precio");
+		grid.addColumn(plan -> {return plan.getGenre().getName();}).setAutoWidth(true).setHeader("Género");
 		
-		grid.setDataProvider(new CrudServiceDataProvider<>(businessService));
+		grid.setDataProvider(new CrudServiceDataProvider<>(planService));
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 		grid.setHeightFull();
 
@@ -103,13 +95,13 @@ public class CrudBusinessesView extends Div implements BeforeEnterObserver {
 				delete.setVisible(true);
 			} else {
 				clearForm();
-				UI.getCurrent().navigate(CrudBusinessesView.class);
+				UI.getCurrent().navigate(CrudPlansView.class);
 				delete.setVisible(false);
 			}
 		});
 		
 		// Configure Form
-		binder = new BeanValidationBinder<>(Business.class);
+		binder = new BeanValidationBinder<>(Plan.class);
 		binder.bindInstanceFields(this);
 
 		cancel.addClickListener(e -> {
@@ -119,66 +111,70 @@ public class CrudBusinessesView extends Div implements BeforeEnterObserver {
 		
 		save.addClickListener(e -> {
 			try {
-				if (this.business == null) {
-					this.business = new Business();
+				if (this.plan == null) {
+					this.plan = new Plan();
 				}
 				if (name.isEmpty()) {
-			        Notification.show("Introduce el nombre del negocio");
-			    } else if (street.isEmpty()) {
-			        Notification.show("Introduce el street del negocio");
-			    } else if (city.isEmpty()) {
-			        Notification.show("Introduce la ciudad");
+			        Notification.show("Introduce el nombre del plan");
+			    } else if (description.isEmpty()) {
+			        Notification.show("Introduce la description del plan");
+			    } else if (percent.isEmpty()) {
+			        Notification.show("Introduce el porcentaje");
+			    } else if (price.isEmpty()) {
+			        Notification.show("Introduce el precio");
+			    } else if (genre.isEmpty()) {
+			        Notification.show("Introduce el género");
 			    } else {
-			    	//Business business_exists = businessService.loadBusinessByName(name.getValue());
-			        //if(business_exists.getName() == null) {
-						binder.writeBean(this.business);
-						businessService.update(this.business);
+			    	//Plan plan_exists = planService.loadPlanByName(name.getValue());
+			        //if(plan_exists.getName() == null) {
+						binder.writeBean(this.plan);
+						planService.update(this.plan);
 						clearForm();
 						refreshGrid();
 		
-						Notification.show("Negocio guardado correctamente.");
+						Notification.show("Plan guardado correctamente.");
 		
-						UI.getCurrent().navigate(CrudBusinessesView.class);
+						UI.getCurrent().navigate(CrudPlansView.class);
 		        	//}
 		        	//else {
-		            //    Notification.show("Negocio ya registrada."); 
+		            //    Notification.show("Plan ya registrada."); 
 		        	//}
 			    }
 			} catch (ValidationException validationException) {
-				Notification.show("Ocurrió un error al guardar los datos del negocio.");
+				Notification.show("Ocurrió un error al guardar los datos del plan.");
 			}
 		});
 
 		delete.addClickListener(e -> {
 			try {
 				binder.getBean();
-				businessService.delete(this.business.getId());
+				planService.delete(this.plan.getId());
 
 				clearForm();
 				refreshGrid();
 				
-				Notification.show("Negocio eliminado correctamente.");
+				Notification.show("Plan eliminado correctamente.");
 				
-				UI.getCurrent().navigate(CrudBusinessesView.class);
+				UI.getCurrent().navigate(CrudPlansView.class);
 			} catch (Exception exception) {
-				Notification.show("Ocurrió un error al borrar los datos del negocio.");
+				Notification.show("Ocurrió un error al borrar los datos del plan.");
 			}
 		});
 	}
 
 	@Override
 	public void beforeEnter(BeforeEnterEvent event) {
-		Optional<Integer> BusinessId = event.getRouteParameters().getInteger(FILM_ID);
-		if (BusinessId.isPresent()) {
-			Optional<Business> BusinessFromBackend = businessService.get(BusinessId.get());
-			if (BusinessFromBackend.isPresent()) {
-				populateForm(BusinessFromBackend.get());
+		Optional<Integer> PlanId = event.getRouteParameters().getInteger(FILM_ID);
+		if (PlanId.isPresent()) {
+			Optional<Plan> PlanFromBackend = planService.get(PlanId.get());
+			if (PlanFromBackend.isPresent()) {
+				populateForm(PlanFromBackend.get());
 			} else {
-				Notification.show("No se pudo encontrar ese negocio");
+				Notification.show("No se pudo encontrar ese plan");
 
 				// when a row is selected but the data is no longer available
 				refreshGrid();
-				event.forwardTo(CrudBusinessesView.class);
+				event.forwardTo(CrudPlansView.class);
 			}
 		}
 	}
@@ -194,11 +190,13 @@ public class CrudBusinessesView extends Div implements BeforeEnterObserver {
 
 		FormLayout formLayout = new FormLayout();
 		name = new TextField("Nombre");
-		street = new TextField("Calle");
-		city = new ComboBox<City>("Ciudad");
-		city.setItems(cityService.findAll()); // list/set of possible cities.
-		city.setItemLabelGenerator(city -> city.getName() + " " + city.getId());
-		Component[] fields = new Component[] { name, street, city };
+		description = new TextField("Descripción");
+		genre = new ComboBox<Genre>("Género");
+		genre.setItems(genreService.findAll()); // list/set of possible cities.
+		genre.setItemLabelGenerator(genre -> genre.getName() + " " + genre.getId());
+		percent = new IntegerField("Porcentaje");
+		price = new IntegerField("Precio");
+		Component[] fields = new Component[] { name, description, percent, price, genre };
 
 		for (Component field : fields) {
 			((HasStyle) field).addClassName("full-width");
@@ -242,8 +240,8 @@ public class CrudBusinessesView extends Div implements BeforeEnterObserver {
 		populateForm(null);
 	}
 
-	private void populateForm(Business value) {
-		this.business = value;
-		binder.readBean(this.business);
+	private void populateForm(Plan value) {
+		this.plan = value;
+		binder.readBean(this.plan);
 	}
 }
