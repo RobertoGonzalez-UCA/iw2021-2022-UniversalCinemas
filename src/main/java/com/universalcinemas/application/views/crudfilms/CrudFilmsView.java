@@ -142,14 +142,16 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 			        Notification.show("Introduce el nombre de la película");
 			    } else if (director.isEmpty()) {
 			        Notification.show("Introduce el director de la película");
-			    } else if (releasedate.getValue() == null) {
-			        Notification.show("Introduce la fecha en la que se estrenó la película");
 			    } else if (synopsis.isEmpty()) {
 			    	Notification.show("Introduce una sinopsis de la película");
+			    } else if (releasedate.getValue() == null) {
+			        Notification.show("Introduce la fecha en la que se estrenó la película");
 			    } else if (agerating.isEmpty()) {
 			        Notification.show("Introduce la edad mínima");
 			    } else if (rating.isEmpty()) {
 			        Notification.show("Introduce la puntuación de la película");
+				} else if (genre.isEmpty()) {
+			        Notification.show("Introduce el género de la película");
 				}
 				else {
 			    	//Film film_exists = filmService.loadFilmByName(name.getValue());

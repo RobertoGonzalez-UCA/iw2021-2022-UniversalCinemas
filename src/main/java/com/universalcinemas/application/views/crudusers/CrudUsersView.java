@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.UriUtils;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
 
+import com.universalcinemas.application.data.genre.Genre;
+import com.universalcinemas.application.data.role.Role;
+import com.universalcinemas.application.data.role.RoleService;
 import com.universalcinemas.application.data.user.User;
 import com.universalcinemas.application.data.user.UserService;
 import com.universalcinemas.application.views.MainLayout;
@@ -19,6 +22,7 @@ import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -58,6 +62,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 	private TextField phonenumber;
 	private Upload urlprofileimage;
 	private Image urlprofileimagePreview;
+	private ComboBox<Role> role;
 
 	private Button cancel = new Button("Cancelar");
 	private Button save = new Button("Guardar");
@@ -67,11 +72,13 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 
 	private User user;
 
-	private UserService UserService;
-
+	private UserService userService;
+	private RoleService roleService;
+	
 	@SuppressWarnings({ "deprecation", "deprecation", "deprecation" })
-	public CrudUsersView(@Autowired UserService UserService) {
-		this.UserService = UserService;
+	public CrudUsersView(@Autowired UserService userService, RoleService roleService) {
+		this.userService = userService;
+		this.roleService = roleService;
 		addClassNames("crud-users-view-view", "flex", "flex-col", "h-full");
 		// Create UI
 		SplitLayout splitLayout = new SplitLayout();
@@ -88,12 +95,13 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		grid.addColumn("email").setAutoWidth(true);
 		grid.addColumn("dateofbirth").setAutoWidth(true).setHeader("Fecha de nacimiento");
 		grid.addColumn("phonenumber").setAutoWidth(true).setHeader("Teléfono");
+		grid.addColumn(user -> {return user.getRole().getName();}).setAutoWidth(true).setHeader("Rol");
 		TemplateRenderer<User> urlprofileimageRenderer = TemplateRenderer.<User>of(
 				"<span style='border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; width: 64px; height: 64px'><img style='max-width: 100%' src='[[item.urlprofileimage]]' /></span>")
 				.withProperty("urlprofileimage", User::getUrlprofileimage);
 		grid.addColumn(urlprofileimageRenderer).setHeader("Imagen de perfil").setWidth("96px").setFlexGrow(0);
 
-		grid.setDataProvider(new CrudServiceDataProvider<>(UserService));
+		grid.setDataProvider(new CrudServiceDataProvider<>(userService));
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 		grid.setHeightFull();
 
@@ -126,21 +134,23 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 					this.user = new User();
 				}
 				if (name.isEmpty()) {
-			        Notification.show("Introduce tu nombre");
+			        Notification.show("Introduce un nombre");
 			    } else if (surname.isEmpty()) {
-			        Notification.show("Introduce tus apellidos");
-			    } else if (dateofbirth.getValue() == null) {
-			        Notification.show("Introduce tu fecha de nacimiento");
+			        Notification.show("Introduce unos apellidos");
 			    } else if (email.isEmpty()) {
-			    	Notification.show("Introduce tu email");
+			    	Notification.show("Introduce un email");
+			    } else if (dateofbirth.getValue() == null) {
+			        Notification.show("Introduce una fecha de nacimiento");
 			    } else if (phonenumber.isEmpty()) {
-			        Notification.show("Introduce tu teléfono");
+			        Notification.show("Introduce un teléfono");
+			    } else if (role.isEmpty()) {
+			        Notification.show("Introduce un rol");
 			    } else {
 			    	//User user_exists = UserService.loadUserByEmail(email.getValue());
 			        //if(user_exists.getEmail() == null) {
 						binder.writeBean(this.user);
 						this.user.setUrlprofileimage(urlprofileimagePreview.getSrc());
-						UserService.update(this.user);
+						userService.update(this.user);
 						clearForm();
 						refreshGrid();
 		
@@ -160,7 +170,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		delete.addClickListener(e -> {
 			try {
 				binder.getBean();
-				UserService.delete(this.user.getId());
+				userService.delete(this.user.getId());
 
 				clearForm();
 				refreshGrid();
@@ -178,7 +188,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 	public void beforeEnter(BeforeEnterEvent event) {
 		Optional<Integer> UserId = event.getRouteParameters().getInteger(USER_ID);
 		if (UserId.isPresent()) {
-			Optional<User> UserFromBackend = UserService.get(UserId.get());
+			Optional<User> UserFromBackend = userService.get(UserId.get());
 			if (UserFromBackend.isPresent()) {
 				populateForm(UserFromBackend.get());
 			} else {
@@ -206,13 +216,17 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		email = new TextField("Email");
 		dateofbirth = new DatePicker("Fecha de nacimiento");
 		phonenumber = new TextField("Teléfono");
+		role = new ComboBox<Role>("Rol");
+		role.setItems(roleService.findAll()); // list/set of possible cities.
+		role.setItemLabelGenerator(role -> role.getName());
+		Label filmposterLabel = new Label("Póster de la película");
 		Label urlprofileimageLabel = new Label("Imagen de perfil");
 		urlprofileimagePreview = new Image();
 		urlprofileimagePreview.setWidth("100%");
 		urlprofileimage = new Upload();
 		urlprofileimage.getStyle().set("box-sizing", "border-box");
 		urlprofileimage.getElement().appendChild(urlprofileimagePreview.getElement());
-		Component[] fields = new Component[] { name, surname, email, dateofbirth, phonenumber, urlprofileimageLabel,
+		Component[] fields = new Component[] { name, surname, email, dateofbirth, phonenumber, role, urlprofileimageLabel,
 				urlprofileimage };
 
 		for (Component field : fields) {

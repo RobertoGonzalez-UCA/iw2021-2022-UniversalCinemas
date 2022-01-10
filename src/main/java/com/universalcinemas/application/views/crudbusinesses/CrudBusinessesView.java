@@ -128,7 +128,9 @@ public class CrudBusinessesView extends Div implements BeforeEnterObserver {
 			        Notification.show("Introduce el street del negocio");
 			    } else if (city.isEmpty()) {
 			        Notification.show("Introduce la ciudad");
-			    } else {
+			    } else if (city.isEmpty()) {
+			        Notification.show("Introduce la ciudad del negocio");
+				}else {
 			    	//Business business_exists = businessService.loadBusinessByName(name.getValue());
 			        //if(business_exists.getName() == null) {
 						binder.writeBean(this.business);
