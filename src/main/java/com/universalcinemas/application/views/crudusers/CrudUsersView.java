@@ -45,12 +45,12 @@ import com.vaadin.flow.router.Route;
 import elemental.json.Json;
 
 @PageTitle("Panel usuarios")
-@Route(value = "cruduser/:UserID?/:action?(edit)", layout = MainLayout.class)
+@Route(value = "crudusers/:UserID?/:action?(edit)", layout = MainLayout.class)
 @RolesAllowed("ROLE_admin")
 public class CrudUsersView extends Div implements BeforeEnterObserver {
 
 	private final String USER_ID = "UserID";
-	private final String USER_EDIT_ROUTE_TEMPLATE = "cruduser/%d/edit";
+	private final String USER_EDIT_ROUTE_TEMPLATE = "crudusers/%d/edit";
 
 	private Grid<User> grid = new Grid<>(User.class, false);
 
@@ -127,16 +127,33 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 				if (this.user == null) {
 					this.user = new User();
 				}
-				binder.writeBean(this.user);
-				this.user.setUrlprofileimage(urlprofileimagePreview.getSrc());
-
-				UserService.update(this.user);
-				clearForm();
-				refreshGrid();
-
-				Notification.show("Usuario guardado correctamente.");
-
-				UI.getCurrent().navigate(CrudUsersView.class);
+				if (name.isEmpty()) {
+			        Notification.show("Introduce tu nombre");
+			    } else if (surname.isEmpty()) {
+			        Notification.show("Introduce tus apellidos");
+			    } else if (dateofbirth.getValue() == null) {
+			        Notification.show("Introduce tu fecha de nacimiento");
+			    } else if (email.isEmpty()) {
+			    	Notification.show("Introduce tu email");
+			    } else if (phonenumber.isEmpty()) {
+			        Notification.show("Introduce tu teléfono");
+			    } else {
+			    	User user_exists = UserService.loadUserByEmail(email.getValue());
+			        if(user_exists.getEmail() == null) {
+						binder.writeBean(this.user);
+						this.user.setUrlprofileimage(urlprofileimagePreview.getSrc());
+						UserService.update(this.user);
+						clearForm();
+						refreshGrid();
+		
+						Notification.show("Usuario guardado correctamente.");
+		
+						UI.getCurrent().navigate(CrudUsersView.class);
+		        	}
+		        	else {
+		                Notification.show("Usuario ya registrado."); 
+		        	}
+			    }
 			} catch (ValidationException validationException) {
 				Notification.show("Ocurrió un error al guardar los datos del usuario.");
 			}
