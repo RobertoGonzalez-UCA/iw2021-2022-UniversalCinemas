@@ -1,6 +1,8 @@
 package com.universalcinemas.application.data.business;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
