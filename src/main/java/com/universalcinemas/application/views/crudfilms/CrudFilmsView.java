@@ -64,7 +64,6 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 	private IntegerField agerating;
 	private NumberField rating;
 	private TextField filmposter;
-	private Image filmposterPreview;
 	private ComboBox<Genre> genre;
 
 	private Button cancel = new Button("Cancelar");
@@ -274,12 +273,5 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 	private void populateForm(Film value) {
 		this.film = value;
 		binder.readBean(this.film);
-		this.filmposterPreview.setVisible(value != null);
-		if (value == null) {
-			this.filmposterPreview.setSrc("");
-		} else {
-			this.filmposterPreview.setSrc(value.getFilmposter());
-		}
-
 	}
 }

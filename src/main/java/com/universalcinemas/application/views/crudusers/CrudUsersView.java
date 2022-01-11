@@ -61,7 +61,6 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 	private DatePicker dateofbirth;
 	private TextField phonenumber;
 	private TextField urlprofileimage;
-	private Image urlprofileimagePreview;
 	private TextField password;
 	private ComboBox<Role> role;
 
@@ -159,7 +158,6 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 			    	//User user_exists = UserService.loadUserByEmail(email.getValue());
 			        //if(user_exists.getEmail() == null) {
 						binder.writeBean(this.user);
-						this.user.setUrlprofileimage(urlprofileimagePreview.getSrc());
 						userService.update(this.user);
 						clearForm();
 						refreshGrid();
@@ -279,12 +277,5 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 	private void populateForm(User value) {
 		this.user = value;
 		binder.readBean(this.user);
-		this.urlprofileimagePreview.setVisible(value != null);
-		if (value == null) {
-			this.urlprofileimagePreview.setSrc("");
-		} else {
-			this.urlprofileimagePreview.setSrc(value.getUrlprofileimage());
-		}
-
 	}
 }
