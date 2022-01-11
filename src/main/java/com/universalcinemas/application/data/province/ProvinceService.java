@@ -26,4 +26,9 @@ public class ProvinceService extends CrudService<Province, Integer>{
 
 	public Collection<Province> findByName(String name) {return provinceRepository.findByName(name);}
 
+
+	public Collection<Province> findByCountry_id(Integer id) {
+		return provinceRepository.findByCountry_id(id);
+	}
+
 }

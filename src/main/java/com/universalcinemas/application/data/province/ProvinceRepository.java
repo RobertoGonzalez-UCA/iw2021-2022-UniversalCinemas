@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProvinceRepository extends JpaRepository<Province, Integer>{
 
 	Collection<Province> findByName(String name);
+
+	Collection<Province> findByCountry_id(Integer id);
 	
 }

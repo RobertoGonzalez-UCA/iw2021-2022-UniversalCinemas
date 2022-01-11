@@ -55,6 +55,11 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 	private ComboBox<City> city;
 	private TextField address;
 	private IntegerField postcode;
+	
+	private TextField cardName;
+	private IntegerField cardNumber;
+	private IntegerField cardSecurityNumber;
+	private DatePicker cardExpirationDate;
 
     @Autowired
     public PagoView(PlanService planService, CountryService countryService, ProvinceService provinceService, CityService cityService) {
@@ -65,12 +70,13 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
     }
     
     private FormLayout crearFormularioDireccion() {
-    	FormLayout formularioDireccion = new FormLayout();
+    	FormLayout formAddress = new FormLayout();
 		country = new ComboBox<Country>("País");
 		country.setItems(countryService.findAll()); // list/set of possible countries.
 		country.setItemLabelGenerator(country -> country.getName());
+		country.setValue(countryService.findByName("España").get());
 		province = new ComboBox<Province>("Provincia");
-		while(country.getValue() != null) province.setItems(provinceService.findByName(country.getValue().getName())); // list/set of possible provinces in selected country.
+		if(country.getValue() != null) province.setItems(provinceService.findByCountry_id(country.getValue().getId())); // list/set of possible provinces in selected country.
 		province.setItemLabelGenerator(province -> province.getName());
 		city = new ComboBox<City>("Ciudad");
 		while(province.getValue() != null) city.setItems(cityService.findByName(province.getValue().getName())); // list/set of possible cities in selected province.
@@ -78,22 +84,20 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 		address = new TextField("Dirección");
 		address.setRequired(true);
 		postcode = new IntegerField("Código postal");
-		formularioDireccion.add(country, province, city, postcode, address);
-		return formularioDireccion;
+		formAddress.add(country, province, city, postcode, address);
+		return formAddress;
     }
     
     private FormLayout crearFormularioTarjeta() {
-    	FormLayout formularioTarjeta = new FormLayout();
-		TextField nombreTarjeta = new TextField("Nombre del titular");
-		nombreTarjeta.setRequired(true);
-		TextField numero = new TextField("Número de tarjeta");
-		numero.setRequired(true);
-		TextField codigoSeguridad = new TextField("Código de seguridad");
-		codigoSeguridad.setRequired(true);
-		DatePicker fechaCaducidad = new DatePicker("Fecha de caducidad");
-		fechaCaducidad.setRequired(true);
-		formularioTarjeta.add(nombreTarjeta, numero, codigoSeguridad, fechaCaducidad);
-		return formularioTarjeta;
+    	FormLayout formCreditcard = new FormLayout();
+    	cardName = new TextField("Nombre del titular");
+    	cardName.setRequired(true);
+		cardNumber = new IntegerField("Número de tarjeta");
+		cardSecurityNumber = new IntegerField("Código de seguridad");
+		cardExpirationDate = new DatePicker("Fecha de caducidad");
+		cardExpirationDate.setRequired(true);
+		formCreditcard.add(cardName, cardNumber, cardSecurityNumber, cardExpirationDate);
+		return formCreditcard;
     }
 
 	@Override

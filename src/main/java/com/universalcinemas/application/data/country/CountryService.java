@@ -1,6 +1,7 @@
 package com.universalcinemas.application.data.country;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,11 @@ public class CountryService extends CrudService<Country, Integer>{
 	@Override
 	protected JpaRepository<Country, Integer> getRepository() {
 		return countryRepository;
+	}
+
+
+	public Optional<Country> findByName(String name) {
+		return countryRepository.findByName(name);
 	}
 
 }
