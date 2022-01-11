@@ -44,12 +44,10 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 	private static final long serialVersionUID = 1L;
 	private PlanService planService;
 	private CountryService countryService;
-	private ProvinceService provinceService;
-	private CityService cityService;
 	
 	private ComboBox<Country> country;
-	private ComboBox<Province> province;
-	private ComboBox<City> city;
+	private TextField province;
+	private TextField city;
 	private TextField address;
 	private IntegerField postcode;
 	
@@ -59,11 +57,9 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 	private DatePicker cardExpirationDate;
 
     @Autowired
-    public PagoView(PlanService planService, CountryService countryService, ProvinceService provinceService, CityService cityService) {
+    public PagoView(PlanService planService, CountryService countryService) {
 		this.planService = planService;
 		this.countryService = countryService;
-		this.provinceService = provinceService;
-		this.cityService = cityService;
     }
     
     private FormLayout crearFormularioDireccion() {
@@ -72,12 +68,8 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 		country.setItems(countryService.findAll()); // list/set of possible countries.
 		country.setItemLabelGenerator(country -> country.getName());
 		country.setValue(countryService.findByName("España").get());
-		province = new ComboBox<Province>("Provincia");
-		if(country.getValue() != null) province.setItems(provinceService.findByCountry_id(country.getValue().getId())); // list/set of possible provinces in selected country.
-		province.setItemLabelGenerator(province -> province.getName());
-		city = new ComboBox<City>("Ciudad");
-		while(province.getValue() != null) city.setItems(cityService.findByName(province.getValue().getName())); // list/set of possible cities in selected province.
-		city.setItemLabelGenerator(city -> city.getName());
+		province = new TextField("Provincia");
+		city = new TextField("Ciudad");
 		address = new TextField("Dirección");
 		address.setRequired(true);
 		postcode = new IntegerField("Código postal");
