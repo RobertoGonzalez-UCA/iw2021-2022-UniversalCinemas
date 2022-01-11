@@ -34,3 +34,9 @@
   align-items: center;
   display: flex;
 }
+ul > li > a{
+	color: white !important;
+}
+ul > li > a .font-medium{
+	font-size: 15px;	
+}	

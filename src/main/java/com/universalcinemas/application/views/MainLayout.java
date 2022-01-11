@@ -7,6 +7,8 @@ import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.elegirasiento.ElegirasientoView;
 import com.universalcinemas.application.views.inicio.InicioView;
 import com.universalcinemas.application.views.iniciosesion.IniciosesionView;
+import com.universalcinemas.application.views.novedades.NovedadesView;
+import com.universalcinemas.application.views.pelicula.PeliculaView;
 import com.universalcinemas.application.views.perfilusuario.PerfilUsuarioView;
 import com.universalcinemas.application.views.planes.PlanesView;
 import com.universalcinemas.application.views.registro.RegistroView;
@@ -14,6 +16,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
@@ -72,7 +75,7 @@ public class MainLayout extends AppLayout {
     public MainLayout() {
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
-        addToDrawer(createDrawerContent());
+        //addToDrawer(createDrawerContent());
     }
     
     @SuppressWarnings("static-access")
@@ -95,28 +98,35 @@ public class MainLayout extends AppLayout {
     }
 
     private Component createHeaderContent() {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addClassName("text-secondary");
-        toggle.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        toggle.getElement().setAttribute("aria-label", "Menu toggle");
-                
-        viewTitle = new H1();
-        viewTitle.addClassNames("m-0", "text-l");
-        HorizontalLayout itemLayout = new HorizontalLayout(createMenuBar());
-        itemLayout.addClassNames("w-full","justify-end");
-        Header header = new Header(toggle,viewTitle, itemLayout);
-        header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center",
-                "w-full");
-        return header;
+//        DrawerToggle toggle = new DrawerToggle();
+//        toggle.addClassName("text-secondary");
+//        toggle.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
+//        toggle.getElement().setAttribute("aria-label", "Menu toggle");
+//                
+//        viewTitle = new H1();
+//        viewTitle.addClassNames("m-0", "text-l");
+//        HorizontalLayout itemLayout = new HorizontalLayout(createMenuBar());
+//        itemLayout.addClassNames("w-full","justify-end");
+//        Header header = new Header(toggle,viewTitle, itemLayout);
+//        header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center",
+//                "w-full");
+        return createDrawerContent();
     }
 
     private Component createDrawerContent() {
-        H2 appName = new H2("UniversalCinemas App");
+    	Button appName = new Button("UniversalCinemas");
         appName.addClassNames("flex", "items-center", "h-xl", "m-0", "px-m", "text-m");
-
+        appName.getElement().getStyle().set("background-color", "black");
+        appName.addClickListener(e ->
+        appName.getUI().ifPresent(ui ->
+	           ui.navigate("/"))
+       );
         com.vaadin.flow.component.html.Section section = new com.vaadin.flow.component.html.Section(appName,
                 createNavigation(), createFooter());
-        section.addClassNames("flex", "flex-col", "items-stretch", "max-h-full", "min-h-full");
+        section.addClassNames("flex", "flex-row", "items-stretch", "max-h-full", "min-h-full");
+        section.getElement().getStyle().set("width", "100%");
+        section.getElement().getStyle().set("background-color", "black");
+
         return section;
     }
 
@@ -124,6 +134,11 @@ public class MainLayout extends AppLayout {
         Nav nav = new Nav();
         nav.addClassNames("border-b", "border-contrast-10", "flex-grow", "overflow-auto");
         nav.getElement().setAttribute("aria-labelledby", "views");
+        nav.getElement().getStyle().set("display", "flex");
+        nav.getElement().getStyle().set("align-items", "center");
+        nav.getElement().getStyle().set("justify-content", "flex-end");
+        nav.getElement().getStyle().set("border-color", "black");
+
 
         H3 views = new H3("Views");
         views.addClassNames("flex", "h-m", "items-center", "mx-m", "my-0", "text-s", "text-tertiary");
@@ -131,7 +146,11 @@ public class MainLayout extends AppLayout {
 
         // Wrap the links in a list; improves accessibility
         UnorderedList list = new UnorderedList();
+        
         list.addClassNames("list-none", "m-0", "p-0");
+        list.getElement().getStyle().set("display", "flex");
+        list.getElement().getStyle().set("align-items", "flex-end");
+        list.getElement().getStyle().set("justify-content", "flex-end");
         nav.add(list);
 
         for (RouterLink link : createLinks()) {
@@ -143,17 +162,12 @@ public class MainLayout extends AppLayout {
     }
 
     private List<RouterLink> createLinks() {
-        MenuItemInfo[] menuItems = new MenuItemInfo[]{ //
-                new MenuItemInfo("Registro", "la la-user", RegistroView.class), //
-
-                new MenuItemInfo("Inicio sesión", "la la-user", IniciosesionView.class), //
-
-                new MenuItemInfo("Inicio", "la la-newspaper", InicioView.class), //
-
-                new MenuItemInfo("Planes", "la la-th-list", PlanesView.class), //
-
-                new MenuItemInfo("Elegir asiento", "la la-chair", ElegirasientoView.class), //
-
+        MenuItemInfo[] menuItems = new MenuItemInfo[]{ 
+                new MenuItemInfo("Inicio", "la text-white", InicioView.class), 
+                new MenuItemInfo("Novedades", "la", NovedadesView.class), 
+                new MenuItemInfo("Planes", "la", PlanesView.class), 
+                new MenuItemInfo("Perfil", "la", PerfilUsuarioView.class), 
+                new MenuItemInfo("Logout", "la", PlanesView.class), 
         };
         List<RouterLink> links = new ArrayList<>();
         for (MenuItemInfo menuItemInfo : menuItems) {
@@ -176,7 +190,7 @@ public class MainLayout extends AppLayout {
         }
 
         Span text = new Span(menuItemInfo.getText());
-        text.addClassNames("font-medium", "text-s");
+        text.addClassNames("font-medium --material-body-text-color: rgba(255, 255, 255, 0)", "text-s");
 
         link.add(icon, text);
         return link;
@@ -189,14 +203,14 @@ public class MainLayout extends AppLayout {
         return layout;
     }
 
-    @Override
-    protected void afterNavigation() {
-        super.afterNavigation();
-        viewTitle.setText(getCurrentPageTitle());
-    }
+    //@Override
+//    protected void afterNavigation() {
+//        super.afterNavigation();
+//        viewTitle.setText(getCurrentPageTitle());
+//    }
 
-    private String getCurrentPageTitle() {
-        PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
-        return title == null ? "" : title.value();
-    }
+//    private String getCurrentPageTitle() {
+//        PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
+//        return title == null ? "" : title.value();
+//    }
 }
