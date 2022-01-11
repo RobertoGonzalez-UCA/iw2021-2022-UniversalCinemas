@@ -60,8 +60,9 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 	private TextField email;
 	private DatePicker dateofbirth;
 	private TextField phonenumber;
-	private Upload urlprofileimage;
+	private TextField urlprofileimage;
 	private Image urlprofileimagePreview;
+	private TextField password;
 	private ComboBox<Role> role;
 
 	private Button cancel = new Button("Cancelar");
@@ -95,7 +96,9 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		grid.addColumn("email").setAutoWidth(true);
 		grid.addColumn("dateofbirth").setAutoWidth(true).setHeader("Fecha de nacimiento");
 		grid.addColumn("phonenumber").setAutoWidth(true).setHeader("Teléfono");
+		grid.addColumn("password").setAutoWidth(true).setHeader("Contraseña encriptada");
 		grid.addColumn(user -> {return user.getRole().getName();}).setAutoWidth(true).setHeader("Rol");
+		grid.addColumn("urlprofileimage").setAutoWidth(true).setHeader("URL de la foto de perfil");
 		TemplateRenderer<User> urlprofileimageRenderer = TemplateRenderer.<User>of(
 				"<span style='border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; width: 64px; height: 64px'><img style='max-width: 100%' src='[[item.urlprofileimage]]' /></span>")
 				.withProperty("urlprofileimage", User::getUrlprofileimage);
@@ -120,8 +123,6 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		// Configure Form
 		binder = new BeanValidationBinder<>(User.class);
 		binder.bindInstanceFields(this);
-
-		attachImageUpload(urlprofileimage, urlprofileimagePreview);
 
 		cancel.addClickListener(e -> {
 			clearForm();
@@ -148,6 +149,9 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 			    } else if (phonenumber.isEmpty()) {
 			        phonenumber.focus();
                     Notification.show("Introduce un teléfono");
+			    } else if (password.isEmpty()) {
+			        role.focus();
+                    Notification.show("Introduce una contraseña encriptada");
 			    } else if (role.isEmpty()) {
 			        role.focus();
                     Notification.show("Introduce un rol");
@@ -222,17 +226,12 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		email = new TextField("Email");
 		dateofbirth = new DatePicker("Fecha de nacimiento");
 		phonenumber = new TextField("Teléfono");
+		password = new TextField("Contraseña encriptada");
 		role = new ComboBox<Role>("Rol");
 		role.setItems(roleService.findAll()); // list/set of possible cities.
 		role.setItemLabelGenerator(role -> role.getName());
-		//Label filmposterLabel = new Label("Póster de la película");
-		Label urlprofileimageLabel = new Label("Imagen de perfil");
-		urlprofileimagePreview = new Image();
-		urlprofileimagePreview.setWidth("100%");
-		urlprofileimage = new Upload();
-		urlprofileimage.getStyle().set("box-sizing", "border-box");
-		urlprofileimage.getElement().appendChild(urlprofileimagePreview.getElement());
-		Component[] fields = new Component[] { name, surname, email, dateofbirth, phonenumber, role, urlprofileimageLabel,
+		urlprofileimage = new  TextField("URL de la foto de perfil");
+		Component[] fields = new Component[] { name, surname, email, dateofbirth, phonenumber, password, role,
 				urlprofileimage };
 
 		for (Component field : fields) {
@@ -266,24 +265,6 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		wrapper.setWidthFull();
 		splitLayout.addToPrimary(wrapper);
 		wrapper.add(grid);
-	}
-
-	private void attachImageUpload(Upload upload, Image preview) {
-		ByteArrayOutputStream uploadBuffer = new ByteArrayOutputStream();
-		upload.setAcceptedFileTypes("image/*");
-		upload.setReceiver((fileName, mimeType) -> {
-			return uploadBuffer;
-		});
-		upload.addSucceededListener(e -> {
-			String mimeType = e.getMIMEType();
-			String base64ImageData = Base64.getEncoder().encodeToString(uploadBuffer.toByteArray());
-			String dataUrl = "data:" + mimeType + ";base64,"
-					+ UriUtils.encodeQuery(base64ImageData, StandardCharsets.UTF_8);
-			upload.getElement().setPropertyJson("files", Json.createArray());
-			preview.setSrc(dataUrl);
-			uploadBuffer.reset();
-		});
-		preview.setVisible(false);
 	}
 
 	private void refreshGrid() {
