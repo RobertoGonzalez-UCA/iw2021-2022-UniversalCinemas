@@ -37,6 +37,7 @@ public class User implements UserDetails {
 	@NotNull
 	private String phonenumber;
 	
+	@NotNull
 	@ManyToOne
 	private Role role;
 	
