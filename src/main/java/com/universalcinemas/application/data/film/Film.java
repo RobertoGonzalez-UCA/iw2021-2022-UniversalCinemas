@@ -19,7 +19,6 @@ public class Film {
 	private String director;
 	@NotNull
 	private String synopsis;
-	@NotNull
 	private String trailerurl;
 	@NotNull
 	private String filmposter;

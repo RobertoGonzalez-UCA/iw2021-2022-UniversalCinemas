@@ -63,7 +63,7 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 	private DatePicker releasedate;
 	private IntegerField agerating;
 	private NumberField rating;
-	private Upload filmposter;
+	private TextField filmposter;
 	private Image filmposterPreview;
 	private ComboBox<Genre> genre;
 
@@ -104,6 +104,7 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 				"<span style='border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; width: 64px; height: 64px'><img style='max-width: 100%' src='[[item.filmposter]]' /></span>")
 				.withProperty("filmposter", Film::getFilmposter);
 		grid.addColumn(filmposterRenderer).setHeader("Póster de la película").setWidth("96px").setFlexGrow(0);
+		grid.addColumn("filmposter").setAutoWidth(true).setHeader("URL del póster");
 
 		grid.setDataProvider(new CrudServiceDataProvider<>(filmService));
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -124,8 +125,6 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 		// Configure Form
 		binder = new BeanValidationBinder<>(Film.class);
 		binder.bindInstanceFields(this);
-
-		attachImageUpload(filmposter, filmposterPreview);
 
 		cancel.addClickListener(e -> {
 			clearForm();
@@ -151,12 +150,12 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 			        Notification.show("Introduce la puntuación de la película");
 				} else if (genre.isEmpty()) {
 			        Notification.show("Introduce el género de la película");
-				}
-				else {
+				} else if (filmposter.isEmpty()) {
+					Notification.show("Introduce la URL del póster");
+				} else {
 			    	//Film film_exists = filmService.loadFilmByName(name.getValue());
 			        //if(film_exists.getName() == null) {
 						binder.writeBean(this.film);
-						this.film.setFilmposter(filmposterPreview.getSrc());
 						filmService.update(this.film);
 						clearForm();
 						refreshGrid();
@@ -227,14 +226,8 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 		genre = new ComboBox<Genre>("Género");
 		genre.setItems(genreService.findAll()); // list/set of possible cities.
 		genre.setItemLabelGenerator(genre -> genre.getName() + " " + genre.getId());
-		Label filmposterLabel = new Label("Póster de la película");
-		filmposterPreview = new Image();
-		filmposterPreview.setWidth("100%");
-		filmposter = new Upload();
-		filmposter.getStyle().set("box-sizing", "border-box");
-		filmposter.getElement().appendChild(filmposterPreview.getElement());
-		Component[] fields = new Component[] { name, director, synopsis, releasedate, agerating, rating, genre, filmposterLabel,
-				filmposter };
+		filmposter = new TextField("URL del póster");
+		Component[] fields = new Component[] { name, director, synopsis, releasedate, agerating, rating, genre, filmposter };
 
 		for (Component field : fields) {
 			((HasStyle) field).addClassName("full-width");
@@ -269,7 +262,7 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 		wrapper.add(grid);
 	}
 
-	private void attachImageUpload(Upload upload, Image preview) {
+	/*private void attachImageUpload(Upload upload, Image preview) {
 		ByteArrayOutputStream uploadBuffer = new ByteArrayOutputStream();
 		upload.setAcceptedFileTypes("image/*");
 		upload.setReceiver((fileName, mimeType) -> {
@@ -285,7 +278,7 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 			uploadBuffer.reset();
 		});
 		preview.setVisible(false);
-	}
+	}*/
 
 	private void refreshGrid() {
 		grid.select(null);
