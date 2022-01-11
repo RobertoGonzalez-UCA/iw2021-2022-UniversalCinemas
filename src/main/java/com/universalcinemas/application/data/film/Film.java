@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 
 import com.universalcinemas.application.data.city.City;
 import com.universalcinemas.application.data.genre.Genre;
-import com.universalcinemas.application.data.language.Language;
 
 @Entity
 
@@ -26,8 +25,6 @@ public class Film {
 	private Double rating;
 	@ManyToOne
 	private Genre genre;
-	@ManyToMany
-    Set<Language> filmLanguages;
 	@Id
 	@GeneratedValue
 	private Integer id;
