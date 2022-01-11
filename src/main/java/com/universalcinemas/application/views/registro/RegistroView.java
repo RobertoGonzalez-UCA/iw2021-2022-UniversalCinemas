@@ -7,6 +7,10 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -31,8 +35,11 @@ public class RegistroView extends VerticalLayout {
         
 		this.userService = userService;
 				
-		H2 title = new H2("Registro");
-        TextField name = new TextField("Nombre");
+		H2 title = new H2("Universal Cinemas");
+		Paragraph second_title = new Paragraph("Regístrate e inicia sesión para disfrutar de nuestra cartelera");
+		H3 third_title = new H3("Regístrese");
+
+		TextField name = new TextField("Nombre");
         TextField surname = new TextField("Apellidos");
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(name,surname);
@@ -77,7 +84,7 @@ public class RegistroView extends VerticalLayout {
         horizontalLayout5.add(button,button2);
 
 
-        add(title,horizontalLayout,horizontalLayout2,horizontalLayout3,horizontalLayout4,horizontalLayout5);
+        add(title,second_title, third_title,horizontalLayout,horizontalLayout2,horizontalLayout3,horizontalLayout4,horizontalLayout5);
         
         button2.addClickListener(e ->
 	     button.getUI().ifPresent(ui ->
