@@ -17,7 +17,7 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 
 	private UserRepository repository;
 	private PasswordEncoder encoder;
-	
+
 	@Autowired
 	private RoleService roleService;
 
@@ -36,13 +36,13 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 			throw new UsernameNotFoundException(email);
 		}
 	}
-	
+
 	public void registerUser(User user) {
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.setRole(roleService.getDefaultRole());
 		repository.save(user);
 	}
-	
+
 	public boolean activateUser(String email, String key) {
 
 		Optional<User> user = repository.findByEmail(email);
@@ -59,23 +59,31 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 	protected JpaRepository<User, Integer> getRepository() {
 		return repository;
 	}
-	
+
 	public User obtenerDatosUsuario(int id) {
 //		Optional<User> usuario = repository.findById(id);
 //		return usuario.isPresent() ? usuario.get() : null;
 		return repository.findById(id).get();
 	}
-	
+
 	public void actualizarUsuario(User usuario) {
 		repository.save(usuario);
 	}
-	
-	public User loadUserByEmail(String email){
+
+	public User loadUserByEmail(String email) {
 		Optional<User> user = repository.findByEmail(email);
 		if (user.isPresent()) {
 			return user.get();
 		} else {
 			return new User();
 		}
+	}
+
+	public long countById(Integer id) {
+		return repository.count();
+	}
+
+	public long countByPlan_Id(Integer id) {
+		return repository.countByPlan_Id(id);
 	}
 }

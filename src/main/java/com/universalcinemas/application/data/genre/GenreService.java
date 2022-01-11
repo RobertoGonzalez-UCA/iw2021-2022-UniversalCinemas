@@ -18,5 +18,7 @@ public class GenreService extends CrudService<Genre, Integer> {
 		return genreRepository;
 	}
 	public Collection<Genre> findAll() {return genreRepository.findAll();}
+	
+	public String getName(Integer id) {return genreRepository.findById(id).get().getName(); }
 
 }
