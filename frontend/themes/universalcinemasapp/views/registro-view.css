@@ -18,3 +18,55 @@
 /* h2, button, #vaadin-text-field-label-0, #vaadin-text-field-label-1,#vaadin-text-field-label-2{ */
 /* 	color: rgb(181, 18, 31) !important; */
 /* } */
+#outlet-signup{
+	display: flex;
+	justify-content: center;
+    align-items: center;
+}
+#root-signup{
+	box-shadow: 1px 1px 12px 2px #333;
+}
+
+#vaadin-vertical-layout-signup{
+ 	padding: 0; 
+}
+
+vaadin-vertical-layout > #h2-signup{
+    margin-top: 16px;
+    border-radius: 5px 5px 0px 0px;
+    padding: 10px 0px;
+    padding-left: 18px;
+    font-size: 32px;
+    color: white;
+    width: 96%;
+    text-align: left;
+    background-color: var(--lumo-primary-color);
+}
+vaadin-vertical-layout > #p-signup{
+	font-size: 16px;
+	/*text-transform: lowercase;*/
+	color: var(--lumo-tint-70pct);
+	line-height: var(--lumo-line-height-s);
+    background-color: var(--lumo-primary-color);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+   	margin-top: 0px;
+    padding: 10px 15px;
+    text-align: left;
+}
+vaadin-vertical-layout > #h3-signup{
+	font-size: var(--lumo-font-size-xxl);
+    margin-top: 0.5em;	
+    margin-bottom: 0.3em;
+}
+
+#horizontalLayout-signup{
+	padding: 1rem;
+	padding-top: 0;
+	padding-bottom: 1rem;
+}
+#body-signup{
+	display: flex;
+	justify-content: center;
+    align-items: center;
+}
