@@ -4,16 +4,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.universalcinemas.application.data.genre.Genre;
 
 @Entity
 
 public class Plan {
+	@NotNull
 	private String name;
+	@NotNull
 	private String description;
+	@NotNull
 	private Integer percent;
+	@NotNull
 	private Integer price;
+	@NotNull
 	@ManyToOne
 	private Genre genre;
 	@Id

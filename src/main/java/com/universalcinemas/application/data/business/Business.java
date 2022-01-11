@@ -4,15 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.universalcinemas.application.data.city.City;
 
 @Entity
 
 public class Business {
+	@NotNull
 	private String name;
+	@NotNull
 	private String street;
 
+	@NotNull
 	@ManyToOne(optional = false)
 	private City city;
 

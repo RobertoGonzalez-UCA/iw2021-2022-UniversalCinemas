@@ -6,20 +6,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.universalcinemas.application.data.genre.Genre;
 
 @Entity
 
 public class Film {
+	@NotNull
 	private String name;
+	@NotNull
 	private String director;
+	@NotNull
 	private String synopsis;
+	@NotNull
 	private String trailerurl;
+	@NotNull
 	private String filmposter;
+	@NotNull
 	private LocalDate releasedate;
+	@NotNull
 	private Integer agerating;
+	@NotNull
 	private Double rating;
+	@NotNull
 	@ManyToOne
 	private Genre genre;
 	@Id

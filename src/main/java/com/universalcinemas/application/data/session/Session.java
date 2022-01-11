@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.universalcinemas.application.data.film.Film;
 import com.universalcinemas.application.data.room.Room;
@@ -13,9 +14,12 @@ import com.universalcinemas.application.data.room.Room;
 @Entity
 
 public class Session {
+	@NotNull
 	private LocalDateTime date_time;
+	@NotNull
 	@ManyToOne(optional = false)
     private Film film;
+	@NotNull
 	@ManyToOne(optional = false)
     private Room room;
 	@Id

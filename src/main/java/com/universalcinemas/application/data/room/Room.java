@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.universalcinemas.application.data.business.Business;
 
@@ -11,9 +12,13 @@ import com.universalcinemas.application.data.business.Business;
 
 public class Room {
 	
+	@NotNull
 	private Integer num_rows;
+	@NotNull
 	private Integer num_columns;
+	@NotNull
 	private Integer num_room;
+	@NotNull
 	@ManyToOne(optional = false)
     private Business business;
 	@Id

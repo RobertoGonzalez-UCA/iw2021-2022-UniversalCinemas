@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,12 +23,18 @@ import com.universalcinemas.application.data.role.Role;
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
+	@NotNull
 	private String name;
+	@NotNull
 	private String surname;
+	@NotNull
 	private String email;
+	@NotNull
 	private String password;
 	private String urlprofileimage;
+	@NotNull
 	private LocalDate dateofbirth;
+	@NotNull
 	private String phonenumber;
 	
 	@ManyToOne

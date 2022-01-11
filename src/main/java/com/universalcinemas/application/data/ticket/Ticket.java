@@ -4,14 +4,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.universalcinemas.application.data.session.Session;
 
 @Entity
 
 public class Ticket {
+	@NotNull
 	private Double price;
+	@NotNull
 	private Integer discount;
+	@NotNull
 	@ManyToOne(optional = false)
     private Session session;
 	@Id

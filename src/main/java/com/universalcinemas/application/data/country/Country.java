@@ -3,10 +3,12 @@ package com.universalcinemas.application.data.country;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 
 public class Country {
+	@NotNull
 	private String name;
 	
 	@Id

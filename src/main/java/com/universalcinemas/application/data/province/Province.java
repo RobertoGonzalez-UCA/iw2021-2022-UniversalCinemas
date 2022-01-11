@@ -4,14 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.universalcinemas.application.data.country.Country;
 
 @Entity
 
 public class Province {
+	@NotNull
 	private String name;
 	
+	@NotNull
 	@ManyToOne(optional = false)
     private Country country;
 	

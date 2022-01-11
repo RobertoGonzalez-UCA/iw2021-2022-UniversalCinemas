@@ -5,14 +5,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.universalcinemas.application.data.ticket.Ticket;
 
 @Entity
 
 public class Seats {
+	@NotNull
 	private Integer roww;
+	@NotNull
 	private Integer col;
+	@NotNull
 	@ManyToOne(optional = false)
 	@JoinColumn(referencedColumnName = "id")
     private Ticket ticket;
