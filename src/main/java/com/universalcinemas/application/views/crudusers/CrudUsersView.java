@@ -49,6 +49,7 @@ import elemental.json.Json;
 @RolesAllowed("ROLE_admin")
 public class CrudUsersView extends Div implements BeforeEnterObserver {
 
+	private static final long serialVersionUID = 1L;
 	private final String USER_ID = "UserID";
 	private final String USER_EDIT_ROUTE_TEMPLATE = "crudusers/%d/edit";
 
@@ -224,7 +225,7 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 		role = new ComboBox<Role>("Rol");
 		role.setItems(roleService.findAll()); // list/set of possible cities.
 		role.setItemLabelGenerator(role -> role.getName());
-		Label filmposterLabel = new Label("Póster de la película");
+		//Label filmposterLabel = new Label("Póster de la película");
 		Label urlprofileimageLabel = new Label("Imagen de perfil");
 		urlprofileimagePreview = new Image();
 		urlprofileimagePreview.setWidth("100%");

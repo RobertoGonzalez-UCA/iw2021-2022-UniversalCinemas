@@ -1,6 +1,5 @@
 package com.universalcinemas.application.views.registro;
 
-
 import com.universalcinemas.application.data.user.User;
 import com.universalcinemas.application.data.user.UserService;
 import com.vaadin.flow.component.button.Button;
@@ -8,8 +7,6 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.H6;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
@@ -91,7 +88,6 @@ public class RegistroView extends VerticalLayout {
 	           ui.navigate("/login"))
         );
         
-        //setHeightFull();
 		setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);//puts button in vertical center
     }

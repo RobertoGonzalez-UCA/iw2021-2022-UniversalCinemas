@@ -1,6 +1,5 @@
 package com.universalcinemas.application.views.crudsessions;
 
-import java.sql.Date;
 import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
@@ -15,14 +14,12 @@ import com.universalcinemas.application.data.room.RoomService;
 import com.universalcinemas.application.data.session.Session;
 import com.universalcinemas.application.data.session.SessionService;
 import com.universalcinemas.application.views.MainLayout;
-import com.universalcinemas.application.views.crudsessions.CrudSessionsView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -31,7 +28,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.BeforeEnterEvent;

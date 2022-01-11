@@ -1,6 +1,5 @@
 package com.universalcinemas.application.views.menuoperator;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;

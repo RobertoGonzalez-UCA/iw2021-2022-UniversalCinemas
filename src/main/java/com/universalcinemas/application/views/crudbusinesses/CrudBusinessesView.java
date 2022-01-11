@@ -1,14 +1,10 @@
 package com.universalcinemas.application.views.crudbusinesses;
 
-import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.util.UriUtils;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
 
 import com.universalcinemas.application.data.business.Business;
@@ -16,36 +12,26 @@ import com.universalcinemas.application.data.business.BusinessService;
 import com.universalcinemas.application.data.city.City;
 import com.universalcinemas.application.data.city.CityService;
 import com.universalcinemas.application.views.MainLayout;
-import com.universalcinemas.application.views.crudbusinesses.CrudBusinessesView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
-import elemental.json.Json;
 
 @PageTitle("Panel negocios")
 @Route(value = "crudbusinesses/:BusinessID?/:action?(edit)", layout = MainLayout.class)

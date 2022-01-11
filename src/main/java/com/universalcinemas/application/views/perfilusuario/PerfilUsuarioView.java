@@ -7,7 +7,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.universalcinemas.application.data.user.User;
 import com.universalcinemas.application.data.user.UserService;
-import com.universalcinemas.application.views.inicio.InicioView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

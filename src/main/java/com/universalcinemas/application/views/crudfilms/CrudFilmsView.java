@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.UriUtils;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
 
-import com.universalcinemas.application.data.city.City;
 import com.universalcinemas.application.data.film.Film;
 import com.universalcinemas.application.data.film.FilmService;
 import com.universalcinemas.application.data.genre.Genre;

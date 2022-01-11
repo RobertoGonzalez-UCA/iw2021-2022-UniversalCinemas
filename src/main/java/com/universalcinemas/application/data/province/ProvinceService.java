@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.vaadin.artur.helpers.CrudService;
 
-import com.universalcinemas.application.data.province.Province;
-import com.universalcinemas.application.data.province.ProvinceRepository;
-
 @Service
 public class ProvinceService extends CrudService<Province, Integer>{
 	
