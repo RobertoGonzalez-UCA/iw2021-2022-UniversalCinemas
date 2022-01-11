@@ -10,6 +10,7 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
@@ -95,29 +96,39 @@ public class RegistroView extends VerticalLayout {
 	 private void register(String name, String surname, String birthDate, String phoneNumber, String email, String password1, String password2) {
 		 
 		 if (name.trim().isEmpty()) {
-            Notification.show("Introduce tu nombre");
+	        	Notification notification_name_error = Notification.show("Introduce tu nombre");
+	        	notification_name_error.addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (surname.trim().isEmpty()) {
-            Notification.show("Introduce tus apellidos");
+        	Notification notification_surname_error = Notification.show("Introduce tus apellidos");
+        	notification_surname_error.addThemeVariants(NotificationVariant.LUMO_ERROR);
         } else if (birthDate.toString().trim() == "") {
-            Notification.show("Introduce tu fecha de nacimiento");
+        	Notification notification_birthDate_error = Notification.show("Introduce tu fecha de nacimiento");
+        	notification_birthDate_error.addThemeVariants(NotificationVariant.LUMO_ERROR); 
         } else if (email.trim().isEmpty()) {
-            Notification.show("Introduce tu email");
+        	Notification notification_email_error = Notification.show("Introduce tu email");
+        	notification_email_error.addThemeVariants(NotificationVariant.LUMO_ERROR); 
         } else if (phoneNumber.trim().isEmpty()) {
-            Notification.show("Introduce tu teléfono");
+        	Notification notification_phone_error = Notification.show("Introduce tu teléfono");
+        	notification_phone_error.addThemeVariants(NotificationVariant.LUMO_ERROR); 
         } else if (password1.trim().isEmpty()) {
-            Notification.show("Introduce una contraseña");
+        	Notification notification_password1_error = Notification.show("Introduce la contraseña");
+        	notification_password1_error.addThemeVariants(NotificationVariant.LUMO_ERROR); 
         } else if (password2.trim().isEmpty()) {
-            Notification.show("Introduce la contraseña de confirmación");
+        	Notification notification_password2_error = Notification.show("Introduce la contraseña de confirmación");
+        	notification_password2_error.addThemeVariants(NotificationVariant.LUMO_ERROR); 
         } else if (!password1.equals(password2)) {
-            Notification.show("Las contraseñas no coinciden");
+        	Notification notification_password_error = Notification.show("Las contraseñas no coinciden");
+        	notification_password_error.addThemeVariants(NotificationVariant.LUMO_ERROR); 
         } else {
         	User user_exists = userService.loadUserByEmail(email);
         	if(user_exists.getEmail() == null) {
             	User user = new User(name,surname,email,birthDate,phoneNumber,password1);
             	userService.registerUser(user);
-                Notification.show("Te has registrado con éxito"); 
+            	Notification notification_success = Notification.show("Te has registrado con éxito");
+            	notification_success.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         	}else {
-                Notification.show("Usuario ya registrado."); 
+        		Notification notification_error = Notification.show("El usuario ya existe. Introduce otro correo.");
+        		notification_error.addThemeVariants(NotificationVariant.LUMO_ERROR); 
         	}
         }
     }
