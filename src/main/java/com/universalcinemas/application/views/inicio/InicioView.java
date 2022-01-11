@@ -45,7 +45,7 @@ public class InicioView extends VerticalLayout {
         
         HorizontalLayout hLayoutAux2 = new HorizontalLayout();
         
-        films = filmService.findByGenre_Id(1);
+        films = filmService.findByGenre_Id(5);
 
         for(Film f: films)
         {
@@ -60,6 +60,97 @@ public class InicioView extends VerticalLayout {
         
         vLayoutMain.add(new H1("Peliculas de acción"));
         vLayoutMain.add(hLayoutAux2);
+        
+        HorizontalLayout hLayoutAux3 = new HorizontalLayout();
+        
+        films = filmService.findByGenre_Id(4);
+
+        for(Film f: films)
+        {
+        	VerticalLayout vLayoutAux = new VerticalLayout();
+        	Image img=new Image(f.getFilmposter(), f.getFilmposter());
+            img.setWidth("200px");
+            img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
+            vLayoutAux.add(img);
+            vLayoutAux.add(f.getName());
+            hLayoutAux3.add(vLayoutAux);
+        }
+        
+        vLayoutMain.add(new H1("Peliculas de comedia"));
+        vLayoutMain.add(hLayoutAux3);
+        
+        HorizontalLayout hLayoutAux4 = new HorizontalLayout();
+        
+        films = filmService.findByGenre_Id(3);
+
+        for(Film f: films)
+        {
+        	VerticalLayout vLayoutAux = new VerticalLayout();
+        	Image img=new Image(f.getFilmposter(), f.getFilmposter());
+            img.setWidth("200px");
+            img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
+            vLayoutAux.add(img);
+            vLayoutAux.add(f.getName());
+            hLayoutAux4.add(vLayoutAux);
+        }
+        
+        vLayoutMain.add(new H1("Peliculas de drama"));
+        vLayoutMain.add(hLayoutAux4);
+        
+        HorizontalLayout hLayoutAux5 = new HorizontalLayout();
+        
+        films = filmService.findByGenre_Id(2);
+
+        for(Film f: films)
+        {
+        	VerticalLayout vLayoutAux = new VerticalLayout();
+        	Image img=new Image(f.getFilmposter(), f.getFilmposter());
+            img.setWidth("200px");
+            img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
+            vLayoutAux.add(img);
+            vLayoutAux.add(f.getName());
+            hLayoutAux5.add(vLayoutAux);
+        }
+        
+        vLayoutMain.add(new H1("Peliculas de fantasia"));
+        vLayoutMain.add(hLayoutAux5);
+        
+        HorizontalLayout hLayoutAux6 = new HorizontalLayout();
+        
+        films = filmService.findByGenre_Id(1);
+
+        for(Film f: films)
+        {
+        	VerticalLayout vLayoutAux = new VerticalLayout();
+        	Image img=new Image(f.getFilmposter(), f.getFilmposter());
+            img.setWidth("200px");
+            img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
+            vLayoutAux.add(img);
+            vLayoutAux.add(f.getName());
+            hLayoutAux6.add(vLayoutAux);
+        }
+        
+        vLayoutMain.add(new H1("Peliculas de suspense"));
+        vLayoutMain.add(hLayoutAux6);
+        
+        HorizontalLayout hLayoutAux7 = new HorizontalLayout();
+        
+        films = filmService.findByGenre_Id(0);
+
+        for(Film f: films)
+        {
+        	VerticalLayout vLayoutAux = new VerticalLayout();
+        	Image img=new Image(f.getFilmposter(), f.getFilmposter());
+            img.setWidth("200px");
+            img.addClickListener(e -> UI.getCurrent().navigate(PeliculaView.class, f.getId()));
+            vLayoutAux.add(img);
+            vLayoutAux.add(f.getName());
+            hLayoutAux7.add(vLayoutAux);
+        }
+        
+        vLayoutMain.add(new H1("Peliculas de terror"));
+        vLayoutMain.add(hLayoutAux7);
+        
         add(vLayoutMain);
     }
 }
