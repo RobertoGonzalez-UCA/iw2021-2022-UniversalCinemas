@@ -9,6 +9,7 @@ import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -29,21 +30,35 @@ public class RegistroView extends VerticalLayout {
     public RegistroView(UserService userService) {
         
 		this.userService = userService;
-		
+				
 		H2 title = new H2("Registro");
         TextField name = new TextField("Nombre");
         TextField surname = new TextField("Apellidos");
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(name,surname);
+        
         DatePicker birthDate = new DatePicker("Fecha nacimiento");
         EmailField emailField = new EmailField();
-        emailField.setLabel("Email address");
+        emailField.setLabel("Email");
         emailField.getElement().setAttribute("name", "email");
         emailField.setPlaceholder("username@example.com");
-        emailField.setErrorMessage("Please enter a valid example.com email address");
+        emailField.setErrorMessage("Por favor, introduce un correo válido.");
         emailField.setClearButtonVisible(true);
         emailField.setPattern("^(.+)@(.+)$");
+        
+        HorizontalLayout horizontalLayout2 = new HorizontalLayout();
+        horizontalLayout2.add(birthDate,emailField);
+        
         TextField phoneNumber = new TextField("Número de teléfono");
         PasswordField password1 = new PasswordField("Contraseña");
         PasswordField password2 = new PasswordField("Confirma contraseña");
+        
+        HorizontalLayout horizontalLayout3 = new HorizontalLayout();
+        horizontalLayout3.add(phoneNumber);
+        
+        HorizontalLayout horizontalLayout4 = new HorizontalLayout();
+        horizontalLayout4.add(password1,password2);
+        
         Button button = new Button("Registrarme", event -> register(
         		name.getValue(),
         		surname.getValue(),
@@ -53,18 +68,23 @@ public class RegistroView extends VerticalLayout {
                 password1.getValue(),
                 password2.getValue()
         ));
-        
-        Button button2 = new Button("Acceder a mi cuenta");
-        
+        button.getElement().getStyle().set("background-color", "var(--lumo-primary-color)");
 
-        add(title,name,surname,birthDate,emailField,phoneNumber,password1,password2,button,button2);
+        
+        HorizontalLayout horizontalLayout5 = new HorizontalLayout();
+        Button button2 = new Button("Acceder a mi cuenta");
+        button2.getElement().getStyle().set("background-color", "var(--lumo-primary-color)");
+        horizontalLayout5.add(button,button2);
+
+
+        add(title,horizontalLayout,horizontalLayout2,horizontalLayout3,horizontalLayout4,horizontalLayout5);
         
         button2.addClickListener(e ->
 	     button.getUI().ifPresent(ui ->
 	           ui.navigate("/login"))
         );
         
-        setHeightFull();
+        //setHeightFull();
 		setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);//puts button in vertical center
     }

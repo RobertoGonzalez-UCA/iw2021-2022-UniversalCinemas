@@ -34,3 +34,19 @@
   align-items: center;
   display: flex;
 }
+
+#outlet{
+	display: flex;
+	justify-content: center;
+    align-items: center;
+}
+#ROOT-2521314{
+	box-shadow: 1px 1px 12px 2px var(--lumo-primary-color);
+}
+vaadin-vertical-layout h2{
+	margin-top: 20px;
+	border-radius: 5px;
+    padding: 10px;
+    font-size: 32px;
+    color: white;
+}
