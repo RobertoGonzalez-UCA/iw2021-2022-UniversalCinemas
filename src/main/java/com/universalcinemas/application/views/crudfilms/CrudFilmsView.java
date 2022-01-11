@@ -49,7 +49,7 @@ import elemental.json.Json;
 
 @PageTitle("Panel películas")
 @Route(value = "crudfilms/:FilmID?/:action?(edit)", layout = MainLayout.class)
-@RolesAllowed("ROLE_admin")
+@RolesAllowed({"ROLE_admin", "ROLE_operator"})
 public class CrudFilmsView extends Div implements BeforeEnterObserver {
 
 	private static final long serialVersionUID = 1L;

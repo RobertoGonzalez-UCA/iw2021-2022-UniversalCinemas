@@ -34,7 +34,7 @@ public class MenuOperatorView extends VerticalLayout{
 		VerticalLayout labelLayout = new VerticalLayout(new H4("Menú de administrador"));
 		VerticalLayout volverLayout = new VerticalLayout(crearBoton("Volver al home","news"));
 		
-		buttonLayout.add(crearBoton("Peliculas","crudfilms"), crearBoton("Salas","crudrooms"));
+		buttonLayout.add(crearBoton("Peliculas","crudfilms"), crearBoton("Salas","crudrooms"), crearBoton("Sesiones","crudsessions"));
 		mainLayout.add(buttonLayout);
 		mainLayout.setAlignItems(Alignment.CENTER);
 		labelLayout.setAlignItems(Alignment.CENTER);

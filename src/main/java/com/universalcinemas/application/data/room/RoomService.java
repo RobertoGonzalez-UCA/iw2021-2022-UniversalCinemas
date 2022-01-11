@@ -1,5 +1,7 @@
 package com.universalcinemas.application.data.room;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.vaadin.artur.helpers.CrudService;
@@ -15,5 +17,9 @@ public class RoomService extends CrudService<Room, Integer>{
 	@Override
 	protected JpaRepository<Room, Integer> getRepository() {
 		return roomRepository;
+	}
+
+	public Collection<Room> findAll() {
+		return roomRepository.findAll();
 	}
 }

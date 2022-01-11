@@ -1,5 +1,6 @@
-package com.universalcinemas.application.views.crudrooms;
+package com.universalcinemas.application.views.crudsessions;
 
+import java.sql.Date;
 import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
@@ -7,18 +8,22 @@ import javax.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
 
-import com.universalcinemas.application.data.business.Business;
-import com.universalcinemas.application.data.business.BusinessService;
+import com.universalcinemas.application.data.film.Film;
+import com.universalcinemas.application.data.film.FilmService;
 import com.universalcinemas.application.data.room.Room;
 import com.universalcinemas.application.data.room.RoomService;
+import com.universalcinemas.application.data.session.Session;
+import com.universalcinemas.application.data.session.SessionService;
 import com.universalcinemas.application.views.MainLayout;
-import com.universalcinemas.application.views.crudrooms.CrudRoomsView;
+import com.universalcinemas.application.views.crudsessions.CrudSessionsView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -26,7 +31,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -34,38 +39,39 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@PageTitle("Panel salas")
-@Route(value = "crudrooms/:RoomID?/:action?(edit)", layout = MainLayout.class)
+@PageTitle("Panel sesiones")
+@Route(value = "crudsessions/:SessionID?/:action?(edit)", layout = MainLayout.class)
 @RolesAllowed({"ROLE_admin", "ROLE_operator"})
-public class CrudRoomsView extends Div implements BeforeEnterObserver {
+public class CrudSessionsView extends Div implements BeforeEnterObserver {
 
 	private static final long serialVersionUID = 1L;
-	private final String FILM_ID = "RoomID";
-	private final String FILM_EDIT_ROUTE_TEMPLATE = "crudrooms/%d/edit";
+	private final String FILM_ID = "SessionID";
+	private final String FILM_EDIT_ROUTE_TEMPLATE = "crudsessions/%d/edit";
 
-	private Grid<Room> grid = new Grid<>(Room.class, false);
+	private Grid<Session> grid = new Grid<>(Session.class, false);
 
-	private IntegerField num_rows;
-	private IntegerField num_columns;
-	private IntegerField num_room;
-	private ComboBox<Business> business;
+	private DateTimePicker date_time;
+	private ComboBox<Film> film;
+	private ComboBox<Room> room;
 
 	private Button cancel = new Button("Cancelar");
 	private Button save = new Button("Guardar");
 	private Button delete = new Button("Eliminar");
 
-	private BeanValidationBinder<Room> binder;
+	private BeanValidationBinder<Session> binder;
 
-	private Room room;
+	private Session session;
 
+	private SessionService sessionService;
+	private FilmService filmService;
 	private RoomService roomService;
-	private BusinessService businessService;
 	
 	@SuppressWarnings("deprecation")
-	public CrudRoomsView(@Autowired RoomService roomService, BusinessService businessService) {
+	public CrudSessionsView(@Autowired SessionService sessionService, FilmService filmService, RoomService roomService) {
+		this.sessionService = sessionService;
+		this.filmService = filmService;
 		this.roomService = roomService;
-		this.businessService = businessService;
-		addClassNames("crud-rooms-view-view", "flex", "flex-col", "h-full");
+		addClassNames("crud-sessions-view-view", "flex", "flex-col", "h-full");
 		// Create UI
 		SplitLayout splitLayout = new SplitLayout();
 		splitLayout.setSizeFull();
@@ -76,12 +82,11 @@ public class CrudRoomsView extends Div implements BeforeEnterObserver {
 		add(splitLayout);
 
 		// Configure Grid
-		grid.addColumn("num_room").setAutoWidth(true).setHeader("Número de la sala");
-		grid.addColumn("num_rows").setAutoWidth(true).setHeader("Número de filas");
-		grid.addColumn("num_columns").setAutoWidth(true).setHeader("Número de columnas");
-		grid.addColumn(room -> {return room.getBusiness().getName();}).setAutoWidth(true).setHeader("Negocio");
-		
-		grid.setDataProvider(new CrudServiceDataProvider<>(roomService));
+		grid.addColumn("date_time").setAutoWidth(true).setHeader("Fecha y hora");
+		grid.addColumn(session -> {return session.getFilm().getName();}).setAutoWidth(true).setHeader("Película");
+		grid.addColumn(session -> {return session.getRoom().getNum_room();}).setAutoWidth(true).setHeader("Sala");
+	
+		grid.setDataProvider(new CrudServiceDataProvider<>(sessionService));
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 		grid.setHeightFull();
 
@@ -92,13 +97,13 @@ public class CrudRoomsView extends Div implements BeforeEnterObserver {
 				delete.setVisible(true);
 			} else {
 				clearForm();
-				UI.getCurrent().navigate(CrudRoomsView.class);
+				UI.getCurrent().navigate(CrudSessionsView.class);
 				delete.setVisible(false);
 			}
 		});
 		
 		// Configure Form
-		binder = new BeanValidationBinder<>(Room.class);
+		binder = new BeanValidationBinder<>(Session.class);
 		binder.bindInstanceFields(this);
 
 		cancel.addClickListener(e -> {
@@ -108,68 +113,66 @@ public class CrudRoomsView extends Div implements BeforeEnterObserver {
 		
 		save.addClickListener(e -> {
 			try {
-				if (this.room == null) {
-					this.room = new Room();
+				if (this.session == null) {
+					this.session = new Session();
 				} 
-				if (num_room.isEmpty()) {
-			        Notification.show("Introduce el número de la sala");
-			    } else if (num_rows.isEmpty()) {
-			        Notification.show("Introduce el número de filas de la sala");
-			    } else if (num_columns.isEmpty()) {
-			        Notification.show("Introduce el número de columnas de la sala");
-			    } else if (business.isEmpty()) {
-			        Notification.show("Introduce el negocio");
+				if (date_time.isEmpty()) {
+			        Notification.show("Introduce una fecha y una hora");
+			    } else if (film.isEmpty()) {
+			        Notification.show("Introduce una película");
+			    } else if (room.isEmpty()) {
+			        Notification.show("Introduce una sala");
 			    } else {
-			    	//Room room_exists = roomService.loadRoomByName(num_rows.getValue());
-			        //if(room_exists.getName() == null) {
-						binder.writeBean(this.room);
-						roomService.update(this.room);
+			    	//Session session_exists = sessionService.loadSessionByName(date_time.getValue());
+			        //if(session_exists.getName() == null) {
+						binder.writeBean(this.session);
+						sessionService.update(this.session);
 						clearForm();
 						refreshGrid();
 		
-						Notification.show("Sala guardado correctamente.");
+						Notification.show("Sesión guardada correctamente.");
 		
-						UI.getCurrent().navigate(CrudRoomsView.class);
+						UI.getCurrent().navigate(CrudSessionsView.class);
 		        	//}
 		        	//else {
-		            //    Notification.show("Room ya registrada."); 
+		            //    Notification.show("Session ya registrada."); 
 		        	//}
 			    }
 			} catch (ValidationException validationException) {
-				Notification.show("Ocurrió un error al guardar los datos de la sala.");
+				Notification.show("Ocurrió un error al guardar los datos de la sesión.");
 			}
 		});
 
 		delete.addClickListener(e -> {
 			try {
 				binder.getBean();
-				roomService.delete(this.room.getId());
+				sessionService.delete(this.session.getId());
 
 				clearForm();
 				refreshGrid();
 				
 				Notification.show("Sala eliminado correctamente.");
 				
-				UI.getCurrent().navigate(CrudRoomsView.class);
+				UI.getCurrent().navigate(CrudSessionsView.class);
 			} catch (Exception exception) {
-				Notification.show("Ocurrió un error al borrar los datos de la sala.");
+				Notification.show("Ocurrió un error al borrar los datos de la sesión.");
 			}
 		});
 	}
 
 	@Override
 	public void beforeEnter(BeforeEnterEvent event) {
-		Optional<Integer> RoomId = event.getRouteParameters().getInteger(FILM_ID);
-		if (RoomId.isPresent()) {
-			Optional<Room> RoomFromBackend = roomService.get(RoomId.get());
-			if (RoomFromBackend.isPresent()) {
-				populateForm(RoomFromBackend.get());
+		Optional<Integer> SessionId = event.getRouteParameters().getInteger(FILM_ID);
+		if (SessionId.isPresent()) {
+			Optional<Session> SessionFromBackend = sessionService.get(SessionId.get());
+			if (SessionFromBackend.isPresent()) {
+				populateForm(SessionFromBackend.get());
 			} else {
-				Notification.show("No se pudo encontrar esa sala");
+				Notification.show("No se pudo encontrar esa sesión");
 
 				// when a row is selected but the data is no longer available
 				refreshGrid();
-				event.forwardTo(CrudRoomsView.class);
+				event.forwardTo(CrudSessionsView.class);
 			}
 		}
 	}
@@ -184,13 +187,14 @@ public class CrudRoomsView extends Div implements BeforeEnterObserver {
 		editorLayoutDiv.add(editorDiv);
 
 		FormLayout formLayout = new FormLayout();
-		num_room = new IntegerField("Número de la sala");
-		num_rows = new IntegerField("Número de filas");
-		num_columns = new IntegerField("Número de columnas");
-		business = new ComboBox<Business>("Negocio");
-		business.setItems(businessService.findAll()); // list/set of possible cities.
-		business.setItemLabelGenerator(business -> business.getName() + " " + business.getId());
-		Component[] fields = new Component[] { num_room, num_columns, num_rows, business };
+		date_time = new DateTimePicker("Fecha y hora");
+		film = new ComboBox<Film>("Película");
+		film.setItems(filmService.findAll()); // list/set of possible cities.
+		film.setItemLabelGenerator(film -> film.getName());
+		room = new ComboBox<Room>("Sala");
+		room.setItems(roomService.findAll()); // list/set of possible cities.
+		room.setItemLabelGenerator(room -> "Sala " + room.getNum_room().toString() + " del cine " + room.getBusiness().getName());
+		Component[] fields = new Component[] { date_time, film, room };
 
 		for (Component field : fields) {
 			((HasStyle) field).addClassName("full-width");
@@ -234,8 +238,8 @@ public class CrudRoomsView extends Div implements BeforeEnterObserver {
 		populateForm(null);
 	}
 
-	private void populateForm(Room value) {
-		this.room = value;
-		binder.readBean(this.room);
+	private void populateForm(Session value) {
+		this.session = value;
+		binder.readBean(this.session);
 	}
 }
