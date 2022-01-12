@@ -27,7 +27,7 @@ public class SecurityService {
 
 	public Optional<User> getAuthenticatedUser() {
 		if (getAuthentication().isPresent()) {
-			return userRepository.findByEmail(getAuthentication().get().getName());
+			return userRepository.findByName(getAuthentication().get().getName());
 		} else {
 			return Optional.empty();
 		}

@@ -1,5 +1,7 @@
 package com.universalcinemas.application.views.perfilusuario;
 
+import java.util.Optional;
+
 import javax.annotation.security.PermitAll;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.universalcinemas.application.data.user.User;
 import com.universalcinemas.application.data.user.UserService;
+import com.universalcinemas.application.security.SecurityService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -34,17 +37,26 @@ import com.vaadin.flow.router.Route;
 @PermitAll
 public class PerfilUsuarioView extends VerticalLayout {
 	private static final long serialVersionUID = 1L;
-	UserService servicioUsuario;
+	private UserService servicioUsuario;
+	private SecurityService securityService;
+	
+
 	@Autowired
-	public PerfilUsuarioView(UserService servicioUsuario) {
+	public PerfilUsuarioView(UserService servicioUsuario, SecurityService securityService) {
 		this.servicioUsuario = servicioUsuario;
-		VerticalLayout formularioDatos = new VerticalLayout(crearFormularioDatos(servicioUsuario.obtenerDatosUsuario(1)));
-		VerticalLayout formularioLogin = new VerticalLayout(crearFormularioLogin(servicioUsuario.obtenerDatosUsuario(1)));
+		this.securityService = securityService;
+		
+		User currentUser = securityService.getAuthenticatedUser().get();
+			
+		VerticalLayout formularioDatos = new VerticalLayout(
+				crearFormularioDatos(servicioUsuario.obtenerDatosUsuario(1)));
+		VerticalLayout formularioLogin = new VerticalLayout(
+				crearFormularioLogin(servicioUsuario.obtenerDatosUsuario(1)));
 		HorizontalLayout formularios = new HorizontalLayout(formularioDatos, formularioLogin);
 		HorizontalLayout botonLayout = new HorizontalLayout(crearBotonInicio());
 		add(formularios, new Hr(), botonLayout);
 	}
-	
+
 	private FormLayout crearFormularioDatos(User usuario) {
 		FormLayout formulario = new FormLayout();
 		TextField nombre = new TextField("Nombre");
@@ -53,59 +65,56 @@ public class PerfilUsuarioView extends VerticalLayout {
 		DatePicker fechaNacimiento = new DatePicker("Nacimiento");
 		Button modificar = new Button("Modificar");
 		Dialog dialog = new Dialog();
-        VerticalLayout dialogLayout = createDialogLayout(dialog);
-        dialog.add(dialogLayout);
+		VerticalLayout dialogLayout = createDialogLayout(dialog);
+		dialog.add(dialogLayout);
 
 		modificar.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-		
-		nombre.setValue(usuario.getName());
+
+		nombre.setValue(usuario.getUsername());
 		apellidos.setValue(usuario.getSurname());
 		telefono.setValue(usuario.getPhone());
 		fechaNacimiento.setValue(usuario.getDateOfBirth());
-		
+
 		nombre.addValueChangeListener(e -> modificar.setEnabled(true));
 		apellidos.addValueChangeListener(e -> modificar.setEnabled(true));
 		telefono.addValueChangeListener(e -> modificar.setEnabled(true));
 		fechaNacimiento.addValueChangeListener(e -> modificar.setEnabled(true));
-		
+
 		modificar.addClickListener(e -> {
 			boolean x = false;
-			
-			if(nombre.getValue().compareTo(usuario.getName()) != 0) {
+
+			if (nombre.getValue().compareTo(usuario.getUsername()) != 0) {
 				usuario.setName(nombre.getValue());
 				x = true;
 			}
-			if(apellidos.getValue().compareTo(usuario.getSurname()) != 0) {
+			if (apellidos.getValue().compareTo(usuario.getSurname()) != 0) {
 				usuario.setSurname(apellidos.getValue());
 				x = true;
 			}
 
-			if(telefono.getValue().compareTo(usuario.getPhone()) != 0) {
+			if (telefono.getValue().compareTo(usuario.getPhone()) != 0) {
 				usuario.setPhone(telefono.getValue());
 				x = true;
 			}
-			if(fechaNacimiento.getValue().compareTo(usuario.getDateOfBirth()) != 0) {
+			if (fechaNacimiento.getValue().compareTo(usuario.getDateOfBirth()) != 0) {
 				usuario.setDateOfBirth(fechaNacimiento.getValue());
 				x = true;
 			}
-			if(x) {
+			if (x) {
 				servicioUsuario.actualizarUsuario(usuario);
 				dialog.open();
 			}
-			
+
 		});
-		
-		formulario.add(nombre, apellidos,
-				fechaNacimiento, telefono, modificar);
-		formulario.setResponsiveSteps(
-				new ResponsiveStep("0",1),
-				new ResponsiveStep("500px",3)
-				);
+
+		formulario.add(nombre, apellidos, fechaNacimiento, telefono, modificar);
+		formulario.setResponsiveSteps(new ResponsiveStep("0", 1), new ResponsiveStep("500px", 3));
 		formulario.setColspan(nombre, 1);
 		formulario.setColspan(apellidos, 2);
-	
+
 		return formulario;
 	}
+
 	private FormLayout crearFormularioLogin(User usuario) {
 		FormLayout formulario = new FormLayout();
 		EmailField email = new EmailField("Correo electrónico");
@@ -114,82 +123,77 @@ public class PerfilUsuarioView extends VerticalLayout {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		Dialog dialog = new Dialog();
 
-        VerticalLayout dialogLayout = createDialogLayout(dialog);
-        dialog.add(dialogLayout);
-		
+		VerticalLayout dialogLayout = createDialogLayout(dialog);
+		dialog.add(dialogLayout);
+
 		passButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-		
+
 		email.setValue(usuario.getEmail());
-		
+
 		email.addValueChangeListener(e -> passButton.setEnabled(true));
-		
+
 		passButton.addClickListener(e -> {
 			boolean x = false;
-			
-			if(email.getValue().compareTo(usuario.getEmail()) != 0) {
-				if(passwordEncoder.matches(newPassword.getValue(), usuario.getPassword())) {
+
+			if (email.getValue().compareTo(usuario.getEmail()) != 0) {
+				if (passwordEncoder.matches(newPassword.getValue(), usuario.getPassword())) {
 					usuario.setEmail(email.getValue());
 					x = true;
-				}
-				else
+				} else
 					mostrarError();
 			}
-			if(x) {
+			if (x) {
 				servicioUsuario.actualizarUsuario(usuario);
 				dialog.open();
 			}
 		});
-		
-		formulario.add(email, 
-				newPassword,
-				passButton
-				);
-		formulario.setResponsiveSteps(
-				new ResponsiveStep("0",1),
-				new ResponsiveStep("500px",3)
-				);
+
+		formulario.add(email, newPassword, passButton);
+		formulario.setResponsiveSteps(new ResponsiveStep("0", 1), new ResponsiveStep("500px", 3));
 		formulario.setColspan(email, 3);
 		formulario.setColspan(newPassword, 2);
-		
+
 		return formulario;
 	}
+
 	private static VerticalLayout createDialogLayout(Dialog dialog) {
-        H2 headline = new H2("Los datos han sido actualizados.");
-        H4 midline = new H4("Los cambios se verán reflejados pronto.");
-        Button okButton = new Button("OK", e -> {
-        	dialog.close();
-        	UI.getCurrent().getPage().reload();
-        });
-        Button homeButton = new Button("Volver al home", e -> {
-        	dialog.close();
-        	UI.getCurrent().navigate("");
-        });
-        
-        okButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        HorizontalLayout buttonLayout = new HorizontalLayout(homeButton, okButton);
-        buttonLayout
-                .setJustifyContentMode(FlexComponent.JustifyContentMode.END);
+		H2 headline = new H2("Los datos han sido actualizados.");
+		H4 midline = new H4("Los cambios se verán reflejados pronto.");
+		Button okButton = new Button("OK", e -> {
+			dialog.close();
+			UI.getCurrent().getPage().reload();
+		});
+		Button homeButton = new Button("Volver al home", e -> {
+			dialog.close();
+			UI.getCurrent().navigate("");
+		});
 
-        VerticalLayout dialogLayout = new VerticalLayout(headline, midline,
-                buttonLayout);
-        dialogLayout.setPadding(false);
-        dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
-        dialogLayout.getStyle().set("width", "300px").set("max-width", "100%");
+		okButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		HorizontalLayout buttonLayout = new HorizontalLayout(homeButton, okButton);
+		buttonLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
 
-        return dialogLayout;
-    }
+		VerticalLayout dialogLayout = new VerticalLayout(headline, midline, buttonLayout);
+		dialogLayout.setPadding(false);
+		dialogLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
+		dialogLayout.getStyle().set("width", "300px").set("max-width", "100%");
+
+		return dialogLayout;
+	}
+
 	private static Button crearBotonInicio() {
 		Button homeButton = new Button("Volver al home", new Icon(VaadinIcon.HOME), e -> UI.getCurrent().navigate(""));
-        homeButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-        
-        return homeButton;
+		homeButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+
+		return homeButton;
 	}
+
 	private static void mostrarError() {
 		Dialog errorDialog = new Dialog();
-		Label errorLine = new Label("La contraseña proporcionada no coincide. Vuelve a introducirla para cambiar el correo, por favor.");
+		Label errorLine = new Label(
+				"La contraseña proporcionada no coincide. Vuelve a introducirla para cambiar el correo, por favor.");
 		Button okButton = new Button("OK", e -> errorDialog.close());
 		VerticalLayout errorLayout = new VerticalLayout(errorLine, okButton);
-		
+
 		errorDialog.open();
 		errorDialog.add(errorLayout);
 	}
