@@ -196,4 +196,8 @@ public class User implements UserDetails {
 	public void setRole(Role role) {
 		this.role = role;
 	}
+
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
 }

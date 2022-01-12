@@ -14,6 +14,9 @@ import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.plan.PlanService;
 import com.universalcinemas.application.data.province.Province;
 import com.universalcinemas.application.data.province.ProvinceService;
+import com.universalcinemas.application.data.user.User;
+import com.universalcinemas.application.data.user.UserService;
+import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.MainLayout;
 import com.universalcinemas.application.views.inicio.InicioView;
 import com.vaadin.flow.component.UI;
@@ -44,6 +47,8 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 	private static final long serialVersionUID = 1L;
 	private PlanService planService;
 	private CountryService countryService;
+	private SecurityService securityService;
+	private UserService userService;
 	
 	private ComboBox<Country> country;
 	private TextField province;
@@ -57,9 +62,11 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 	private DatePicker cardExpirationDate;
 
     @Autowired
-    public PagoView(PlanService planService, CountryService countryService) {
+    public PagoView(PlanService planService, CountryService countryService, SecurityService securityService, UserService userService) {
 		this.planService = planService;
 		this.countryService = countryService;
+		this.securityService = securityService;
+		this.userService = userService;
     }
     
     private FormLayout crearFormularioDireccion() {
@@ -91,6 +98,7 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 
 	@Override
 	public void setParameter(BeforeEvent event, Integer planId) {
+		User currentUser = securityService.getAuthenticatedUser().get();
 		Optional<Plan> plan = planService.findById(planId);
 		Button btn = new Button("Pagar");
 		btn.addClickListener(e -> {
@@ -105,11 +113,21 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 			        Notification.show("Introduce el código postal");
 			    } else if (address.isEmpty()) {
 			        Notification.show("Introduce la dirección");
+			    } else if (cardName.isEmpty()) {
+			        Notification.show("Introduce el nombre del titular de la tarjeta");
+			    } else if (cardNumber.isEmpty()) {
+			        Notification.show("Introduce el número de la tarjeta");
+			    } else if (cardSecurityNumber.isEmpty()) {
+			        Notification.show("Introduce el número de seguridad de la tarjeta");
+			    } else if (cardExpirationDate.isEmpty()) {
+			        Notification.show("Introduce la fecha de caducidad de la tarjeta");
 			    } else {
+			    	currentUser.setPlan(plan.get());
+			    	userService.actualizarUsuario(userService.obtenerDatosUsuario(currentUser.getId()));
 			    	UI.getCurrent().navigate(InicioView.class);
 			    }
 			} catch (Exception exception) {
-				Notification.show("Ocurrió un error al guardar los datos del plan.");
+				Notification.show("Ocurrió un error al procesar el pago. " + exception.getMessage());
 			}
 		});
     	btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
