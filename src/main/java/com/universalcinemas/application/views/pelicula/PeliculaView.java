@@ -284,7 +284,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 		Anchor anchor = new Anchor(new StreamResource("Entrada.pdf", new InputStreamFactory() {
             @Override
             public InputStream createInputStream() {
-                File file = new File("Entrada.pdf");
+                File file = new File("entradas/Entrada.pdf");
                 try {
                     return new FileInputStream(file);
                 } catch (FileNotFoundException e) {
