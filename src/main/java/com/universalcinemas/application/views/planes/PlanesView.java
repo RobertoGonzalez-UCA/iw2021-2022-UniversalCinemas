@@ -1,6 +1,7 @@
 package com.universalcinemas.application.views.planes;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.plan.PlanService;
@@ -19,7 +20,7 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Planes")
 @Route(value = "plans", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
 public class PlanesView extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;

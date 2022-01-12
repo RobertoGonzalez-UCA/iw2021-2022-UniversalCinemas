@@ -3,6 +3,7 @@ package com.universalcinemas.application.views.pago;
 import java.util.Optional;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +42,7 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Pago")
 @Route(value = "checkout", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
 public class PagoView extends VerticalLayout implements HasUrlParameter<Integer> {
 
 	private static final long serialVersionUID = 1L;
@@ -123,7 +124,7 @@ public class PagoView extends VerticalLayout implements HasUrlParameter<Integer>
 			        Notification.show("Introduce la fecha de caducidad de la tarjeta");
 			    } else {
 			    	currentUser.setPlan(plan.get());
-			    	userService.actualizarUsuario(userService.obtenerDatosUsuario(currentUser.getId()));
+			    	userService.actualizarUsuario(currentUser);
 			    	UI.getCurrent().navigate(InicioView.class);
 			    }
 			} catch (Exception exception) {

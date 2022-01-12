@@ -1,6 +1,7 @@
 package com.universalcinemas.application.views.inicio;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import com.github.javaparser.ParseException;
 import com.universalcinemas.application.data.film.Film;
@@ -17,7 +18,7 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Inicio")
 @Route(value = "", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
 public class InicioView extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;

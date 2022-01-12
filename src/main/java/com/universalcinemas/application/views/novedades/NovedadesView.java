@@ -1,6 +1,7 @@
 package com.universalcinemas.application.views.novedades;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import com.universalcinemas.application.data.user.UserService;
 import com.universalcinemas.application.views.MainLayout;
@@ -20,7 +21,7 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Novedades")
 @Route(value = "news", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
 public class NovedadesView extends VerticalLayout {
 	
 	private static final long serialVersionUID = 1L;

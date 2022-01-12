@@ -3,6 +3,7 @@ package com.universalcinemas.application.views.perfilusuario;
 import java.util.Optional;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,7 +35,7 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Perfil")
 @Route(value = "perfilusuario")
-@PermitAll
+@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
 public class PerfilUsuarioView extends VerticalLayout {
 	private static final long serialVersionUID = 1L;
 	private UserService servicioUsuario;

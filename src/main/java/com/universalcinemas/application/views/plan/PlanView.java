@@ -3,6 +3,7 @@ package com.universalcinemas.application.views.plan;
 import java.util.Optional;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import com.universalcinemas.application.data.plan.Plan;
 import com.universalcinemas.application.data.plan.PlanService;
@@ -23,7 +24,7 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Plan")
 @Route(value = "plan", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
 public class PlanView extends VerticalLayout implements HasUrlParameter<Integer> {
 
 	private static final long serialVersionUID = 1L;

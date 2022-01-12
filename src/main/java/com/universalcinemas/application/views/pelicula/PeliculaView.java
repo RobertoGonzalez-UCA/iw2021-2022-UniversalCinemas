@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 import com.universalcinemas.application.data.business.Business;
 import com.universalcinemas.application.data.film.Film;
@@ -48,7 +49,7 @@ import com.vaadin.flow.server.StreamResource;
 
 @PageTitle("Pelicula")
 @Route(value = "pelicula", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
 public class PeliculaView extends VerticalLayout implements HasUrlParameter<Integer> {
 	private static final long serialVersionUID = 1L;
 	private static DateTimeFormatter formatoFecha = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).localizedBy(Locale.forLanguageTag("es-ES"));
