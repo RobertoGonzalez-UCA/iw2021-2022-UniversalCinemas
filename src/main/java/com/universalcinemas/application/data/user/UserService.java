@@ -1,5 +1,6 @@
 package com.universalcinemas.application.data.user;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +86,9 @@ public class UserService extends CrudService<User, Integer> implements UserDetai
 
 	public long countByPlan_Id(Integer id) {
 		return repository.countByPlan_Id(id);
+	}
+
+	public List<User> findAll() {
+		return repository.findAll();
 	}
 }

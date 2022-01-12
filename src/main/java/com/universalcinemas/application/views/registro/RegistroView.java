@@ -1,12 +1,14 @@
 package com.universalcinemas.application.views.registro;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.universalcinemas.application.data.user.User;
 import com.universalcinemas.application.data.user.UserService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
@@ -23,6 +25,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+@Component
+@Scope("prototype")
 @PageTitle("Registro")
 @Route(value = "signup")
 @AnonymousAllowed
