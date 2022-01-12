@@ -24,6 +24,7 @@ import com.universalcinemas.application.data.ticket.Ticket;
 import com.universalcinemas.application.data.ticket.TicketService;
 import com.universalcinemas.application.views.MainLayout;
 import com.vaadin.flow.component.HtmlComponent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -73,7 +74,6 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
  			cines = filmService.obtenerBusinessSesiones(sesiones);
  	    	compraDialogo.add(createDialogLayout(compraDialogo));
  			compraDialogo.open();
-// 			 UI.getCurrent().navigate(HomeView.class);
  			 
  		});
     	Image img=new Image(film.get().getFilmposter(), film.get().getFilmposter());
@@ -94,16 +94,12 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 	}
 	
 	private VerticalLayout createDialogLayout(Dialog dialog) {
-//		LocalDate hoy = LocalDate.now();
+		
 		VerticalLayout dialogLayout = new VerticalLayout();
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		
 		ComboBox<Business> elegirCine = new ComboBox<>("Elegir cine");
 		ComboBox<Session> fechas = new ComboBox<>("Elegir sesión");
-//		DatePicker fechaPelicula = new DatePicker("Día");
-//		TimePicker horaPelicula = new TimePicker("Hora");
-//		IntegerField cantidadEntradas = new IntegerField();
-
 		Button cancelarCompraButton = new Button("Cancelar", e -> {
 			dialog.close();
 			sesionElegida = null;
@@ -127,13 +123,8 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 		elegirCine.setItems(cines);
 		elegirCine.setItemLabelGenerator(cine -> cine.getName());
 		
-//		fechaPelicula.setMin(hoy);
+
 		fechas.setItemLabelGenerator(sesion -> sesion.getDate_time().format(formatoFecha));
-		
-//		cantidadEntradas.setLabel("Número de entradas");
-//		cantidadEntradas.setMin(1);
-//		cantidadEntradas.setValue(1);
-//		cantidadEntradas.setHasControls(true);
 		
 		buttonLayout.add(cancelarCompraButton, elegirAsientoButton);
 		dialogLayout.add(buttonLayout, elegirCine);
@@ -183,32 +174,8 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     			seats.add(s);
     		}
         	
-        	//tickets_id.add(t.getId());
-        	//seats_id.add(seatsService.getAllOccupiedSeatsByTicketId(t.getId()));
-        	//System.out.println(t.getId());
         }
-    	
-    	
-//    	Iterable<Seats> seats = seatsService.getAllOccupiedSeatsByTicketId(tickets_id.get(0));
-//    	List<Integer> seats_id = new ArrayList<Integer>();
-//    	
-//    	for(Seats s: seats)
-//        {
-//    		seats_id.add(s.getId());
-//        	System.out.println(s.getId());
-//        }
-    	
-		//seats.add(seatsService.getAllOccupiedSeatsByTicketId(tickets_id.get(i)));
-
-//    	for(int i = 0; i < tickets_id.size(); i++) {
-//    		Seats seat = new Seats();
-//    		seat = seatsService.getAllOccupiedSeatsByTicketId(tickets_id.get(i));
-//    		seats_id.add();
-//    		System.out.println(seatsService.getAllOccupiedSeatsByTicketId(tickets_id.get(i)));
-//    		System.out.println(seats.get(i).getId());
-//    	}
-    	
-    	//List<Seats> seats = seatsRepository.findAll();		
+  
 		List<Integer> cols = new ArrayList<Integer>();
 		List<Integer> rows = new ArrayList<Integer>();
 		
@@ -225,7 +192,6 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 				
 				for(int r = 0; r < rows.size(); r++) {
 					for(int c = 0; c < cols.size(); c++) {
-						//System.out.println(i + " " + j + " " + r + " " + c + " " + rows.get(r) + " " +  cols.get(c));
 						if (i == rows.get(r) && j == cols.get(c) && r == c) 
 			 				img2.getElement().getStyle().set("background-color", "red");
 					}
@@ -276,11 +242,13 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
     	
     	setHeightFull();
 		setAlignItems(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);//puts button in vertical center
+        setJustifyContentMode(JustifyContentMode.CENTER);
 		
 		dialog.setCloseOnEsc(false);
 		
 		Button btnConfirmar = new Button("Confirmar");
+		Button btnCancelar = new Button("Cancelar");
+		Dialog compra = new Dialog();
 		Anchor anchor = new Anchor(new StreamResource("Entrada.pdf", new InputStreamFactory() {
             @Override
             public InputStream createInputStream() {
@@ -296,13 +264,28 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
         anchor.getElement().setAttribute("download", true);
         anchor.add(btnConfirmar);
 
-		dialog.add(anchor);
-		btnConfirmar.addClickListener(e -> {
-			Notification.show("Compraste con éxito tu/s ticket/s");
- 			dialog.close(); 
+		dialog.add(btnCancelar, anchor);
+		
+		btnCancelar.setIcon(new Icon(VaadinIcon.ARROW_LEFT));
+		btnCancelar.addThemeVariants(ButtonVariant.LUMO_ERROR);
+		
+		btnConfirmar.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+		btnConfirmar.setIconAfterText(true);
+		btnConfirmar.setIcon(new Icon(VaadinIcon.ARROW_RIGHT));
+		
+		btnCancelar.addClickListener(e -> {
+			dialog.close();
+			compra.add(createDialogLayout(compra));
+			compra.open();
  		});
 		
-		dialog.setCloseOnOutsideClick(true);
+		btnConfirmar.addClickListener(e -> {
+			Notification.show("Compraste con éxito tu/s ticket/s");
+ 			dialog.close();
+			UI.getCurrent().navigate("");
+ 		});
+		
+		dialog.setCloseOnOutsideClick(false);
 		
 		return verticalLayout;
 	}
