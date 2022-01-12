@@ -151,6 +151,8 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		H2 title = new H2("ELEGIR ASIENTO");
 		Div divColor = new Div();
+		boolean[][] matrizAsientos = new boolean[6][12];
+		
 		divColor.getElement().getStyle().set("background","linear-gradient(to bottom, red, black)");
 		divColor.getElement().getStyle().set("height","30px");
 		divColor.getElement().getStyle().set("margin-top", "10px");
@@ -208,13 +210,21 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 				if(img2.getElement().getStyle().get("background-color") == "white" ) {
 					img2.addClickListener((e -> {
 						img2.getElement().getStyle().set("background-color", "green");
+						matrizAsientos[num_row][num_col] = true;
 
-		 				Ticket ticket = new Ticket(12.,0,sesionElegida);
-		 				ticketService.saveNewTicket(ticket);
+//		 				Ticket ticket = new Ticket(12.,0,sesionElegida);
+//		 				ticketService.saveNewTicket(ticket);
 		 			
-		 				Seats seats2 = new Seats(num_row,num_col,ticket);
-		 				seatsService.saveNewOccupiedSeat(seats2);
+//		 				Seats seats2 = new Seats(num_row,num_col,ticket);
+//		 				seatsService.saveNewOccupiedSeat(seats2);
+						
 		 			}));
+				}
+				else if(img2.getElement().getStyle().get("background-colo") == "green") {
+					img2.addClickListener(e -> {
+						img2.getElement().getStyle().set("background-color", "white");
+						matrizAsientos[num_row][num_col] = false;
+					});
 				}
 
 				if(j == 0)
@@ -250,22 +260,6 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 		Button btnConfirmar = new Button("Confirmar");
 		Button btnCancelar = new Button("Cancelar");
 		Dialog compra = new Dialog();
-		Anchor anchor = new Anchor(new StreamResource("Entrada.pdf", new InputStreamFactory() {
-            @Override
-            public InputStream createInputStream() {
-                File file = new File("entradas/Entrada.pdf");
-                try {
-                    return new FileInputStream(file);
-                } catch (FileNotFoundException e) {
-                    // TODO: handle FileNotFoundException somehow
-                    throw new RuntimeException(e);
-                }
-            }
-        }), "");
-        anchor.getElement().setAttribute("download", true);
-        anchor.add(btnConfirmar);
-
-		dialog.add(btnCancelar, anchor);
 		
 		btnCancelar.setIcon(new Icon(VaadinIcon.ARROW_LEFT));
 		btnCancelar.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -281,13 +275,73 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
  		});
 		
 		btnConfirmar.addClickListener(e -> {
-			Notification.show("Compraste con éxito tu/s ticket/s");
- 			dialog.close();
-			UI.getCurrent().navigate("");
+			boolean encontrado = false;
+			
+			for(int i = 0; i < matrizAsientos.length && !encontrado; i++)
+				for(int j = 0; j < matrizAsientos[i].length && !encontrado; j++)
+					if(matrizAsientos[i][j])
+						encontrado = true;
+			
+			if(encontrado) {
+				Ticket ticket = new Ticket(12., 0, sesionElegida);
+				int cantidad = 0;
+				ticketService.saveNewTicket(ticket);
+				for(int i = 0; i < matrizAsientos.length; i++)
+					for(int j = 0; j < matrizAsientos[i].length; j++)
+						if(matrizAsientos[i][j]) {
+							seatsService.saveNewOccupiedSeat(new Seats(i, j, ticket));
+							cantidad++;
+						}
+							
+				String mensaje = "Compraste con éxito ";
+				mensaje += cantidad > 1 ? "tus tickets." : "tu ticket";
+				Notification.show(mensaje);
+				dialog.close();
+				Dialog cerrar = new Dialog();
+				cerrar.add(createDialogLayout3(cerrar));
+				cerrar.open();
+			}
+			else
+				Notification.show("No seleccionaste ningún asiento");
  		});
+
+		dialog.add(btnCancelar, btnConfirmar);
 		
 		dialog.setCloseOnOutsideClick(false);
 		
 		return verticalLayout;
+	}
+	
+	private HorizontalLayout createDialogLayout3(Dialog dialog) {
+		Button aceptar = new Button("Continuar", e -> {
+			dialog.close();
+			UI.getCurrent().navigate("");
+		});
+		
+		Button descargar = new Button("Descargar entrada", e -> {
+			dialog.close();
+			UI.getCurrent().navigate("");
+		});
+		
+		Anchor anchor = new Anchor(new StreamResource("Entrada.pdf", new InputStreamFactory() {
+            @Override
+            public InputStream createInputStream() {
+                File file = new File("entradas/Entrada.pdf");
+                try {
+                    return new FileInputStream(file);
+                } catch (FileNotFoundException e) {
+                    // TODO: handle FileNotFoundException somehow
+                    throw new RuntimeException(e);
+                }
+            }
+        }), "");
+        anchor.getElement().setAttribute("download", true);
+        anchor.add(descargar);
+        
+        aceptar.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+        descargar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        descargar.setIcon(new Icon(VaadinIcon.DOWNLOAD));
+        
+        return new HorizontalLayout(anchor, aceptar);
 	}
 }

@@ -25,9 +25,9 @@ public class SeatsService extends CrudService<Seats, Integer>{
 	
 	
 	public void saveNewOccupiedSeat(Seats seat) {
-		seat.setRow(seat.getRow());
-		seat.setCol(seat.getCol());
-		seat.setTicket(seat.getTicket());
+//		seat.setRow(seat.getRow());
+//		seat.setCol(seat.getCol());
+//		seat.setTicket(seat.getTicket());
 		repository.save(seat);
 	}
 }
