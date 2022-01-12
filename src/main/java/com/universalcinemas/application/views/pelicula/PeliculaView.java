@@ -1,5 +1,9 @@
 package com.universalcinemas.application.views.pelicula;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -24,6 +28,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -37,6 +42,8 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.InputStreamFactory;
+import com.vaadin.flow.server.StreamResource;
 
 @PageTitle("Pelicula")
 @Route(value = "pelicula", layout = MainLayout.class)
@@ -108,16 +115,7 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 			dialog2.setWidth("800px");
 			createDialogLayout2(dialog2);
 		});
-//		elegirAsientoButton.addClickListener(e -> 
-//		elegirAsientoButton.getUI().ifPresent(ui ->
-//	        ui.navigate("/chooseseat"))
-//		);
-		
-//		VerticalLayout dialogLayout2 = createDialogLayout(dialog);
-//		dialog.add(dialogLayout2);
-//		Button button22 = new Button("Show dialog", e -> dialog.open());
-//		add(dialog, button22);
-		
+
 		elegirAsientoButton.setEnabled(false);
 		elegirAsientoButton.setIcon(new Icon(VaadinIcon.ARROW_RIGHT));
 		elegirAsientoButton.setIconAfterText(true);
@@ -244,9 +242,6 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 				img2.addClickListener((e -> {
 		 			img2.getElement().getStyle().set("background-color", "green");
 
-		 			
-		 			//Session session = new Session(sesionElegida.getDate_time(), sesionElegida.getFilm(), sesionElegida.getRoom());
-
 		 			Ticket ticket = new Ticket(12.,0,sesionElegida);
 		 			ticketService.saveNewTicket(ticket);
 		 			
@@ -286,8 +281,22 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 		dialog.setCloseOnEsc(false);
 		
 		Button btnConfirmar = new Button("Confirmar");
-//		btnConfirmar.getElement().getStyle().set(null, null);
-		dialog.add(btnConfirmar);
+		Anchor anchor = new Anchor(new StreamResource("Entrada.pdf", new InputStreamFactory() {
+            @Override
+            public InputStream createInputStream() {
+                File file = new File("Entrada.pdf");
+                try {
+                    return new FileInputStream(file);
+                } catch (FileNotFoundException e) {
+                    // TODO: handle FileNotFoundException somehow
+                    throw new RuntimeException(e);
+                }
+            }
+        }), "");
+        anchor.getElement().setAttribute("download", true);
+        anchor.add(btnConfirmar);
+
+		dialog.add(anchor);
 		btnConfirmar.addClickListener(e -> {
 			Notification.show("Compraste con éxito tu/s ticket/s");
  			dialog.close(); 
