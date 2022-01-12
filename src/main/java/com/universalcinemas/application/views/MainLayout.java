@@ -3,21 +3,17 @@ package com.universalcinemas.application.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.universalcinemas.application.data.user.User;
+import com.universalcinemas.application.data.user.UserService;
 import com.universalcinemas.application.security.SecurityService;
 import com.universalcinemas.application.views.inicio.InicioView;
 import com.universalcinemas.application.views.novedades.NovedadesView;
 import com.universalcinemas.application.views.perfilusuario.PerfilUsuarioView;
 import com.universalcinemas.application.views.planes.PlanesView;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.contextmenu.MenuItem;
-import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
@@ -36,8 +32,9 @@ public class MainLayout extends AppLayout {
 	private static final long serialVersionUID = 1L;
 	private SecurityService securityService;
 
-	public MainLayout(SecurityService securityService) {
+	public MainLayout(SecurityService securityService, UserService userService) {
 		this.securityService = securityService;
+
 		setPrimarySection(Section.DRAWER);
 		addToNavbar(true, createHeaderContent());
 		// addToDrawer(createDrawerContent());
@@ -70,19 +67,11 @@ public class MainLayout extends AppLayout {
 
 	@SuppressWarnings("static-access")
 	private Component createMenuBar() {
-		User currentUser = securityService.getAuthenticatedUser().get();
 
 		HorizontalLayout hLayoutMain = new HorizontalLayout();
-		hLayoutMain.setMargin(true);
 
 		MenuBar profileMenu = new MenuBar();
-		MenuItem item = profileMenu.addItem(currentUser.getName());
-
-		SubMenu profileSubMenu = item.getSubMenu();
-		profileSubMenu.addItem("Perfil", e -> UI.getCurrent().navigate(PerfilUsuarioView.class));
-		profileSubMenu.addItem("Elegir plan", e -> UI.getCurrent().navigate(PlanesView.class));
-		profileSubMenu.add(new Hr());
-		profileSubMenu.addItem("Cerrar sesión", e -> securityService.logout());
+		profileMenu.addItem("Cerrar sesión", e -> securityService.logout());
 
 		hLayoutMain.add(profileMenu);
 
@@ -146,6 +135,7 @@ public class MainLayout extends AppLayout {
 			list.add(item);
 		}
 
+		nav.add(createMenuBar());
 		return nav;
 	}
 
@@ -153,12 +143,10 @@ public class MainLayout extends AppLayout {
 		MenuItemInfo[] menuItems = new MenuItemInfo[] { new MenuItemInfo("Inicio", "la text-white", InicioView.class),
 				new MenuItemInfo("Novedades", "la", NovedadesView.class),
 				new MenuItemInfo("Planes", "la", PlanesView.class),
-				new MenuItemInfo("Perfil", "la", PerfilUsuarioView.class),
-				new MenuItemInfo("Logout", "la", PlanesView.class), };
+				new MenuItemInfo("Perfil", "la", PerfilUsuarioView.class), };
 		List<RouterLink> links = new ArrayList<>();
 		for (MenuItemInfo menuItemInfo : menuItems) {
 			links.add(createLink(menuItemInfo));
-
 		}
 
 		return links;
