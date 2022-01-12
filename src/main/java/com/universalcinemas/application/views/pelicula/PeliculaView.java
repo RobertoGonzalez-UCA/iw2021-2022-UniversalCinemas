@@ -205,16 +205,17 @@ public class PeliculaView extends VerticalLayout implements HasUrlParameter<Inte
 				int num_row = i;
 				int num_col = j;
 				
-				img2.addClickListener((e -> {
-		 			img2.getElement().getStyle().set("background-color", "green");
+				if(img2.getElement().getStyle().get("background-color") == "white" ) {
+					img2.addClickListener((e -> {
+						img2.getElement().getStyle().set("background-color", "green");
 
-		 			Ticket ticket = new Ticket(12.,0,sesionElegida);
-		 			ticketService.saveNewTicket(ticket);
+		 				Ticket ticket = new Ticket(12.,0,sesionElegida);
+		 				ticketService.saveNewTicket(ticket);
 		 			
-		 			Seats seats2 = new Seats(num_row,num_col,ticket);
-		 			seatsService.saveNewOccupiedSeat(seats2);
-		 		}));
-				
+		 				Seats seats2 = new Seats(num_row,num_col,ticket);
+		 				seatsService.saveNewOccupiedSeat(seats2);
+		 			}));
+				}
 
 				if(j == 0)
 					img2.getElement().getStyle().set("margin-left", "100px");
