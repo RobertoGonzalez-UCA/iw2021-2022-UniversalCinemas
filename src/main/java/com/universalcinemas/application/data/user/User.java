@@ -36,17 +36,18 @@ public class User implements UserDetails {
 	private LocalDate dateofbirth;
 	@NotNull
 	private String phonenumber;
-	
+
 	@NotNull
 	@ManyToOne
 	private Role role;
-	
+
 	@ManyToOne
 	private Plan plan;
-	
-	@Id @GeneratedValue
+
+	@Id
+	@GeneratedValue
 	private Integer id;
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
@@ -54,35 +55,42 @@ public class User implements UserDetails {
 
 		return roles;
 	}
-	
-	public User() {}
-	
-	public User(String name, String surname, String email, String dateofBirth, String phonenumber, String password){
-		
+
+	public User() {
+	}
+
+	public User(String name, String surname, String email, String dateofBirth, String phonenumber, String password) {
+
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.phonenumber = phonenumber;
-		
+
 		// Convert from String to LocalDate
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		formatter = formatter.withLocale( new Locale ( "es" , "ES" ));  // Locale specifies human language for translating, and cultural norms for lowercase/uppercase and abbreviations and such. Example: Locale.US or Locale.CANADA_FRENCH
+		formatter = formatter.withLocale(new Locale("es", "ES")); // Locale specifies human language for translating,
+																	// and cultural norms for lowercase/uppercase and
+																	// abbreviations and such. Example: Locale.US or
+																	// Locale.CANADA_FRENCH
 		LocalDate date = LocalDate.parse(dateofBirth, formatter);
-    
+
 		this.dateofbirth = date;
 		this.password = password;
 
 	}
 
-	
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -128,7 +136,7 @@ public class User implements UserDetails {
 	public void setDateOfBirth(LocalDate dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
-	
+
 	// REVISAR
 	public LocalDate getDateofbirth() {
 		return dateofbirth;
@@ -138,13 +146,13 @@ public class User implements UserDetails {
 		this.dateofbirth = dateofbirth;
 	}
 	// -------
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
 	public String getPassword() {
-		
+
 		return this.password;
 	}
 
@@ -155,7 +163,7 @@ public class User implements UserDetails {
 	public void setUrlprofileimage(String urlprofileimage) {
 		this.urlprofileimage = urlprofileimage;
 	}
-	
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;

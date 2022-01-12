@@ -49,9 +49,9 @@ public class PerfilUsuarioView extends VerticalLayout {
 		User currentUser = securityService.getAuthenticatedUser().get();
 			
 		VerticalLayout formularioDatos = new VerticalLayout(
-				crearFormularioDatos(servicioUsuario.obtenerDatosUsuario(1)));
+				crearFormularioDatos(servicioUsuario.obtenerDatosUsuario(currentUser.getId())));
 		VerticalLayout formularioLogin = new VerticalLayout(
-				crearFormularioLogin(servicioUsuario.obtenerDatosUsuario(1)));
+				crearFormularioLogin(servicioUsuario.obtenerDatosUsuario(currentUser.getId())));
 		HorizontalLayout formularios = new HorizontalLayout(formularioDatos, formularioLogin);
 		HorizontalLayout botonLayout = new HorizontalLayout(crearBotonInicio());
 		add(formularios, new Hr(), botonLayout);
