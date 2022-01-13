@@ -18,7 +18,7 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Inicio")
 @Route(value = "", layout = MainLayout.class)
-@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
+@PermitAll
 public class InicioView extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
