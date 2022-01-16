@@ -105,6 +105,18 @@ public class CrudUsersView extends Div implements BeforeEnterObserver {
 
 		grid.setDataProvider(new CrudServiceDataProvider<>(userService));
 		grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+		
+//		HorizontalLayout buttonLayout = new HorizontalLayout();
+//		Button button = new Button("Volver a Menú Admin");
+//		
+//		button.addClickListener(e ->
+//	     button.getUI().ifPresent(ui ->
+//	           ui.navigate("/menuadmin"))
+//       );
+//		
+//		add(button);
+		
+		
 		grid.setHeightFull();
 
 		// when a row is selected or deselected

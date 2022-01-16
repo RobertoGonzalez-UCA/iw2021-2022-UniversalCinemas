@@ -15,10 +15,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @PageTitle("Inicio")
 @Route(value = "", layout = MainLayout.class)
-@PermitAll
+@AnonymousAllowed
 public class InicioView extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;

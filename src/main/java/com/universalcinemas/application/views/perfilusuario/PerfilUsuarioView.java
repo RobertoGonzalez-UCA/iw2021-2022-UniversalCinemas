@@ -55,7 +55,9 @@ public class PerfilUsuarioView extends VerticalLayout {
 				crearFormularioLogin(servicioUsuario.obtenerDatosUsuario(currentUser.getId())));
 		HorizontalLayout formularios = new HorizontalLayout(formularioDatos, formularioLogin);
 		HorizontalLayout botonLayout = new HorizontalLayout(crearBotonInicio());
-		add(formularios, new Hr(), botonLayout);
+		HorizontalLayout CrudButtonLayout = new HorizontalLayout(crearBotonCrud(currentUser));
+
+		add(formularios, new Hr(), botonLayout,CrudButtonLayout);
 	}
 
 	private FormLayout crearFormularioDatos(User usuario) {
@@ -187,6 +189,28 @@ public class PerfilUsuarioView extends VerticalLayout {
 
 		return homeButton;
 	}
+	
+	private static Button crearBotonCrud(User currentUser) {
+		String user_role = currentUser.getRole().getName();
+
+		if(user_role.equals("ROLE_operator")) {
+			Button CrudButton1 = new Button("Crud", new Icon(VaadinIcon.COG), e -> UI.getCurrent().navigate("/menuoperator"));
+			CrudButton1.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+			
+			return CrudButton1;
+		}else if(user_role.equals("ROLE_admin")){
+			Button CrudButton2 = new Button("Crud", new Icon(VaadinIcon.COG), e -> UI.getCurrent().navigate("/menuadmin"));
+			CrudButton2.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+			
+			return CrudButton2;
+		}else {
+			Button CrudButton3 = new Button("Crud", new Icon(VaadinIcon.COG), e -> UI.getCurrent().navigate("/"));
+			CrudButton3.getElement().getStyle().set("display","none");
+			
+			return CrudButton3;
+		}
+	}
+	
 
 	private static void mostrarError() {
 		Dialog errorDialog = new Dialog();
