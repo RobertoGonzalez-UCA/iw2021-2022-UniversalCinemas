@@ -152,7 +152,7 @@ public class CrudRoomsView extends Div implements BeforeEnterObserver {
 				
 				UI.getCurrent().navigate(CrudRoomsView.class);
 			} catch (Exception exception) {
-				Notification.show("Ocurrió un error al borrar los datos de la sala.");
+				Notification.show("No se puede borrar la sala ya que hay sesiones que están asociadas a ella.");
 			}
 		});
 	}

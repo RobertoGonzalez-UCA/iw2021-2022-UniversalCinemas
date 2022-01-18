@@ -157,7 +157,7 @@ public class CrudPlansView extends Div implements BeforeEnterObserver {
 				
 				UI.getCurrent().navigate(CrudPlansView.class);
 			} catch (Exception exception) {
-				Notification.show("Ocurrió un error al borrar los datos del plan.");
+				Notification.show("No se puede borrar el el plan ya que hay usuarios que están suscritos a él.");
 			}
 		});
 	}

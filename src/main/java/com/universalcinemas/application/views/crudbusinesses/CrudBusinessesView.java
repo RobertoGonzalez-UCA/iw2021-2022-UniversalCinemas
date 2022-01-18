@@ -147,7 +147,7 @@ public class CrudBusinessesView extends Div implements BeforeEnterObserver {
 				
 				UI.getCurrent().navigate(CrudBusinessesView.class);
 			} catch (Exception exception) {
-				Notification.show("Ocurrió un error al borrar los datos del negocio.");
+				Notification.show("No se puede borrar el negocio ya que hay salas que están asociadas a él.");
 			}
 		});
 	}

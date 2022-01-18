@@ -184,7 +184,7 @@ public class CrudFilmsView extends Div implements BeforeEnterObserver {
 				
 				UI.getCurrent().navigate(CrudFilmsView.class);
 			} catch (Exception exception) {
-				Notification.show("Ocurrió un error al borrar los datos de la película.");
+				Notification.show("No se puede borrar la película ya que hay sesiones que están asociadas a ella.");
 			}
 		});
 	}

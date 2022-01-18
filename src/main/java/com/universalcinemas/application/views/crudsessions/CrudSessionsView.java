@@ -151,7 +151,7 @@ public class CrudSessionsView extends Div implements BeforeEnterObserver {
 				
 				UI.getCurrent().navigate(CrudSessionsView.class);
 			} catch (Exception exception) {
-				Notification.show("Ocurrió un error al borrar los datos de la sesión.");
+				Notification.show("No se puede borrar la sesión ya que hay entradas asociadas a ella.");
 			}
 		});
 	}
