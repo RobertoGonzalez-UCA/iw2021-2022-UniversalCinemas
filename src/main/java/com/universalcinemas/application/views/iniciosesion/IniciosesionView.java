@@ -1,9 +1,7 @@
 package com.universalcinemas.application.views.iniciosesion;
 
 import com.universalcinemas.application.views.MainLayout;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.Uses;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;

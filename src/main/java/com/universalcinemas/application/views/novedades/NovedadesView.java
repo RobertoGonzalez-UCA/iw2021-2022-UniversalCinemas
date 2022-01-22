@@ -21,17 +21,17 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Novedades")
 @Route(value = "news", layout = MainLayout.class)
-@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
+@RolesAllowed({ "ROLE_admin", "ROLE_operator", "ROLE_user" })
 public class NovedadesView extends VerticalLayout {
-	
+
 	private static final long serialVersionUID = 1L;
 	UserService userService;
-	
-	public class IconBox extends VerticalLayout{
+
+	public class IconBox extends VerticalLayout {
 
 		private static final long serialVersionUID = 1L;
 
-		public IconBox(String icon, String text){
+		public IconBox(String icon, String text) {
 			VerticalLayout mainVerticalLayout = new VerticalLayout();
 			mainVerticalLayout.setAlignItems(Alignment.CENTER);
 			mainVerticalLayout.add(new Icon(icon));
@@ -55,6 +55,18 @@ public class NovedadesView extends VerticalLayout {
 				"¡Siempre te mantendremos informado de las últimas noticias de nuestro cine, sea lo que sea!"));
 		mainVerticalLayout.add(new Paragraph(
 				"Nos gusta tener clientes que se comprometan con el mundo cinematográfico, no solo ofrecemos una entrada con palomitas. Queremos darte una de las mejores experiencias y para ello necesitamos que conozcas nuestras ventajas."));
+		mainVerticalLayout.add(new Paragraph(
+				"¡Tenemos todo bajo control! Por eso te queremos mostrar nuestras políticas legales de la A a la Z, para que sepas todo de nosotros."));
+
+		Button showInformation = new Button("Ver información legal");
+		showInformation.addClickListener(e -> {
+			Notification.show("Abriendo archivo...");
+			UI.getCurrent().getPage().open(
+					"https://drive.google.com/file/d/1BXZT0wViW30cIfZ9ox3AKF02O9vyn_Dr/view?usp=sharing", "_blank");
+		});
+		showInformation.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		mainVerticalLayout.add(showInformation);
+		mainVerticalLayout.setAlignItems(Alignment.CENTER);
 
 		// Block 1
 		verticalLayout1.add(new H1("Nuestras ventajas"));
@@ -64,7 +76,7 @@ public class NovedadesView extends VerticalLayout {
 		horizontalLayout3.add(new IconBox("car", "Parking"));
 		horizontalLayout3.add(new IconBox("cutlery", "Restaurante"));
 		horizontalLayout3.add(new IconBox("flash", "Descuentos"));
-		
+
 		Image img1 = new Image(
 				"https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80",
 				"personas viend una pelicula");
@@ -82,21 +94,21 @@ public class NovedadesView extends VerticalLayout {
 				"Lo primero es lo primero, tú. Para ello necesitamos mostrarte nuestro protocolo COVID."));
 		verticalLayout2.add(new Paragraph(
 				"Este protocolo ha sido diseñado con la máxima seguridad para ofrecerte la más segura experiencia cinematográfica que se puede tener en la actualidad."));
-		
+
 		Button showProtocol = new Button("Ver normativa");
 		showProtocol.addClickListener(e -> {
-            Notification.show("Abriendo archivo...");
-            UI.getCurrent().getPage().open("https://www.boe.es/buscar/act.php?id=BOE-A-2021-21307", "_blank");	// This has to redirect a external page
-        });
+			Notification.show("Abriendo archivo...");
+			UI.getCurrent().getPage().open("https://www.boe.es/buscar/act.php?id=BOE-A-2021-21307", "_blank");
+		});
 		showProtocol.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		verticalLayout2.add(showProtocol);
-		
+
 		Image img2 = new Image(
 				"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
 				"butacas de cine");
 		img2.setWidth("35%");
 		img2.setHeight("35%");
-		
+
 		verticalLayout1.setAlignItems(Alignment.CENTER);
 		verticalLayout2.setAlignItems(Alignment.CENTER);
 		horizontalLayout1.setAlignItems(Alignment.CENTER);
