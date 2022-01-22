@@ -1,8 +1,5 @@
 package com.universalcinemas.application.views.perfilusuario;
 
-import java.util.Optional;
-
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,29 +32,27 @@ import com.vaadin.flow.router.Route;
 
 @PageTitle("Perfil")
 @Route(value = "perfilusuario")
-@RolesAllowed({"ROLE_admin", "ROLE_operator", "ROLE_user"})
+@RolesAllowed({ "ROLE_admin", "ROLE_operator", "ROLE_user" })
 public class PerfilUsuarioView extends VerticalLayout {
 	private static final long serialVersionUID = 1L;
 	private UserService servicioUsuario;
 	private SecurityService securityService;
-	
 
 	@Autowired
 	public PerfilUsuarioView(UserService servicioUsuario, SecurityService securityService) {
 		this.servicioUsuario = servicioUsuario;
 		this.securityService = securityService;
-		
+
 		User currentUser = securityService.getAuthenticatedUser().get();
-			
+
 		VerticalLayout formularioDatos = new VerticalLayout(
 				crearFormularioDatos(servicioUsuario.obtenerDatosUsuario(currentUser.getId())));
 		VerticalLayout formularioLogin = new VerticalLayout(
 				crearFormularioLogin(servicioUsuario.obtenerDatosUsuario(currentUser.getId())));
 		HorizontalLayout formularios = new HorizontalLayout(formularioDatos, formularioLogin);
-		HorizontalLayout botonLayout = new HorizontalLayout(crearBotonInicio());
-		HorizontalLayout CrudButtonLayout = new HorizontalLayout(crearBotonCrud(currentUser));
+		HorizontalLayout botonLayout = new HorizontalLayout(crearBotonInicio(), crearBotonCrud(currentUser));
 
-		add(formularios, new Hr(), botonLayout,CrudButtonLayout);
+		add(formularios, new Hr(), botonLayout);
 	}
 
 	private FormLayout crearFormularioDatos(User usuario) {
@@ -189,28 +184,29 @@ public class PerfilUsuarioView extends VerticalLayout {
 
 		return homeButton;
 	}
-	
+
 	private static Button crearBotonCrud(User currentUser) {
 		String user_role = currentUser.getRole().getName();
 
-		if(user_role.equals("ROLE_operator")) {
-			Button CrudButton1 = new Button("Crud", new Icon(VaadinIcon.COG), e -> UI.getCurrent().navigate("/menuoperator"));
+		if (user_role.equals("ROLE_operator")) {
+			Button CrudButton1 = new Button("Panel de operador", new Icon(VaadinIcon.COG),
+					e -> UI.getCurrent().navigate("/menuoperator"));
 			CrudButton1.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-			
+
 			return CrudButton1;
-		}else if(user_role.equals("ROLE_admin")){
-			Button CrudButton2 = new Button("Crud", new Icon(VaadinIcon.COG), e -> UI.getCurrent().navigate("/menuadmin"));
+		} else if (user_role.equals("ROLE_admin")) {
+			Button CrudButton2 = new Button("Panel de administrador", new Icon(VaadinIcon.COG),
+					e -> UI.getCurrent().navigate("/menuadmin"));
 			CrudButton2.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-			
+
 			return CrudButton2;
-		}else {
-			Button CrudButton3 = new Button("Crud", new Icon(VaadinIcon.COG), e -> UI.getCurrent().navigate("/"));
-			CrudButton3.getElement().getStyle().set("display","none");
-			
+		} else {
+			Button CrudButton3 = new Button();
+			CrudButton3.getElement().getStyle().set("display", "none");
+
 			return CrudButton3;
 		}
 	}
-	
 
 	private static void mostrarError() {
 		Dialog errorDialog = new Dialog();
