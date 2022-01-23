@@ -137,6 +137,8 @@ public class CrudRoomsView extends Div implements BeforeEnterObserver {
 			    }
 			} catch (ValidationException validationException) {
 				Notification.show("Ocurrió un error al guardar los datos de la sala.");
+			} catch (Exception exception) {
+				Notification.show("No se puede crear una sala que ya existe.");
 			}
 		});
 

@@ -4,12 +4,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import com.universalcinemas.application.data.business.Business;
 
-@Entity
+@Table(
+	    uniqueConstraints=
+	        @UniqueConstraint(columnNames={"business_id", "num_room"})
+	)
 
+@Entity
 public class Room {
 	
 	@NotNull
