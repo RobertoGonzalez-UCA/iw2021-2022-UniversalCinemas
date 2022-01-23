@@ -15,40 +15,43 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @Route(value = "login", layout = MainLayout.class)
 @AnonymousAllowed
 @Uses(Icon.class)
-public class IniciosesionView extends LoginOverlay implements BeforeEnterObserver{
+public class IniciosesionView extends LoginOverlay implements BeforeEnterObserver {
 
 	private static final long serialVersionUID = 1L;
 
-
 	public IniciosesionView() {
-        setAction("login");
+		setAction("login");
 
-        LoginI18n i18n = LoginI18n.createDefault();
-        i18n.setHeader(new LoginI18n.Header());
-        i18n.getHeader().setTitle("Universal Cinemas");
-        i18n.getHeader().setDescription("Inicia sesión para disfrutar de nuestra cartelera");
-        i18n.getForm().setTitle("Acceda a su cuenta");
-        i18n.getForm().setUsername("Email");
-        i18n.getForm().setPassword("Contraseña");
-        i18n.getForm().setSubmit("Entrar");
-        i18n.getErrorMessage().setTitle("Email o contraseña incorrectos");
-        i18n.getErrorMessage().setMessage("Introduzca un usuario y contraseña válidos.");
-        i18n.setAdditionalInformation(null);
-        setI18n(i18n);
+		LoginI18n i18n = LoginI18n.createDefault();
+		i18n.setHeader(new LoginI18n.Header());
+		i18n.getHeader().setTitle("Universal Cinemas");
+		i18n.getHeader().setDescription("Inicia sesión para disfrutar de nuestra cartelera");
+		i18n.getForm().setTitle("Acceda a su cuenta");
+		i18n.getForm().setUsername("Email");
+		i18n.getForm().setPassword("Contraseña");
+		i18n.getForm().setSubmit("Entrar");
+		i18n.getErrorMessage().setTitle("Email o contraseña incorrectos");
+		i18n.getErrorMessage().setMessage("Introduzca un usuario y contraseña válidos.");
+		i18n.setAdditionalInformation(null);
+		setI18n(i18n);
 
-        setForgotPasswordButtonVisible(false);
-        setOpened(true);
-    }
+		setForgotPasswordButtonVisible(false);
+		setOpened(true);
 
-    
-    @Override
+		/*
+		 * Button register = new Button("Regístrate", new Icon(VaadinIcon.USER), e ->
+		 * UI.getCurrent().navigate("/signup"));
+		 * register.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		 * 
+		 * add(register))
+		 */
+	}
+
+	@Override
 	public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
 		// inform the user about an authentication error
-		if(beforeEnterEvent.getLocation()  
-        .getQueryParameters()
-        .getParameters()
-        .containsKey("error")) {
-            this.setError(true);
-        }
+		if (beforeEnterEvent.getLocation().getQueryParameters().getParameters().containsKey("error")) {
+			this.setError(true);
+		}
 	}
 }
